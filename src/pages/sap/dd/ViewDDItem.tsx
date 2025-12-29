@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
+import { BackButton } from '../../../components/ui/BackButton';
 import { Badge } from '../../../components/ui/badge';
 import { Label } from '../../../components/ui/label';
 import { MOCK_DD_ITEMS, getModuleBySubModule } from '../../../data/mockData';
 import { useAuth } from '../../../contexts/AuthContext';
-import { ArrowLeft, Edit, FileText, Calendar } from 'lucide-react';
+import { Edit, FileText, Calendar } from 'lucide-react';
 
 export function ViewDDItem() {
   const { itemId } = useParams<{ itemId: string }>();
@@ -66,19 +67,11 @@ export function ViewDDItem() {
 
   return (
     <div className="space-y-6">
+      <BackButton to={backPath} />
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate(backPath)}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold">{item.itemId}</h1>
-            <p className="text-muted-foreground mt-2">{item.kpiName}</p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold">{item.itemId}</h1>
+          <p className="text-muted-foreground mt-2">{item.kpiName}</p>
         </div>
         {hasPermission('edit') && (
           <Button

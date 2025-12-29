@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
+import { BackButton } from '../../components/ui/BackButton';
 import { SAP_MODULES } from '../../data/mockData';
 import { ArrowRight, FileText, CheckCircle } from 'lucide-react';
 import { MOCK_DD_ITEMS } from '../../data/mockData';
@@ -25,6 +26,7 @@ export function ModuleView() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/sap" />
       <div>
         <h1 className="text-3xl font-bold">
           {module.code} - {module.name}

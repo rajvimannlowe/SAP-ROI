@@ -1,24 +1,11 @@
 import { useAuth } from '../../contexts/AuthContext';
 import { Dropdown } from '../ui/dropdown';
-import { User, Shield, UserCheck, FileCheck } from 'lucide-react';
+import { Shield, UserCheck, FileCheck } from 'lucide-react';
 import { UserRole } from '../../types';
 import { roleDisplayNames } from '../../theme/theme';
 
 export function Navbar() {
   const { user, switchRole } = useAuth();
-
-  const getRoleIcon = (role: UserRole) => {
-    switch (role) {
-      case 'admin':
-        return <Shield className="h-4 w-4" />;
-      case 'manager':
-        return <UserCheck className="h-4 w-4" />;
-      case 'auditor':
-        return <FileCheck className="h-4 w-4" />;
-      default:
-        return <User className="h-4 w-4" />;
-    }
-  };
 
   const roleOptions = [
     {
@@ -47,17 +34,8 @@ export function Navbar() {
       </div>
       
       <div className="flex items-center gap-3">
-        {/* User Info & Role Switcher Combined */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted">
-          <User className="h-4 w-4 text-muted-foreground" />
-          <div className="flex flex-col min-w-0">
-            <span className="text-sm font-medium text-foreground truncate">{user.name}</span>
-            <span className="text-xs text-muted-foreground truncate">{user.email}</span>
-          </div>
-        </div>
-        
-        {/* Role Switcher Dropdown with Icon */}
-        <div className="w-[200px]">
+        {/* Role Switcher Dropdown */}
+        <div className="w-[220px]">
           <Dropdown
             options={roleOptions}
             value={user.role}

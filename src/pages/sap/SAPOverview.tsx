@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
+import { BackButton } from '../../components/ui/BackButton';
 import { ArrowRight, FileText, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 import { SAP_MODULES, MOCK_DD_ITEMS, getModuleBySubModule } from '../../data/mockData';
 import { SAPSummaryCards } from '../../components/dashboard/SAPSummaryCards';
@@ -115,6 +116,7 @@ export function SAPOverview() {
 
   return (
     <div className="space-y-6">
+      <BackButton to="/enterprise" />
       <div>
         <h1 className="text-3xl font-bold">SAP ROI Overview</h1>
         <p className="text-muted-foreground mt-2">

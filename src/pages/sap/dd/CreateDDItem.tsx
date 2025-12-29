@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
+import { BackButton } from '../../../components/ui/BackButton';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
-import { Select } from '../../../components/ui/select';
+import { Dropdown } from '../../../components/ui/dropdown';
 import { Textarea } from '../../../components/ui/textarea';
 import { DDDomain, Severity, DDStatus } from '../../../types';
 import { getAllSubModules } from '../../../data/mockData';
-import { ArrowLeft } from 'lucide-react';
 
 export function CreateDDItem() {
   const { moduleId, subModuleId } = useParams<{ moduleId: string; subModuleId: string }>();
@@ -63,22 +63,46 @@ export function CreateDDItem() {
     }
   };
 
+  const ddDomainOptions = [
+    { value: '', label: 'Select Domain' },
+    { value: 'Risk Management', label: 'Risk Management' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Process Integrity', label: 'Process Integrity' },
+    { value: 'Data Quality', label: 'Data Quality' },
+    { value: 'Security', label: 'Security' },
+  ];
+
+  const severityOptions = [
+    { value: '', label: 'Select Severity' },
+    { value: 'Low', label: 'Low' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'High', label: 'High' },
+    { value: 'Critical', label: 'Critical' },
+  ];
+
+  const statusOptions = [
+    { value: '', label: 'Select Status' },
+    { value: 'Comfortable', label: 'Comfortable' },
+    { value: 'Needs Review', label: 'Needs Review' },
+    { value: 'High Risk', label: 'High Risk' },
+  ];
+
+  const subModuleOptions = [
+    { value: '', label: 'Select Sub-Module' },
+    ...allSubModules.map((subModule) => ({
+      value: subModule.id,
+      label: `${subModule.code} - ${subModule.name}`,
+    })),
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          onClick={() => navigate(`/sap/${moduleId}/${subModuleId}`)}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold">Create Due Diligence Item</h1>
-          <p className="text-muted-foreground mt-2">
-            Add a new KPI/Control check for Due Diligence
-          </p>
-        </div>
+      <BackButton to={`/sap/${moduleId}/${subModuleId}`} />
+      <div>
+        <h1 className="text-3xl font-bold">Create Due Diligence Item</h1>
+        <p className="text-muted-foreground mt-2">
+          Add a new KPI/Control check for Due Diligence
+        </p>
       </div>
 
       <Card>
@@ -111,20 +135,14 @@ export function CreateDDItem() {
                 <Label htmlFor="subModuleId">
                   Sub-Module <span className="text-destructive">*</span>
                 </Label>
-                <Select
-                  id="subModuleId"
+                <Dropdown
+                  options={subModuleOptions}
                   value={formData.subModuleId}
-                  onChange={(e) => handleChange('subModuleId', e.target.value)}
-                  className={errors.subModuleId ? 'border-destructive' : ''}
+                  onChange={(value) => handleChange('subModuleId', value)}
+                  placeholder="Select Sub-Module"
+                  className={errors.subModuleId ? '[&>button]:border-destructive' : ''}
                   disabled={!!subModuleId}
-                >
-                  <option value="">Select Sub-Module</option>
-                  {allSubModules.map((subModule) => (
-                    <option key={subModule.id} value={subModule.id}>
-                      {subModule.code} - {subModule.name}
-                    </option>
-                  ))}
-                </Select>
+                />
                 {errors.subModuleId && (
                   <p className="text-sm text-destructive">{errors.subModuleId}</p>
                 )}
@@ -169,19 +187,13 @@ export function CreateDDItem() {
                 <Label htmlFor="ddDomain">
                   DD Domain <span className="text-destructive">*</span>
                 </Label>
-                <Select
-                  id="ddDomain"
-                  value={formData.ddDomain}
-                  onChange={(e) => handleChange('ddDomain', e.target.value as DDDomain)}
-                  className={errors.ddDomain ? 'border-destructive' : ''}
-                >
-                  <option value="">Select Domain</option>
-                  <option value="Risk Management">Risk Management</option>
-                  <option value="Compliance">Compliance</option>
-                  <option value="Process Integrity">Process Integrity</option>
-                  <option value="Data Quality">Data Quality</option>
-                  <option value="Security">Security</option>
-                </Select>
+                <Dropdown
+                  options={ddDomainOptions}
+                  value={formData.ddDomain || ''}
+                  onChange={(value) => handleChange('ddDomain', value as DDDomain)}
+                  placeholder="Select Domain"
+                  className={errors.ddDomain ? '[&>button]:border-destructive' : ''}
+                />
                 {errors.ddDomain && (
                   <p className="text-sm text-destructive">{errors.ddDomain}</p>
                 )}
@@ -191,18 +203,13 @@ export function CreateDDItem() {
                 <Label htmlFor="severity">
                   Severity <span className="text-destructive">*</span>
                 </Label>
-                <Select
-                  id="severity"
-                  value={formData.severity}
-                  onChange={(e) => handleChange('severity', e.target.value as Severity)}
-                  className={errors.severity ? 'border-destructive' : ''}
-                >
-                  <option value="">Select Severity</option>
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                  <option value="Critical">Critical</option>
-                </Select>
+                <Dropdown
+                  options={severityOptions}
+                  value={formData.severity || ''}
+                  onChange={(value) => handleChange('severity', value as Severity)}
+                  placeholder="Select Severity"
+                  className={errors.severity ? '[&>button]:border-destructive' : ''}
+                />
                 {errors.severity && (
                   <p className="text-sm text-destructive">{errors.severity}</p>
                 )}
@@ -212,17 +219,13 @@ export function CreateDDItem() {
                 <Label htmlFor="status">
                   Status <span className="text-destructive">*</span>
                 </Label>
-                <Select
-                  id="status"
-                  value={formData.status}
-                  onChange={(e) => handleChange('status', e.target.value as DDStatus)}
-                  className={errors.status ? 'border-destructive' : ''}
-                >
-                  <option value="">Select Status</option>
-                  <option value="Comfortable">Comfortable</option>
-                  <option value="Needs Review">Needs Review</option>
-                  <option value="High Risk">High Risk</option>
-                </Select>
+                <Dropdown
+                  options={statusOptions}
+                  value={formData.status || ''}
+                  onChange={(value) => handleChange('status', value as DDStatus)}
+                  placeholder="Select Status"
+                  className={errors.status ? '[&>button]:border-destructive' : ''}
+                />
                 {errors.status && (
                   <p className="text-sm text-destructive">{errors.status}</p>
                 )}

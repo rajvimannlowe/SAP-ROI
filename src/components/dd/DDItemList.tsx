@@ -4,7 +4,7 @@ import { Badge } from '../ui/badge';
 import { DDItem } from '../../types';
 import { Search, Eye, Edit, FileText } from 'lucide-react';
 import { Input } from '../ui/input';
-import { Select } from '../ui/select';
+import { Dropdown } from '../ui/dropdown';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface DDItemListProps {
@@ -52,6 +52,38 @@ export function DDItemList({ items, onFilterChange, filters, subModules }: DDIte
     }
   };
 
+  const subModuleFilterOptions = [
+    { value: '', label: 'All Sub-Modules' },
+    ...subModules.map((sm) => ({
+      value: sm.id,
+      label: `${sm.code} - ${sm.name}`,
+    })),
+  ];
+
+  const domainFilterOptions = [
+    { value: '', label: 'All Domains' },
+    { value: 'Risk Management', label: 'Risk Management' },
+    { value: 'Compliance', label: 'Compliance' },
+    { value: 'Process Integrity', label: 'Process Integrity' },
+    { value: 'Data Quality', label: 'Data Quality' },
+    { value: 'Security', label: 'Security' },
+  ];
+
+  const severityFilterOptions = [
+    { value: '', label: 'All Severities' },
+    { value: 'Critical', label: 'Critical' },
+    { value: 'High', label: 'High' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'Low', label: 'Low' },
+  ];
+
+  const statusFilterOptions = [
+    { value: '', label: 'All Statuses' },
+    { value: 'High Risk', label: 'High Risk' },
+    { value: 'Needs Review', label: 'Needs Review' },
+    { value: 'Comfortable', label: 'Comfortable' },
+  ];
+
   return (
     <div className="space-y-4">
       {/* Filters */}
@@ -70,47 +102,30 @@ export function DDItemList({ items, onFilterChange, filters, subModules }: DDIte
                 className="pl-9"
               />
             </div>
-            <Select
+            <Dropdown
+              options={subModuleFilterOptions}
               value={filters.subModuleId || ''}
-              onChange={(e) => onFilterChange({ ...filters, subModuleId: e.target.value || undefined })}
-            >
-              <option value="">All Sub-Modules</option>
-              {subModules.map((sm) => (
-                <option key={sm.id} value={sm.id}>
-                  {sm.code} - {sm.name}
-                </option>
-              ))}
-            </Select>
-            <Select
+              onChange={(value) => onFilterChange({ ...filters, subModuleId: value || undefined })}
+              placeholder="All Sub-Modules"
+            />
+            <Dropdown
+              options={domainFilterOptions}
               value={filters.ddDomain || ''}
-              onChange={(e) => onFilterChange({ ...filters, ddDomain: e.target.value || undefined })}
-            >
-              <option value="">All Domains</option>
-              <option value="Risk Management">Risk Management</option>
-              <option value="Compliance">Compliance</option>
-              <option value="Process Integrity">Process Integrity</option>
-              <option value="Data Quality">Data Quality</option>
-              <option value="Security">Security</option>
-            </Select>
-            <Select
+              onChange={(value) => onFilterChange({ ...filters, ddDomain: value || undefined })}
+              placeholder="All Domains"
+            />
+            <Dropdown
+              options={severityFilterOptions}
               value={filters.severity || ''}
-              onChange={(e) => onFilterChange({ ...filters, severity: e.target.value || undefined })}
-            >
-              <option value="">All Severities</option>
-              <option value="Critical">Critical</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </Select>
-            <Select
+              onChange={(value) => onFilterChange({ ...filters, severity: value || undefined })}
+              placeholder="All Severities"
+            />
+            <Dropdown
+              options={statusFilterOptions}
               value={filters.status || ''}
-              onChange={(e) => onFilterChange({ ...filters, status: e.target.value || undefined })}
-            >
-              <option value="">All Statuses</option>
-              <option value="High Risk">High Risk</option>
-              <option value="Needs Review">Needs Review</option>
-              <option value="Comfortable">Comfortable</option>
-            </Select>
+              onChange={(value) => onFilterChange({ ...filters, status: value || undefined })}
+              placeholder="All Statuses"
+            />
           </div>
         </CardContent>
       </Card>

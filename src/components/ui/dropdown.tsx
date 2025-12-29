@@ -70,11 +70,11 @@ export function Dropdown({
         className={cn(
           'flex items-center justify-between gap-2 w-full px-3 py-2 text-sm font-medium',
           'rounded-md border-2 border-input bg-background',
-          'hover:border-[#4160F0] hover:bg-accent',
-          'focus:outline-none focus:ring-2 focus:ring-[#4160F0] focus:ring-offset-2',
+          'hover:bg-accent',
+          'focus:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'transition-all',
-          isOpen && 'border-[#4160F0] ring-2 ring-[#4160F0]/20'
+          isOpen && 'border-[#4160F0]'
         )}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">

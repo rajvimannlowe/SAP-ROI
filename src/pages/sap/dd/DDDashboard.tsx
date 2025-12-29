@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/button';
+import { BackButton } from '../../../components/ui/BackButton';
 import { DashboardCards } from '../../../components/dd/DashboardCards';
 import { DDItemList } from '../../../components/dd/DDItemList';
 import { MOCK_DD_ITEMS, getAllSubModules, getModuleBySubModule } from '../../../data/mockData';
@@ -105,6 +106,7 @@ export function DDDashboard() {
 
   return (
     <div className="space-y-6">
+      <BackButton to={`/sap/${moduleId}`} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Due Diligence Dashboard</h1>
