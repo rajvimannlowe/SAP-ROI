@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { User } from '../types';
+import { User, UserRole } from '../types';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  switchRole: (role: UserRole) => void;
   hasPermission: (permission: 'create' | 'edit' | 'view' | 'export') => boolean;
 }
 
@@ -66,6 +67,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user');
   };
 
+  const switchRole = (role: UserRole) => {
+    if (!user) return;
+    
+    const updatedUser = { ...user, role };
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
+
   const hasPermission = (permission: 'create' | 'edit' | 'view' | 'export'): boolean => {
     if (!user) return false;
 
@@ -82,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, hasPermission }}>
+    <AuthContext.Provider value={{ user, login, logout, switchRole, hasPermission }}>
       {children}
     </AuthContext.Provider>
   );

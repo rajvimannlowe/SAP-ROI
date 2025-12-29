@@ -1,35 +1,42 @@
 import { useAuth } from '../../contexts/AuthContext';
-import { Badge } from '../ui/badge';
-import { User } from 'lucide-react';
+import { Dropdown } from '../ui/dropdown';
+import { User, Shield, UserCheck, FileCheck } from 'lucide-react';
+import { UserRole } from '../../types';
+import { roleDisplayNames } from '../../theme/theme';
 
 export function Navbar() {
-  const { user } = useAuth();
+  const { user, switchRole } = useAuth();
 
-  const getRoleDisplay = (role: string) => {
+  const getRoleIcon = (role: UserRole) => {
     switch (role) {
       case 'admin':
-        return 'Enterprise Admin';
+        return <Shield className="h-4 w-4" />;
       case 'manager':
-        return 'Risk / Business Manager';
+        return <UserCheck className="h-4 w-4" />;
       case 'auditor':
-        return 'Auditor / Compliance Analyst';
+        return <FileCheck className="h-4 w-4" />;
       default:
-        return role;
+        return <User className="h-4 w-4" />;
     }
   };
 
-  const getRoleVariant = (role: string): 'default' | 'secondary' | 'outline' => {
-    switch (role) {
-      case 'admin':
-        return 'default';
-      case 'manager':
-        return 'secondary';
-      case 'auditor':
-        return 'outline';
-      default:
-        return 'outline';
-    }
-  };
+  const roleOptions = [
+    {
+      value: 'admin',
+      label: roleDisplayNames.admin,
+      icon: <Shield className="h-4 w-4" />,
+    },
+    {
+      value: 'manager',
+      label: roleDisplayNames.manager,
+      icon: <UserCheck className="h-4 w-4" />,
+    },
+    {
+      value: 'auditor',
+      label: roleDisplayNames.auditor,
+      icon: <FileCheck className="h-4 w-4" />,
+    },
+  ];
 
   if (!user) return null;
 
@@ -39,21 +46,26 @@ export function Navbar() {
         <h2 className="text-lg font-semibold text-foreground">SAP Due Diligence</h2>
       </div>
       
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted">
-            <User className="h-4 w-4 text-muted-foreground" />
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">{user.name}</span>
-              <span className="text-xs text-muted-foreground">{user.email}</span>
-            </div>
+      <div className="flex items-center gap-3">
+        {/* User Info & Role Switcher Combined */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted">
+          <User className="h-4 w-4 text-muted-foreground" />
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-medium text-foreground truncate">{user.name}</span>
+            <span className="text-xs text-muted-foreground truncate">{user.email}</span>
           </div>
-          <Badge variant={getRoleVariant(user.role)}>
-            {getRoleDisplay(user.role)}
-          </Badge>
+        </div>
+        
+        {/* Role Switcher Dropdown with Icon */}
+        <div className="w-[200px]">
+          <Dropdown
+            options={roleOptions}
+            value={user.role}
+            onChange={(value) => switchRole(value as UserRole)}
+            placeholder="Select Role"
+          />
         </div>
       </div>
     </div>
   );
 }
-
