@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
+import { EnhancedCard } from "../../components/ui/enhanced-card";
 import { Button } from "../../components/ui/button";
-import { Database, ArrowRight, Building2, TrendingUp } from "lucide-react";
+import {
+  Database,
+  ArrowRight,
+  Building2,
+  TrendingUp,
+  ArrowUp,
+} from "lucide-react";
 import {
   MOCK_DD_ITEMS,
   SAP_MODULES,
@@ -138,7 +138,25 @@ export function EnterpriseOverview() {
         </p>
       </div>
 
-      {/* Departments Section - Moved to Top */}
+      {/* Summary Cards - Priority 1: Quick Metrics Overview */}
+      <div>
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold">Key Metrics</h2>
+          <p className="text-muted-foreground text-sm mt-1">
+            Overview of Due Diligence statistics at a glance
+          </p>
+        </div>
+        <EnterpriseSummaryCards
+          totalItems={summary.totalItems}
+          highRisk={summary.highRisk}
+          needsReview={summary.needsReview}
+          comfortable={summary.comfortable}
+          highSeverity={summary.highSeverity}
+          totalModules={summary.totalModules}
+        />
+      </div>
+
+      {/* Departments Section - Priority 2: Main Actions */}
       <div>
         <div className="mb-4">
           <h2 className="text-2xl font-bold">Departments</h2>
@@ -146,60 +164,32 @@ export function EnterpriseOverview() {
             Access Due Diligence management by department
           </p>
         </div>
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {departments.map((dept) => {
             const Icon = dept.icon;
             const isActive = dept.status === "active";
 
             return (
-              <Card
+              <EnhancedCard
                 key={dept.id}
-                className={`group hover:shadow-xl transition-all duration-300 border border-border/50 overflow-hidden bg-gradient-to-br from-card to-card/50 ${
-                  !isActive ? "opacity-70" : ""
-                }`}
-                style={{
-                  borderColor: isActive ? `${dept.color}40` : undefined,
-                }}
+                icon={Icon}
+                iconColor="white"
+                title={dept.name}
+                subtitle={isActive ? dept.description : "Coming Soon"}
+                accentColor={dept.color}
+                topBgColor={isActive ? undefined : `rgba(128, 128, 128, 0.08)`}
+                badge={
+                  isActive
+                    ? {
+                        label: "Active",
+                        color: dept.color,
+                        icon: ArrowUp,
+                      }
+                    : undefined
+                }
+                className={!isActive ? "opacity-70" : ""}
               >
-                {/* Gradient top border */}
-                <div
-                  className="h-1.5"
-                  style={{
-                    background: isActive
-                      ? `linear-gradient(to right, ${dept.color}, #FF6700)`
-                      : `linear-gradient(to right, ${dept.color}40, ${dept.color}20)`,
-                  }}
-                ></div>
-
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div
-                        className="p-2.5 rounded-lg group-hover:scale-110 transition-transform"
-                        style={{
-                          background: `linear-gradient(to bottom right, ${dept.color}15, ${dept.color}08)`,
-                        }}
-                      >
-                        <Icon
-                          className="h-5 w-5"
-                          style={{ color: dept.color }}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg font-bold mb-0.5">
-                          {dept.name}
-                        </CardTitle>
-                        {!isActive && (
-                          <span className="text-xs font-medium text-muted-foreground">
-                            Coming Soon
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
+                <div className="space-y-4">
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {dept.description}
                   </p>
@@ -223,24 +213,14 @@ export function EnterpriseOverview() {
                       Coming Soon
                     </Button>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </EnhancedCard>
             );
           })}
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <EnterpriseSummaryCards
-        totalItems={summary.totalItems}
-        highRisk={summary.highRisk}
-        needsReview={summary.needsReview}
-        comfortable={summary.comfortable}
-        highSeverity={summary.highSeverity}
-        totalModules={summary.totalModules}
-      />
-
-      {/* Charts Grid */}
+      {/* Charts Grid - Priority 3: Detailed Analytics */}
       <div className="space-y-6">
         <div className="mb-4">
           <h2 className="text-2xl font-bold">Analytics & Insights</h2>
@@ -259,51 +239,46 @@ export function EnterpriseOverview() {
         </div>
       </div>
 
-      {/* About Section */}
-      <Card className="border-2 border-border/60">
-        <CardHeader>
-          <CardTitle className="text-xl">About Due Diligence</CardTitle>
-          <CardDescription>
-            Understanding the Automated Due Diligence System
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="prose prose-sm max-w-none">
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              This is an{" "}
-              <strong className="text-foreground">
-                Automated Due Diligence system
-              </strong>{" "}
-              where each KPI represents a control used to assess SAP process
-              risk and compliance. Each Due Diligence item is a control check
-              that monitors risk, compliance, and process integrity within your
-              SAP modules.
-            </p>
-            <div className="grid gap-4 md:grid-cols-3 mt-6">
-              <div className="p-4 rounded-lg border border-border/50 bg-card/50">
-                <h4 className="font-semibold text-sm mb-2">Risk Management</h4>
-                <p className="text-xs text-muted-foreground">
-                  Monitor and identify potential risks across your SAP processes
-                </p>
-              </div>
-              <div className="p-4 rounded-lg border border-border/50 bg-card/50">
-                <h4 className="font-semibold text-sm mb-2">Compliance</h4>
-                <p className="text-xs text-muted-foreground">
-                  Ensure adherence to regulatory requirements and standards
-                </p>
-              </div>
-              <div className="p-4 rounded-lg border border-border/50 bg-card/50">
-                <h4 className="font-semibold text-sm mb-2">
-                  Process Integrity
-                </h4>
-                <p className="text-xs text-muted-foreground">
-                  Maintain and verify the integrity of business processes
-                </p>
-              </div>
+      {/* About Section - Priority 4: Informational */}
+      <EnhancedCard
+        title="About Due Diligence"
+        subtitle="Understanding the Automated Due Diligence System"
+        accentColor="#4160F0"
+        icon={Database}
+      >
+        <div className="prose prose-sm max-w-none">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            This is an{" "}
+            <strong className="text-foreground">
+              Automated Due Diligence system
+            </strong>{" "}
+            where each KPI represents a control used to assess SAP process risk
+            and compliance. Each Due Diligence item is a control check that
+            monitors risk, compliance, and process integrity within your SAP
+            modules.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3 mt-6">
+            <div className="p-4 rounded-lg border border-border/40 bg-muted/30">
+              <h4 className="font-semibold text-sm mb-2">Risk Management</h4>
+              <p className="text-xs text-muted-foreground">
+                Monitor and identify potential risks across your SAP processes
+              </p>
+            </div>
+            <div className="p-4 rounded-lg border border-border/40 bg-muted/30">
+              <h4 className="font-semibold text-sm mb-2">Compliance</h4>
+              <p className="text-xs text-muted-foreground">
+                Ensure adherence to regulatory requirements and standards
+              </p>
+            </div>
+            <div className="p-4 rounded-lg border border-border/40 bg-muted/30">
+              <h4 className="font-semibold text-sm mb-2">Process Integrity</h4>
+              <p className="text-xs text-muted-foreground">
+                Maintain and verify the integrity of business processes
+              </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </EnhancedCard>
     </div>
   );
 }

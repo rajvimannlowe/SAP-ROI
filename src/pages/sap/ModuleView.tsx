@@ -1,11 +1,6 @@
 import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
+import { EnhancedCard } from "../../components/ui/enhanced-card";
 import { Button } from "../../components/ui/button";
 import { BackButton } from "../../components/ui/BackButton";
 import { SAP_MODULES, MOCK_DD_ITEMS } from "../../data/mockData";
@@ -15,6 +10,7 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
+  ArrowUp,
 } from "lucide-react";
 import {
   SummaryCards,
@@ -135,41 +131,27 @@ export function ModuleView() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {subModuleStats.map((subModule) => (
-            <Card
+            <EnhancedCard
               key={subModule.id}
-              className="group hover:shadow-xl transition-all duration-300 border border-border/50 hover:border-[#4160F0]/40 overflow-hidden bg-gradient-to-br from-card to-card/50"
+              icon={FileText}
+              iconColor="white"
+              title={subModule.code}
+              subtitle={subModule.name}
+              accentColor="#4160F0"
+              badge={
+                subModule.itemCount > 0
+                  ? {
+                      label: `${subModule.itemCount} items`,
+                      color: "#4160F0",
+                      icon: ArrowUp,
+                    }
+                  : undefined
+              }
+              className="hover:shadow-xl"
             >
-              {/* Gradient top border */}
-              <div className="h-1.5 bg-gradient-to-r from-[#4160F0] to-[#FF6700]"></div>
-
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="p-2.5 rounded-lg bg-gradient-to-br from-[#4160F0]/10 to-[#FF6700]/10 group-hover:from-[#4160F0]/20 group-hover:to-[#FF6700]/20 transition-all">
-                      <FileText className="h-5 w-5 text-[#4160F0]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg font-bold mb-0.5">
-                        {subModule.code}
-                      </CardTitle>
-                      <p className="text-sm text-muted-foreground truncate">
-                        {subModule.name}
-                      </p>
-                    </div>
-                  </div>
-                  {subModule.itemCount > 0 && (
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-[#4160F0]/10 to-[#FF6700]/10 group-hover:from-[#4160F0]/20 group-hover:to-[#FF6700]/20 transition-all shrink-0">
-                      <span className="text-base font-bold text-[#4160F0]">
-                        {subModule.itemCount}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
+              <div className="space-y-4">
                 {/* Status Breakdown */}
                 {subModule.itemCount > 0 ? (
                   <div className="space-y-2">
@@ -225,8 +207,8 @@ export function ModuleView() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </EnhancedCard>
           ))}
         </div>
       </div>

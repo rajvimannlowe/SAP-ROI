@@ -7,9 +7,9 @@ interface ModuleStatusChartProps {
 
 export function ModuleStatusChart({ data }: ModuleStatusChartProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Status Distribution by Module</CardTitle>
+    <Card className="border-border/50">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">Status Distribution by Module</CardTitle>
       </CardHeader>
       <CardContent>
         <div style={{ height: '400px' }}>

@@ -7,9 +7,9 @@ interface SubModuleBarChartProps {
 
 export function SubModuleBarChart({ data }: SubModuleBarChartProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>DD Items by Sub-Module</CardTitle>
+    <Card className="border-border/50">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">DD Items by Sub-Module</CardTitle>
       </CardHeader>
       <CardContent>
         <div style={{ height: '400px' }}>

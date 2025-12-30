@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
+import { EnhancedCard } from "../../components/ui/enhanced-card";
 import { Button } from "../../components/ui/button";
 import { BackButton } from "../../components/ui/BackButton";
 import {
@@ -15,6 +16,7 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
+  ArrowUp,
 } from "lucide-react";
 import {
   SAP_MODULES,
@@ -174,36 +176,23 @@ export function SAPOverview() {
             View and manage Due Diligence by module
           </p>
         </div>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {moduleCards.map((module) => (
-            <Card
+            <EnhancedCard
               key={module.id}
-              className="group hover:shadow-xl transition-all duration-300 border border-border/50 hover:border-[#4160F0]/40 overflow-hidden bg-gradient-to-br from-card to-card/50"
+              icon={FileText}
+              iconColor="white"
+              title={module.code}
+              subtitle={module.name}
+              accentColor="#4160F0"
+              badge={{
+                label: `${module.itemCount} items`,
+                color: "#4160F0",
+                icon: ArrowUp,
+              }}
+              className="hover:shadow-xl"
             >
-              <div className="h-1.5 bg-gradient-to-r from-[#4160F0] to-[#FF6700]"></div>
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="p-2.5 rounded-lg bg-gradient-to-br from-[#4160F0]/10 to-[#FF6700]/10 group-hover:from-[#4160F0]/20 group-hover:to-[#FF6700]/20 transition-all">
-                      <FileText className="h-5 w-5 text-[#4160F0]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg font-bold mb-0.5">
-                        {module.code}
-                      </CardTitle>
-                      <CardDescription className="text-xs font-medium truncate">
-                        {module.name}
-                      </CardDescription>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-[#4160F0]/10 to-[#FF6700]/10 group-hover:from-[#4160F0]/20 group-hover:to-[#FF6700]/20 transition-all">
-                    <span className="text-base font-bold text-[#4160F0]">
-                      {module.itemCount}
-                    </span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3 pt-0">
+              <div className="space-y-3">
                 {/* Sub-Modules List with Status Breakdown */}
                 {module.subModuleStats && module.subModuleStats.length > 0 && (
                   <div className="space-y-2">
@@ -292,8 +281,8 @@ export function SAPOverview() {
                     View Module <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </EnhancedCard>
           ))}
         </div>
       </div>

@@ -7,9 +7,9 @@ interface ModuleBarChartProps {
 
 export function ModuleBarChart({ data }: ModuleBarChartProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>DD Items by Module</CardTitle>
+    <Card className="border-border/50">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">DD Items by Module</CardTitle>
       </CardHeader>
       <CardContent>
         <div style={{ height: '300px' }}>

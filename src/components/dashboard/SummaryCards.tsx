@@ -43,45 +43,44 @@ export function SummaryCards({
         return (
           <div
             key={index}
-            className="group relative overflow-hidden rounded-xl border border-border/60 bg-card hover:border-[#4160F0]/50 hover:shadow-lg transition-all duration-300"
+            className="group relative overflow-hidden rounded-xl border border-border/40 bg-card shadow-md transition-all duration-300 hover:shadow-lg"
           >
-            {/* Colored top border */}
-            <div 
-              className="absolute top-0 left-0 right-0 h-1"
-              style={{ backgroundColor: card.color }}
-            ></div>
-            
-            {/* Content */}
-            <div className="p-4 pt-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground mb-2 leading-tight">
-                    {card.title}
-                  </p>
-                  <p 
-                    className="text-2xl font-bold leading-none"
-                    style={{ color: card.color }}
-                  >
-                    {card.value}
-                  </p>
-                  {card.description && (
-                    <p className="text-[10px] text-muted-foreground leading-tight mt-1">
-                      {card.description}
-                    </p>
-                  )}
-                </div>
-                <div 
-                  className="p-2.5 rounded-lg shrink-0"
-                  style={{ 
-                    backgroundColor: hexToRgba(card.color, 0.08),
+            {/* Colored top section */}
+            <div
+              className="relative px-3 pt-3 pb-2"
+              style={{
+                background: `linear-gradient(135deg, ${hexToRgba(card.color, 0.12)} 0%, ${hexToRgba(card.color, 0.06)} 100%)`,
+              }}
+            >
+              <div className="flex items-center justify-between gap-2">
+                {/* Icon */}
+                <div
+                  className="flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 group-hover:scale-105"
+                  style={{
+                    background: card.color,
+                    boxShadow: `0 2px 8px ${hexToRgba(card.color, 0.4)}`,
                   }}
                 >
-                  <Icon 
-                    className="h-5 w-5" 
-                    style={{ color: card.color }}
+                  <Icon
+                    className="h-4 w-4 text-white"
                   />
                 </div>
+                
+                {/* Value */}
+                <p
+                  className="text-2xl font-bold leading-none"
+                  style={{ color: card.color }}
+                >
+                  {card.value}
+                </p>
               </div>
+            </div>
+
+            {/* Bottom section with title */}
+            <div className="px-3 pb-3 pt-1.5 bg-card">
+              <p className="text-xs font-semibold text-muted-foreground truncate">
+                {card.title}
+              </p>
             </div>
           </div>
         );
