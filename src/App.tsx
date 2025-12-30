@@ -7,6 +7,7 @@ import { MainLayout } from "./components/layout/MainLayout";
 import { Login } from "./pages/auth/Login";
 import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
 import { PhaseIROIPortfolio } from "./pages/enterprise/PhaseIROIPortfolio";
+import { ROICatalogExplorer } from "./pages/enterprise/ROICatalogExplorer";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route index element={<Navigate to="/enterprise" replace />} />
             <Route path="enterprise" element={<EnterpriseOverview />} />
             <Route path="phase-i" element={<PhaseIROIPortfolio />} />
+            <Route path="phase-i/catalog" element={<ROICatalogExplorer />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />

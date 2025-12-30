@@ -38,13 +38,15 @@ export function PhaseIROIPortfolio() {
         </div>
 
         {/* View Catalog Button */}
-        <Button
-          className="gap-2 shadow-md hover:shadow-lg transition-all"
-          style={{ backgroundColor: "#4160F0" }}
-        >
-          <Grid className="h-4 w-4" />
-          View Catalog
-        </Button>
+        <Link to="/phase-i/catalog">
+          <Button
+            className="gap-2 shadow-md hover:shadow-lg transition-all"
+            style={{ backgroundColor: "#4160F0" }}
+          >
+            <Grid className="h-4 w-4" />
+            View Catalog
+          </Button>
+        </Link>
       </div>
 
       {/* Categories and Investment Cards */}
@@ -90,15 +92,6 @@ function InvestmentCardComponent({
 }) {
   const isHighlighted = investment.highlighted;
   const borderColor = isHighlighted ? "#4160F0" : undefined;
-  const cardBg = isHighlighted
-    ? `linear-gradient(135deg, ${hexToRgba("#4160F0", 0.08)} 0%, ${hexToRgba(
-        "#4160F0",
-        0.03
-      )} 50%, transparent 100%)`
-    : `linear-gradient(135deg, ${hexToRgba(
-        "#9333EA",
-        0.05
-      )} 0%, transparent 100%)`;
 
   return (
     <div
@@ -110,14 +103,6 @@ function InvestmentCardComponent({
         borderWidth: borderColor ? "2px" : "1px",
       }}
     >
-      {/* Light colorful gradient background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: cardBg,
-        }}
-      />
-
       {/* Phase Tag */}
       {investment.phase !== "Phase I" && (
         <div className="absolute top-4 right-4 z-10">
@@ -149,38 +134,30 @@ function InvestmentCardComponent({
             {investment.roiDimensions.map((dim, index) => {
               const Icon = dim.icon;
               const isActive = dim.active;
-              const color = isActive ? dim.color || "#4160F0" : undefined;
-
-              const labelMap: Record<string, string> = {
-                Cost: "$ Cost",
-                Efficiency: "+ Efficiency",
-                Compliance: "O Compliance",
-                Revenue: "~ Revenue",
-              };
+              const color = isActive ? dim.color || "#4160F0" : "#9CA3AF";
 
               return (
                 <div
                   key={index}
-                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md transition-all ${
-                    isActive
-                      ? "bg-background/80 border border-border/50 shadow-sm"
-                      : "opacity-50"
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border shadow-sm transition-all ${
+                    !isActive ? "opacity-60" : ""
                   }`}
+                  style={
+                    isActive
+                      ? {
+                          color: color,
+                          backgroundColor: hexToRgba(color, 0.15),
+                          borderColor: hexToRgba(color, 0.35),
+                        }
+                      : {
+                          color: color,
+                          backgroundColor: hexToRgba(color, 0.1),
+                          borderColor: hexToRgba(color, 0.25),
+                        }
+                  }
                 >
-                  <Icon
-                    className={`h-3.5 w-3.5 ${
-                      isActive ? "" : "text-muted-foreground/50"
-                    }`}
-                    style={isActive && color ? { color } : undefined}
-                  />
-                  <span
-                    className={`text-xs font-medium ${
-                      isActive ? "" : "text-muted-foreground/60"
-                    }`}
-                    style={isActive && color ? { color } : undefined}
-                  >
-                    {labelMap[dim.label] || dim.label}
-                  </span>
+                  <Icon className="h-3.5 w-3.5" />
+                  <span className="text-xs font-medium">{dim.label}</span>
                 </div>
               );
             })}
@@ -209,14 +186,16 @@ function InvestmentCardComponent({
         </div>
 
         {/* Bottom Link/Text Section */}
-        <div className="pt-2 border-t border-border/40">
+        <div className="pt-3 border-t border-border/40">
           {investment.bottomLink ? (
             <Link
               to={`/phase-i/${investment.id}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors group"
+              className="group inline-flex items-center gap-2 w-full px-4 py-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-sm"
             >
-              <span>{investment.bottomLink.replace(" →", "")}</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <span className="text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+                {investment.bottomLink.replace(" →", "")}
+              </span>
+              <ArrowRight className="h-4 w-4 text-blue-600 group-hover:text-blue-700 transition-transform group-hover:translate-x-1 shrink-0" />
             </Link>
           ) : investment.bottomText ? (
             <p className="text-sm text-muted-foreground italic">
