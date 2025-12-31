@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Grid, ArrowRight } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../../../components/ui/button";
 import {
   PHASE_I_ROI_CATEGORIES,
   InvestmentCard,
-} from "../../data/phaseIROIData";
+} from "../../../../../data/phaseIROIData";
 
 export function PhaseIROIPortfolio() {
   const categories = PHASE_I_ROI_CATEGORIES;

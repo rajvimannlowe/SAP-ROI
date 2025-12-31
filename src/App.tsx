@@ -6,8 +6,8 @@ import { MainLayout } from "./components/layout/MainLayout";
 // Pages
 import { Login } from "./pages/auth/Login";
 import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
-import { PhaseIROIPortfolio } from "./pages/enterprise/PhaseIROIPortfolio";
-import { ROICatalogExplorer } from "./pages/enterprise/ROICatalogExplorer";
+import { PhaseIROIPortfolio } from "./pages/enterprise/phase-one/erp/sap-s4hana/PhaseIROIPortfolio";
+import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROICatalogExplorer";
 
 function App() {
   return (

@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { CatalogCard } from "../../components/roi/CatalogCard";
-import { SearchAndFilters } from "../../components/roi/SearchAndFilters";
+import { CatalogCard } from "../../../../../components/roi/CatalogCard";
+import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
 import {
   ROI_CATALOG_ITEMS,
   CATEGORY_OPTIONS,
@@ -10,7 +10,7 @@ import {
   ROI_DIMENSION_OPTIONS,
   PERSONA_OPTIONS,
   INTEGRATION_METHOD_OPTIONS,
-} from "../../data/roiCatalogData";
+} from "../../../../../data/roiCatalogData";
 
 interface FilterState {
   category: string;
