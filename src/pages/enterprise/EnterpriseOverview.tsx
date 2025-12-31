@@ -3,6 +3,7 @@ import { MOCK_DD_ITEMS } from "../../data/mockData";
 import { ROIMetricCards } from "../../components/dashboard/ROIMetricCards";
 import { PortfolioPhasingStructure } from "../../components/dashboard/PortfolioPhasingStructure";
 import { ROIValueLegend } from "../../components/dashboard/ROIValueLegend";
+import { PageHeader } from "../../components/layout/PageHeader";
 
 export function EnterpriseOverview() {
   // Calculate ROI Dashboard statistics
@@ -56,24 +57,10 @@ export function EnterpriseOverview() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="pb-4 border-b border-border/50">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-1 h-10 rounded-full"
-            style={{
-              background: "linear-gradient(to bottom, #4160F0, #FF6700)",
-            }}
-          />
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-foreground leading-tight">
-              Enterprise ROI Dashboard
-            </h1>
-            <p className="text-muted-foreground text-sm mt-0.5">
-              Portfolio-wide value realization and governance view
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        title="Enterprise ROI Dashboard"
+        subtitle="Portfolio-wide value realization and governance view"
+      />
 
       {/* ROI Metric Cards */}
       <div>

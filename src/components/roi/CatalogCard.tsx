@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { CatalogItem } from "../../data/roiCatalogData";
 
 interface CatalogCardProps {
@@ -14,7 +15,8 @@ const hexToRgba = (hex: string, alpha: number): string => {
 
 export function CatalogCard({ item }: CatalogCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
+    <Link to={`/phase-i/catalog/${item.id}/blueprint`}>
+      <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 cursor-pointer">
       <div className="p-3">
         {/* Inner Card with Fresh Vibrant Background */}
         <div
@@ -155,6 +157,7 @@ export function CatalogCard({ item }: CatalogCardProps) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </Link>
   );
 }

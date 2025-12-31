@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Grid, ArrowRight } from "lucide-react";
+import { Grid, ArrowRight } from "lucide-react";
 import { Button } from "../../../../../components/ui/button";
 import {
   PHASE_I_ROI_CATEGORIES,
   InvestmentCard,
 } from "../../../../../data/phaseIROIData";
+import { PageHeader } from "../../../../../components/layout/PageHeader";
 
 export function PhaseIROIPortfolio() {
   const categories = PHASE_I_ROI_CATEGORIES;
@@ -13,40 +14,30 @@ export function PhaseIROIPortfolio() {
     <div className="space-y-8">
       {/* Header Section */}
       <div className="flex items-start justify-between gap-4">
-        <div className="space-y-4 flex-1">
-          {/* Back Link */}
-          <Link
-            to="/enterprise"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Enterprise Dashboard
-          </Link>
-
-          {/* Title Section with Gradient Background */}
-          <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-foreground">
-              Phase I ROI Portfolio
-            </h1>
-            <span className="px-4 py-1.5 text-sm font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
+        <div className="flex-1">
+          <PageHeader
+            title="Phase I ROI Portfolio"
+            subtitle="Critical value investments grouped by business category"
+            backTo="/enterprise"
+            backLabel="Back to Enterprise Dashboard"
+            rightContent={
+              <Link to="/phase-i/catalog">
+                <Button
+                  className="gap-2 shadow-md hover:shadow-lg transition-all"
+                  style={{ backgroundColor: "#4160F0" }}
+                >
+                  <Grid className="h-4 w-4" />
+                  View Catalog
+                </Button>
+              </Link>
+            }
+          />
+          <div className="flex items-center gap-3 mt-4">
+            <span className="px-3 py-1.5 text-sm font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
               Phase I
             </span>
           </div>
-          <p className="text-muted-foreground text-base max-w-2xl">
-            Critical value investments grouped by business category
-          </p>
         </div>
-
-        {/* View Catalog Button */}
-        <Link to="/phase-i/catalog">
-          <Button
-            className="gap-2 shadow-md hover:shadow-lg transition-all"
-            style={{ backgroundColor: "#4160F0" }}
-          >
-            <Grid className="h-4 w-4" />
-            View Catalog
-          </Button>
-        </Link>
       </div>
 
       {/* Categories and Investment Cards */}
@@ -56,7 +47,7 @@ export function PhaseIROIPortfolio() {
             {/* Category Heading with Accent */}
             <div className="flex items-center gap-3">
               <div className="w-1 h-8 rounded-full bg-gradient-to-b from-blue-500 to-blue-600" />
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-xl font-bold text-foreground">
                 {categorySection.category}
               </h2>
             </div>
@@ -82,6 +73,7 @@ const hexToRgba = (hex: string, alpha: number): string => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
+
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
@@ -113,22 +105,22 @@ function InvestmentCardComponent({
       )}
 
       <div className="relative p-5 space-y-4">
-        {/* Title and Details Section */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-bold text-foreground leading-tight">
-            {investment.title}
-          </h3>
-          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span className="font-medium">{investment.company}</span>
-            <span className="text-muted-foreground/50">•</span>
-            <span>{investment.category}</span>
+        {/* Title Section */}
+        <div>
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h3 className="text-lg font-bold text-foreground leading-tight flex-1">
+              {investment.title}
+            </h3>
           </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {investment.description}
+          </p>
         </div>
 
-        {/* ROI Dimensions Section */}
-        <div className="space-y-2">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-            ROI DIMENSIONS
+        {/* ROI Dimensions */}
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            ROI Dimensions
           </p>
           <div className="flex flex-wrap gap-2">
             {investment.roiDimensions.map((dim, index) => {
@@ -169,42 +161,33 @@ function InvestmentCardComponent({
 
         {/* Key Personas Section */}
         <div className="space-y-2 pt-1">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-            KEY PERSONAS
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Key Personas
           </p>
           <div className="flex flex-wrap gap-2">
-            {investment.keyPersonas.map((persona, index) => (
-              <span
-                key={index}
-                className={`px-3 py-1 text-xs font-semibold rounded-full border transition-all ${
-                  persona.active
-                    ? "text-blue-600 bg-blue-50 border-blue-200 shadow-sm hover:bg-blue-100"
-                    : "text-muted-foreground bg-muted/50 border-border"
-                }`}
-              >
-                {persona.label}
-              </span>
-            ))}
+            {investment.keyPersonas.map((persona, idx) => {
+              const personaLabel = typeof persona === 'string' ? persona : persona.label;
+              return (
+                <span
+                  key={idx}
+                  className="px-2.5 py-1 text-xs font-medium rounded-md bg-muted/60 text-muted-foreground border border-border/50"
+                >
+                  {personaLabel}
+                </span>
+              );
+            })}
           </div>
         </div>
 
-        {/* Bottom Link/Text Section */}
-        <div className="pt-3 border-t border-border/40">
-          {investment.bottomLink ? (
-            <Link
-              to={`/phase-i/${investment.id}`}
-              className="group inline-flex items-center gap-2 w-full px-4 py-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 transition-all duration-200 hover:shadow-sm"
-            >
-              <span className="text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                {investment.bottomLink.replace(" →", "")}
-              </span>
-              <ArrowRight className="h-4 w-4 text-blue-600 group-hover:text-blue-700 transition-transform group-hover:translate-x-1 shrink-0" />
-            </Link>
-          ) : investment.bottomText ? (
-            <p className="text-sm text-muted-foreground italic">
-              {investment.bottomText}
-            </p>
-          ) : null}
+        {/* Footer Section */}
+        <div className="pt-3 border-t border-border/50">
+          <Link
+            to="/phase-i/catalog"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#4160F0] hover:text-[#3a55d8] transition-colors group"
+          >
+            <span>Click to view Product ROI Blueprint</span>
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </div>

@@ -1,8 +1,7 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { CatalogCard } from "../../../../../components/roi/CatalogCard";
 import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
+import { PageHeader } from "../../../../../components/layout/PageHeader";
 import {
   ROI_CATALOG_ITEMS,
   CATEGORY_OPTIONS,
@@ -132,29 +131,22 @@ export function ROICatalogExplorer() {
 
   return (
     <div className="space-y-4">
-      {/* Compact Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            to="/phase-i"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Back</span>
-          </Link>
-          <div className="h-4 w-px bg-border" />
-          <h1 className="text-2xl font-bold text-foreground">
-            ROI Catalog Explorer
-          </h1>
-          <span className="px-2.5 py-0.5 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-200">
-            Phase I
-          </span>
-          <span className="text-sm text-muted-foreground">
-            {filteredItems.length} product
-            {filteredItems.length !== 1 ? "s" : ""}
-          </span>
-        </div>
-      </div>
+      {/* Header */}
+      <PageHeader
+        title="ROI Catalog Explorer"
+        backTo="/phase-i"
+        rightContent={
+          <>
+            <span className="px-2.5 py-0.5 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-200">
+              Phase I
+            </span>
+            <span className="text-sm text-muted-foreground">
+              {filteredItems.length} product
+              {filteredItems.length !== 1 ? "s" : ""}
+            </span>
+          </>
+        }
+      />
 
       {/* Search and Filters */}
       <SearchAndFilters
