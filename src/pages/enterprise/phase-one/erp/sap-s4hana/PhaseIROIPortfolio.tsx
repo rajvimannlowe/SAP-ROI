@@ -32,11 +32,6 @@ export function PhaseIROIPortfolio() {
               </Link>
             }
           />
-          <div className="flex items-center gap-3 mt-4">
-            <span className="px-3 py-1.5 text-sm font-semibold text-blue-600 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
-              Phase I
-            </span>
-          </div>
         </div>
       </div>
 
@@ -96,13 +91,11 @@ function InvestmentCardComponent({
       }}
     >
       {/* Phase Tag */}
-      {investment.phase !== "Phase I" && (
-        <div className="absolute top-4 right-4 z-10">
-          <span className="px-3 py-1 text-xs font-semibold text-muted-foreground bg-background/95 backdrop-blur-sm rounded-full border border-border shadow-sm">
-            {investment.phase}
-          </span>
-        </div>
-      )}
+      <div className="absolute top-4 right-4 z-10">
+        <span className="px-3 py-1 text-xs font-semibold text-muted-foreground bg-background/95 backdrop-blur-sm rounded-full border border-border shadow-sm">
+          {investment.phase}
+        </span>
+      </div>
 
       <div className="relative p-5 space-y-4">
         {/* Title Section */}
@@ -112,9 +105,6 @@ function InvestmentCardComponent({
               {investment.title}
             </h3>
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {investment.description}
-          </p>
         </div>
 
         {/* ROI Dimensions */}
@@ -166,7 +156,8 @@ function InvestmentCardComponent({
           </p>
           <div className="flex flex-wrap gap-2">
             {investment.keyPersonas.map((persona, idx) => {
-              const personaLabel = typeof persona === 'string' ? persona : persona.label;
+              const personaLabel =
+                typeof persona === "string" ? persona : persona.label;
               return (
                 <span
                   key={idx}
@@ -182,7 +173,7 @@ function InvestmentCardComponent({
         {/* Footer Section */}
         <div className="pt-3 border-t border-border/50">
           <Link
-            to="/phase-i/catalog"
+            to={`/phase-i/catalog/${investment.id}/blueprint`}
             className="inline-flex items-center gap-2 text-sm font-medium text-[#4160F0] hover:text-[#3a55d8] transition-colors group"
           >
             <span>Click to view Product ROI Blueprint</span>
