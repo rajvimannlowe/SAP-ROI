@@ -24,14 +24,19 @@ export function EnterpriseOverview() {
     );
 
     // Calculate percentages
-    const phaseIPercentage = totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
-    const executionReadyPercentage = totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
+    const phaseIPercentage =
+      totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
+    const executionReadyPercentage =
+      totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
 
     // Calculate value distribution percentages (simulated based on status distribution)
     // High Risk = Value Protection, Needs Review = Value Realization, Comfortable = Strategic Position
-    const valueProtection = totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
-    const valueRealization = totalItems > 0 ? Math.round((needsReview / totalItems) * 100) : 0;
-    const strategicPosition = totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
+    const valueProtection =
+      totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
+    const valueRealization =
+      totalItems > 0 ? Math.round((needsReview / totalItems) * 100) : 0;
+    const strategicPosition =
+      totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
 
     return {
       totalItems,
@@ -48,16 +53,15 @@ export function EnterpriseOverview() {
     };
   }, []);
 
-
   return (
     <div className="space-y-6">
       {/* Header Section */}
       <div className="pb-4 border-b border-border/50">
         <div className="flex items-center gap-3">
-          <div 
+          <div
             className="w-1 h-10 rounded-full"
             style={{
-              background: 'linear-gradient(to bottom, #4160F0, #FF6700)',
+              background: "linear-gradient(to bottom, #4160F0, #FF6700)",
             }}
           />
           <div className="flex-1">
@@ -86,7 +90,9 @@ export function EnterpriseOverview() {
 
       {/* Portfolio Phasing Structure */}
       <div className="space-y-3">
-        <h2 className="text-xl font-bold text-foreground">Portfolio Phasing Structure</h2>
+        <h2 className="text-xl font-bold text-foreground">
+          Portfolio Phasing Structure
+        </h2>
         <PortfolioPhasingStructure
           phaseI={{
             count: roiStats.phaseIProducts,
@@ -115,7 +121,8 @@ export function EnterpriseOverview() {
       {/* Footer Message */}
       <div className="text-center pt-3">
         <p className="text-xs text-muted-foreground italic">
-          ROI is tracked as value protection and realization, not just cost savings.
+          ROI is tracked as value protection and realization, not just cost
+          savings.
         </p>
       </div>
     </div>

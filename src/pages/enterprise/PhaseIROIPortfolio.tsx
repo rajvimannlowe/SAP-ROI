@@ -134,7 +134,18 @@ function InvestmentCardComponent({
             {investment.roiDimensions.map((dim, index) => {
               const Icon = dim.icon;
               const isActive = dim.active;
-              const color = isActive ? dim.color || "#4160F0" : "#9CA3AF";
+              // Map dimensions to their standard colors (matching catalog data)
+              const getDimensionColor = (label: string): string => {
+                const colorMap: Record<string, string> = {
+                  Cost: "#16A34A",
+                  Efficiency: "#4160F0",
+                  Compliance: "#6B7280",
+                  Revenue: "#FF6700",
+                  Experience: "#9333EA",
+                };
+                return colorMap[label] || dim.color || "#4160F0";
+              };
+              const color = getDimensionColor(dim.label);
 
               return (
                 <div
@@ -142,19 +153,11 @@ function InvestmentCardComponent({
                   className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border shadow-sm transition-all ${
                     !isActive ? "opacity-60" : ""
                   }`}
-                  style={
-                    isActive
-                      ? {
-                          color: color,
-                          backgroundColor: hexToRgba(color, 0.15),
-                          borderColor: hexToRgba(color, 0.35),
-                        }
-                      : {
-                          color: color,
-                          backgroundColor: hexToRgba(color, 0.1),
-                          borderColor: hexToRgba(color, 0.25),
-                        }
-                  }
+                  style={{
+                    color: color,
+                    backgroundColor: hexToRgba(color, 0.15),
+                    borderColor: hexToRgba(color, 0.35),
+                  }}
                 >
                   <Icon className="h-3.5 w-3.5" />
                   <span className="text-xs font-medium">{dim.label}</span>
