@@ -30,46 +30,52 @@ function PhaseBox({ phase, count, description, highlight = false }: PhaseBoxProp
   return (
     <div
       onClick={handleClick}
-      className={`group relative overflow-hidden rounded-lg border border-border/50 bg-card shadow-sm transition-all duration-200 hover:shadow-md ${
+      className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 ${
         highlight ? 'ring-2 ring-blue-500/30 border-blue-500/60 cursor-pointer' : ''
       }`}
-      style={highlight ? {
-        borderColor: `${accentColor}60`,
-      } : undefined}
     >
-      {/* Light colorful background */}
-      <div 
-        className="p-4"
-        style={{
-          background: highlight 
-            ? `linear-gradient(135deg, ${hexToRgba(accentColor, 0.12)} 0%, ${hexToRgba(accentColor, 0.06)} 50%, transparent 100%)`
-            : `linear-gradient(135deg, ${hexToRgba(phaseColor, 0.1)} 0%, ${hexToRgba(phaseColor, 0.05)} 50%, transparent 100%)`,
-        }}
-      >
-        <div className="text-center space-y-2">
-          <div className="flex items-center justify-center gap-2">
-            <span 
-              className="text-2xl font-bold"
-              style={{ color: phaseColor }}
-            >
-              {count}
-            </span>
-            {highlight && (
+      <div className="p-3">
+        {/* Inner Card with Solid Color Background - Consistent with other cards */}
+        <div 
+          className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
+          style={{
+            backgroundColor: hexToRgba(phaseColor, highlight ? 0.12 : 0.1),
+            borderColor: hexToRgba(phaseColor, 0.3),
+          }}
+        >
+          {/* Subtle hover effect */}
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              background: `radial-gradient(circle at top right, ${hexToRgba(phaseColor, 0.2)}, transparent 70%)`,
+            }}
+          />
+
+          <div className="relative z-10 text-center space-y-2">
+            <div className="flex items-center justify-center gap-2">
               <span 
-                className="px-1.5 py-0.5 text-[10px] font-semibold rounded border"
-                style={{
-                  color: accentColor,
-                  backgroundColor: hexToRgba(accentColor, 0.15),
-                  borderColor: `${accentColor}40`,
-                }}
+                className="text-2xl font-bold"
+                style={{ color: phaseColor }}
               >
-                Phase I
+                {count}
               </span>
-            )}
-          </div>
-          <div>
-            <p className="text-sm font-bold text-foreground mb-0.5">{phase}</p>
-            <p className="text-xs text-muted-foreground">{description}</p>
+              {highlight && (
+                <span 
+                  className="px-1.5 py-0.5 text-[10px] font-semibold rounded border"
+                  style={{
+                    color: accentColor,
+                    backgroundColor: hexToRgba(accentColor, 0.15),
+                    borderColor: hexToRgba(accentColor, 0.35),
+                  }}
+                >
+                  Phase I
+                </span>
+              )}
+            </div>
+            <div>
+              <p className="text-sm font-bold text-foreground mb-0.5">{phase}</p>
+              <p className="text-xs text-muted-foreground">{description}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -103,14 +109,18 @@ export function PortfolioPhasingStructure({
     <div className="space-y-3">
       {/* Enterprise ROI Central Box */}
       <div className="flex justify-center">
-        <div
-          className="relative overflow-hidden rounded-lg border border-border/50 bg-card shadow-sm px-4 py-3 transition-all duration-200 hover:shadow-md"
-          style={{
-            borderColor: `${accentColor}60`,
-            background: `linear-gradient(135deg, ${hexToRgba(accentColor, 0.1)} 0%, ${hexToRgba(accentColor, 0.05)} 50%, transparent 100%)`,
-          }}
-        >
-          <h3 className="text-lg font-bold text-foreground text-center">Enterprise ROI</h3>
+        <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl transition-all duration-300">
+          <div className="p-3">
+            <div 
+              className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
+              style={{
+                backgroundColor: hexToRgba(accentColor, 0.1),
+                borderColor: hexToRgba(accentColor, 0.3),
+              }}
+            >
+              <h3 className="text-lg font-bold text-foreground text-center">Enterprise ROI</h3>
+            </div>
+          </div>
         </div>
       </div>
 

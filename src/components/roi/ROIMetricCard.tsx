@@ -1,4 +1,10 @@
-import { Database, Target, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  Database,
+  Target,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 
 interface ROIMetricCardProps {
   title: string;
@@ -29,7 +35,7 @@ export function ROIMetricCard({
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
       <div className="p-3">
-        {/* Inner Card with Fresh Vibrant Background */}
+        {/* Inner Card with Solid Color Background - Consistent with other cards */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
@@ -37,11 +43,14 @@ export function ROIMetricCard({
             borderColor: hexToRgba(dimensionColor, 0.3),
           }}
         >
-          {/* Animated gradient overlay on hover */}
+          {/* Subtle hover effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at top right, ${hexToRgba(dimensionColor, 0.2)}, transparent 70%)`,
+              background: `radial-gradient(circle at top right, ${hexToRgba(
+                dimensionColor,
+                0.2
+              )}, transparent 70%)`,
             }}
           />
 
@@ -69,8 +78,8 @@ export function ROIMetricCard({
                   </span>
                 </div>
               </div>
-              
-              {/* Dimension Badge with Fresh Styling */}
+
+              {/* Dimension Badge */}
               <div className="flex items-center gap-1.5">
                 <div
                   className="w-1.5 h-1.5 rounded-full transition-transform duration-300 group-hover:scale-125"
@@ -93,7 +102,10 @@ export function ROIMetricCard({
             </div>
 
             {/* Metrics Grid - Centered */}
-            <div className="grid grid-cols-3 gap-2 pt-2 border-t" style={{ borderColor: hexToRgba(dimensionColor, 0.2) }}>
+            <div
+              className="grid grid-cols-3 gap-2 pt-2 border-t"
+              style={{ borderColor: hexToRgba(dimensionColor, 0.2) }}
+            >
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
                   <div
@@ -103,13 +115,18 @@ export function ROIMetricCard({
                       border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Database className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
+                    <Database
+                      className="h-3.5 w-3.5"
+                      style={{ color: dimensionColor }}
+                    />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
                   Unit
                 </p>
-                <p className="text-xs font-bold text-foreground leading-tight">{unit}</p>
+                <p className="text-xs font-bold text-foreground leading-tight">
+                  {unit}
+                </p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
@@ -120,13 +137,19 @@ export function ROIMetricCard({
                       border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Target className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
+                    <Target
+                      className="h-3.5 w-3.5"
+                      style={{ color: dimensionColor }}
+                    />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
                   Target
                 </p>
-                <p className="text-xs font-bold leading-tight" style={{ color: dimensionColor }}>
+                <p
+                  className="text-xs font-bold leading-tight"
+                  style={{ color: dimensionColor }}
+                >
                   {target}
                 </p>
               </div>
@@ -139,19 +162,24 @@ export function ROIMetricCard({
                       border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Clock className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
+                    <Clock
+                      className="h-3.5 w-3.5"
+                      style={{ color: dimensionColor }}
+                    />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
                   Refresh
                 </p>
-                <p className="text-xs font-bold text-foreground leading-tight">{refresh}</p>
+                <p className="text-xs font-bold text-foreground leading-tight">
+                  {refresh}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Indicator */}
+        {/* Footer Indicator - Centered */}
         <div className="flex items-center justify-center px-1">
           <div className="flex items-center gap-1.5">
             <div
