@@ -29,11 +29,11 @@ export function ROIMetricCard({
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
       <div className="p-3">
-        {/* Inner Card with Solid Color Background */}
+        {/* Inner Card with Fresh Vibrant Background */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
-            backgroundColor: hexToRgba(dimensionColor, 0.1),
+            backgroundColor: hexToRgba(dimensionColor, 0.12),
             borderColor: hexToRgba(dimensionColor, 0.3),
           }}
         >
@@ -70,7 +70,7 @@ export function ROIMetricCard({
                 </div>
               </div>
               
-              {/* Dimension Badge with Solid Color */}
+              {/* Dimension Badge with Fresh Styling */}
               <div className="flex items-center gap-1.5">
                 <div
                   className="w-1.5 h-1.5 rounded-full transition-transform duration-300 group-hover:scale-125"
@@ -92,17 +92,18 @@ export function ROIMetricCard({
               </div>
             </div>
 
-            {/* Metrics Grid with Fresh Icons */}
+            {/* Metrics Grid - Centered */}
             <div className="grid grid-cols-3 gap-2 pt-2 border-t" style={{ borderColor: hexToRgba(dimensionColor, 0.2) }}>
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
                   <div
-                    className="p-1 rounded"
+                    className="p-1.5 rounded-lg transition-all duration-300 group-hover:scale-110"
                     style={{
-                      background: hexToRgba(dimensionColor, 0.1),
+                      backgroundColor: hexToRgba(dimensionColor, 0.12),
+                      border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Database className="h-3 w-3 text-muted-foreground" />
+                    <Database className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
@@ -113,12 +114,13 @@ export function ROIMetricCard({
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
                   <div
-                    className="p-1 rounded"
+                    className="p-1.5 rounded-lg transition-all duration-300 group-hover:scale-110"
                     style={{
-                      background: hexToRgba(dimensionColor, 0.1),
+                      backgroundColor: hexToRgba(dimensionColor, 0.12),
+                      border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Target className="h-3 w-3" style={{ color: dimensionColor }} />
+                    <Target className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
@@ -131,12 +133,13 @@ export function ROIMetricCard({
               <div className="text-center">
                 <div className="flex items-center justify-center mb-1">
                   <div
-                    className="p-1 rounded"
+                    className="p-1.5 rounded-lg transition-all duration-300 group-hover:scale-110"
                     style={{
-                      background: hexToRgba(dimensionColor, 0.1),
+                      backgroundColor: hexToRgba(dimensionColor, 0.12),
+                      border: `1px solid ${hexToRgba(dimensionColor, 0.25)}`,
                     }}
                   >
-                    <Clock className="h-3 w-3 text-muted-foreground" />
+                    <Clock className="h-3.5 w-3.5" style={{ color: dimensionColor }} />
                   </div>
                 </div>
                 <p className="text-[9px] text-muted-foreground mb-0.5 font-semibold uppercase tracking-wide">
@@ -148,11 +151,11 @@ export function ROIMetricCard({
           </div>
         </div>
 
-        {/* Footer with Fresh Indicator */}
-        <div className="flex items-center justify-between px-1">
+        {/* Footer Indicator */}
+        <div className="flex items-center justify-center px-1">
           <div className="flex items-center gap-1.5">
             <div
-              className="w-1 h-1 rounded-full transition-transform duration-300 group-hover:scale-150"
+              className="w-1.5 h-1.5 rounded-full transition-transform duration-300 group-hover:scale-150"
               style={{
                 backgroundColor: dimensionColor,
                 boxShadow: `0 0 6px ${hexToRgba(dimensionColor, 0.6)}`,
