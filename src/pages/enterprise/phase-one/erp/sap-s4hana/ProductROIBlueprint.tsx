@@ -11,11 +11,12 @@ import {
   AlertTriangle,
   TrendingUp,
   CheckCircle2,
-  LucideIcon,
 } from "lucide-react";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 import { ROIIntentCard } from "../../../../../components/roi/ROIIntentCard";
 import { ROIMetricCard } from "../../../../../components/roi/ROIMetricCard";
+import { InfoCard } from "../../../../../components/roi/InfoCard";
+import { IconBadge } from "../../../../../components/roi/IconBadge";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 
 type Section = "intent" | "metrics" | "data" | "intelligence" | "modules";
@@ -47,18 +48,6 @@ const gradientStyles = {
     "linear-gradient(135deg, rgba(65, 96, 240, 0.03) 0%, rgba(255, 103, 0, 0.03) 100%)",
 };
 
-const IconBadge = ({
-  gradient,
-  icon: Icon,
-}: {
-  gradient: string;
-  icon: LucideIcon;
-}) => (
-  <div className="p-1.5 rounded-lg" style={{ background: gradient }}>
-    <Icon className="h-4 w-4 text-white" />
-  </div>
-);
-
 const SectionHeader = ({
   title,
   subtitle,
@@ -69,42 +58,6 @@ const SectionHeader = ({
   <div>
     <h2 className="text-xl font-bold text-foreground mb-2">{title}</h2>
     <p className="text-sm text-muted-foreground">{subtitle}</p>
-  </div>
-);
-
-const InfoCard = ({
-  icon: Icon,
-  iconGradient,
-  title,
-  value,
-  description,
-  borderColor = "rgba(65, 96, 240, 0.2)",
-  bgGradient = gradientStyles.blueBg,
-}: {
-  icon: LucideIcon;
-  iconGradient: string;
-  title: string;
-  value?: string;
-  description?: string;
-  borderColor?: string;
-  bgGradient?: string;
-}) => (
-  <div
-    className="border rounded-lg p-4 shadow-sm"
-    style={{ borderColor, background: bgGradient }}
-  >
-    <div className="flex items-center gap-2.5 mb-3">
-      <IconBadge gradient={iconGradient} icon={Icon} />
-      <h3 className="text-sm font-bold text-foreground">{title}</h3>
-    </div>
-    {value && (
-      <p className="text-sm font-bold text-foreground mb-1.5">{value}</p>
-    )}
-    {description && (
-      <p className="text-xs text-muted-foreground leading-relaxed">
-        {description}
-      </p>
-    )}
   </div>
 );
 
@@ -244,31 +197,41 @@ export function ProductROIBlueprint() {
               subtitle="Data sources, integration methods, and update frequencies"
             />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-              <div className="lg:col-span-2 border border-border/50 rounded-lg p-4 bg-card shadow-sm">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <IconBadge
-                    gradient={gradientStyles.primary}
-                    icon={Database}
-                  />
-                  <h3 className="text-base font-bold text-foreground">
-                    Data Sources
-                  </h3>
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2.5">
-                    Internal Sources
-                  </p>
-                  <ul className="space-y-2">
-                    {blueprint.dataSources.sources.map((source, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2.5 text-xs text-foreground"
-                      >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#4160F0] mt-0.5 shrink-0" />
-                        <span className="leading-relaxed">{source}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="lg:col-span-2 group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
+                <div className="p-3">
+                  <div
+                    className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
+                    style={{
+                      backgroundColor: "rgba(65, 96, 240, 0.05)",
+                      borderColor: "rgba(65, 96, 240, 0.2)",
+                    }}
+                  >
+                    <div className="flex items-center gap-2.5 mb-4">
+                      <IconBadge
+                        gradient={gradientStyles.primary}
+                        icon={Database}
+                      />
+                      <h3 className="text-base font-bold text-foreground">
+                        Data Sources
+                      </h3>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2.5">
+                        Internal Sources
+                      </p>
+                      <ul className="space-y-2">
+                        {blueprint.dataSources.sources.map((source, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2.5 text-xs text-foreground"
+                          >
+                            <CheckCircle2 className="h-3.5 w-3.5 text-[#4160F0] mt-0.5 shrink-0" />
+                            <span className="leading-relaxed">{source}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="space-y-3">
@@ -286,7 +249,7 @@ export function ProductROIBlueprint() {
                   value={blueprint.updateFrequency}
                   description={blueprint.updateFrequencyDetails}
                   borderColor="rgba(139, 92, 246, 0.2)"
-                  bgGradient={gradientStyles.purpleBg}
+                  bgColor="rgba(139, 92, 246, 0.05)"
                 />
               </div>
             </div>
