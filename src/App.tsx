@@ -6,12 +6,8 @@ import { MainLayout } from "./components/layout/MainLayout";
 // Pages
 import { Login } from "./pages/auth/Login";
 import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
-import { SAPOverview } from "./pages/sap/SAPOverview";
-import { ModuleView } from "./pages/sap/ModuleView";
-import { DDDashboard } from "./pages/sap/dd/DDDashboard";
-import { CreateDDItem } from "./pages/sap/dd/CreateDDItem";
-import { ViewDDItem } from "./pages/sap/dd/ViewDDItem";
-import { EditDDItem } from "./pages/sap/dd/EditDDItem";
+import { PhaseIROIPortfolio } from "./pages/enterprise/PhaseIROIPortfolio";
+import { ROICatalogExplorer } from "./pages/enterprise/ROICatalogExplorer";
 
 function App() {
   return (
@@ -32,31 +28,8 @@ function App() {
           >
             <Route index element={<Navigate to="/enterprise" replace />} />
             <Route path="enterprise" element={<EnterpriseOverview />} />
-
-            {/* SAP Routes */}
-            <Route path="sap" element={<SAPOverview />} />
-            <Route path="sap/:moduleId" element={<ModuleView />} />
-            <Route
-              path="sap/:moduleId/:subModuleId"
-              element={<DDDashboard />}
-            />
-            <Route
-              path="sap/:moduleId/:subModuleId/create"
-              element={
-                <ProtectedRoute requirePermission="create">
-                  <CreateDDItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="sap/dd-item/:itemId" element={<ViewDDItem />} />
-            <Route
-              path="sap/dd-item/:itemId/edit"
-              element={
-                <ProtectedRoute requirePermission="edit">
-                  <EditDDItem />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="phase-i" element={<PhaseIROIPortfolio />} />
+            <Route path="phase-i/catalog" element={<ROICatalogExplorer />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
