@@ -16,13 +16,13 @@ export function CatalogCard({ item }: CatalogCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
       <div className="p-3">
-        {/* Inner Card with Vibrant Fresh Color Background */}
+        {/* Inner Card with Brand Colors Light Shades - Fresh Look */}
         <div
           className="rounded-lg p-3 mb-3 shadow-sm border"
           style={{
             background:
-              "linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.12) 50%, rgba(59, 130, 246, 0.10) 100%)",
-            borderColor: "rgba(99, 102, 241, 0.3)",
+              "linear-gradient(135deg, rgba(65, 96, 240, 0.10) 0%, rgba(65, 96, 240, 0.08) 50%, rgba(255, 103, 0, 0.06) 100%)",
+            borderColor: "rgba(65, 96, 240, 0.18)",
           }}
         >
           {/* Category with Label */}

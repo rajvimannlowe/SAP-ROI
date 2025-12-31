@@ -115,7 +115,7 @@ function InvestmentCardComponent({
       <div className="relative p-5 space-y-4">
         {/* Title and Details Section */}
         <div className="space-y-2">
-          <h3 className="text-xl font-bold text-foreground leading-tight">
+          <h3 className="text-lg font-bold text-foreground leading-tight">
             {investment.title}
           </h3>
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
@@ -126,7 +126,7 @@ function InvestmentCardComponent({
         </div>
 
         {/* ROI Dimensions Section */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             ROI DIMENSIONS
           </p>
@@ -134,7 +134,7 @@ function InvestmentCardComponent({
             {investment.roiDimensions.map((dim, index) => {
               const Icon = dim.icon;
               const isActive = dim.active;
-              // Map dimensions to their standard colors (matching catalog data)
+              // Map dimensions to their standard fresh colors (matching catalog data)
               const getDimensionColor = (label: string): string => {
                 const colorMap: Record<string, string> = {
                   Cost: "#16A34A",
@@ -168,7 +168,7 @@ function InvestmentCardComponent({
         </div>
 
         {/* Key Personas Section */}
-        <div className="space-y-3 pt-1">
+        <div className="space-y-2 pt-1">
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             KEY PERSONAS
           </p>
