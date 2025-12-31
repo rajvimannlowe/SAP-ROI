@@ -16,13 +16,13 @@ export function CatalogCard({ item }: CatalogCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
       <div className="p-3">
-        {/* Inner Card with Vibrant Fresh Color Background */}
+        {/* Inner Card with Fresh Vibrant Background */}
         <div
           className="rounded-lg p-3 mb-3 shadow-sm border"
           style={{
             background:
-              "linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.12) 50%, rgba(59, 130, 246, 0.10) 100%)",
-            borderColor: "rgba(99, 102, 241, 0.3)",
+              "linear-gradient(135deg, rgba(147, 197, 253, 0.15) 0%, rgba(196, 181, 253, 0.12) 50%, rgba(251, 146, 60, 0.08) 100%)",
+            borderColor: "rgba(191, 219, 254, 0.4)",
           }}
         >
           {/* Category with Label */}
@@ -55,7 +55,7 @@ export function CatalogCard({ item }: CatalogCardProps) {
             </span>
           </div>
 
-          {/* ROI Dimensions - Colorful Badges in One Line (Smaller Size) */}
+          {/* ROI Dimensions - Fresh Colorful Badges in One Line */}
           <div>
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
               ROI Dimensions:{" "}
@@ -63,7 +63,18 @@ export function CatalogCard({ item }: CatalogCardProps) {
             <div className="flex gap-1 items-center flex-nowrap">
               {item.roiDimensions.map((dim, idx) => {
                 const Icon = dim.icon;
-                const color = dim.color || "#4160F0";
+                // Fresh, vibrant colors for ROI dimensions
+                const getDimensionColor = (label: string): string => {
+                  const colorMap: Record<string, string> = {
+                    Cost: "#059669", // Fresh emerald green
+                    Efficiency: "#2563EB", // Bright sky blue
+                    Compliance: "#7C3AED", // Vibrant violet
+                    Revenue: "#EA580C", // Warm orange
+                    Experience: "#DB2777", // Fresh pink
+                  };
+                  return colorMap[label] || "#6366F1"; // Indigo fallback
+                };
+                const color = getDimensionColor(dim.label);
                 return (
                   <div
                     key={idx}
@@ -71,7 +82,7 @@ export function CatalogCard({ item }: CatalogCardProps) {
                     style={{
                       color: color,
                       backgroundColor: hexToRgba(color, 0.15),
-                      borderColor: hexToRgba(color, 0.35),
+                      borderColor: hexToRgba(color, 0.4),
                     }}
                   >
                     <Icon className="h-2.5 w-2.5" />
@@ -98,7 +109,7 @@ export function CatalogCard({ item }: CatalogCardProps) {
                   key={idx}
                   className="flex items-start text-xs text-foreground"
                 >
-                  <span className="w-1 h-1 rounded-full bg-blue-600 mt-1.5 mr-1.5 shrink-0" />
+                  <span className="w-1 h-1 rounded-full bg-emerald-600 mt-1.5 mr-1.5 shrink-0" />
                   <span className="leading-tight">{metric}</span>
                 </li>
               ))}
@@ -116,7 +127,7 @@ export function CatalogCard({ item }: CatalogCardProps) {
                   key={idx}
                   className="flex items-start text-xs text-foreground"
                 >
-                  <span className="w-1 h-1 rounded-full bg-purple-600 mt-1.5 mr-1.5 shrink-0" />
+                  <span className="w-1 h-1 rounded-full bg-violet-600 mt-1.5 mr-1.5 shrink-0" />
                   <span className="leading-tight">{source}</span>
                 </li>
               ))}
