@@ -23,6 +23,13 @@ export const sections: SectionConfig[] = [
   { id: "modules", label: "Modules", icon: Layers },
 ];
 
+// Metric Card Colors - Centralized for consistency
+export const METRIC_COLORS = {
+  financialValue: "#10b981", // Green for financial metrics
+  controlCoverage: "#2563eb", // Blue for coverage metrics
+  kpiStatus: "#6366f1", // Purple for KPI metrics
+} as const;
+
 export const gradientStyles = {
   primary: "linear-gradient(135deg, #4160F0 0%, #2563eb 100%)",
   brand: "linear-gradient(135deg, #4160F0 0%, #FF6700 100%)",

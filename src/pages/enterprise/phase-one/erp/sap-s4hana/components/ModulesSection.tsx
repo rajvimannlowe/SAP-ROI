@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { ProductBlueprint } from "../../../../../../data/productBlueprintData";
 import { SectionHeader } from "./SectionHeader";
 
@@ -12,6 +13,19 @@ export function ModulesSection({
   activeModuleId,
   onModuleClick,
 }: ModulesSectionProps) {
+  const navigate = useNavigate();
+  const { id: blueprintId } = useParams<{ id: string }>();
+
+  const handleModuleClick = (moduleId: string) => {
+    onModuleClick?.(moduleId);
+    // Navigate to module cockpit page
+    navigate(
+      `/phase-i/catalog/${
+        blueprintId || "sap-s4hana"
+      }/blueprint/${moduleId}/cockpit`
+    );
+  };
+
   return (
     <div className="space-y-5 animate-in fade-in-50 duration-300">
       <SectionHeader
@@ -24,7 +38,7 @@ export function ModulesSection({
           return (
             <button
               key={module.id}
-              onClick={() => onModuleClick?.(module.id)}
+              onClick={() => handleModuleClick(module.id)}
               className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl transition-all duration-300 ${
                 isActive
                   ? "ring-2 ring-[#4160F0]/30 border-[#4160F0]/50"

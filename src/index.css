@@ -81,30 +81,31 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Custom Scrollbar Styling */
+/* Custom Scrollbar Styling - Minimal */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
-  border-radius: 10px;
+  border-radius: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #4160F0, #FF6700);
-  border-radius: 10px;
+  background: rgba(65, 96, 240, 0.3);
+  border-radius: 2px;
   transition: background 0.2s;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #3a55d8, #e65c00);
+  background: rgba(65, 96, 240, 0.5);
 }
 
 /* Firefox scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #4160F0 transparent;
+  scrollbar-color: rgba(65, 96, 240, 0.3) transparent;
 }
 
 .dark {
