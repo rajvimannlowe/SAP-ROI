@@ -66,7 +66,7 @@ export const FI_MODULE_COCKPIT: ModuleCockpitData = {
     },
     financialValueAtRisk: {
       value: "$124M",
-      description: "Avoid potential $ value reduction",
+      description: "Fraud prevention & error reduction",
     },
     controlCoverage: {
       value: "92%",
