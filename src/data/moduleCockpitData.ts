@@ -16,6 +16,23 @@ export interface KPIDetail {
   owner: string;
   recommendedAction: string;
   subModuleId: string;
+  // Extended fields for detail view
+  businessObjective?: string;
+  roiDimension?: string;
+  businessContext?: string;
+  calculationLogic?: string;
+  dataSources?: string[];
+  updateFrequency?: string;
+  targetValue?: string;
+  thresholds?: {
+    green: string;
+    amber: string;
+    red: string;
+  };
+  currentMeasuredValue?: string;
+  statusAnalysis?: string;
+  ownerDepartment?: string;
+  lastUpdated?: string;
 }
 
 export interface ModuleCockpitData {
@@ -116,9 +133,34 @@ export const FI_MODULE_COCKPIT: ModuleCockpitData = {
       businessRiskPrevented: "Payment fraud and duplicate vendor invoices",
       controlType: "Preventive",
       status: "Optimal",
-      owner: "Finance Controller",
+      owner: "AP Manager",
       recommendedAction: "None - performing as expected",
       subModuleId: "ap",
+      businessObjective:
+        "Prevent duplicate vendor payments and eliminate payment fraud by validating invoice uniqueness before processing",
+      roiDimension: "Control",
+      businessContext:
+        "This control protects approximately $850M in annual vendor payments. Historical baseline shows 0.3% duplicate invoice rate without controls, representing $2.5M annual exposure.",
+      calculationLogic:
+        "Count of invoice payments blocked due to matching vendor number, invoice number, amount, and payment date within system-defined tolerance window. Measured as percentage of total invoice volume screened.",
+      dataSources: [
+        "SAP FI Document Tables (BKPF, BSEG)",
+        "Vendor Master Data (LFA1, LFB1)",
+        "Payment Run Logs",
+        "System Workflow Tables",
+      ],
+      updateFrequency: "Real-time validation at payment processing",
+      targetValue: "100% of invoices screened",
+      thresholds: {
+        green: ">99.5% screened",
+        amber: "97-99.5%",
+        red: "<97%",
+      },
+      currentMeasuredValue: "99.8% screening rate",
+      statusAnalysis:
+        "All payment runs executing successfully with automated duplicate checks. Zero false negatives detected in monthly audit sampling.",
+      ownerDepartment: "Finance Shared Services",
+      lastUpdated: "Jan 6, 2026, 10:49 AM",
     },
     {
       id: "period-close",

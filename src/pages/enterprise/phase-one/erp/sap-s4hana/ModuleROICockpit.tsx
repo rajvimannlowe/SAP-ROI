@@ -182,6 +182,13 @@ export function ModuleROICockpit() {
         }
         columns={kpiColumns}
         data={filteredKPIs}
+        onRowClick={(kpi) => {
+          navigate(
+            `/phase-i/catalog/${
+              blueprintId || "sap-s4hana"
+            }/blueprint/${moduleId}/cockpit/${kpi.id}`
+          );
+        }}
       />
 
       {/* Learning Dashboard */}
