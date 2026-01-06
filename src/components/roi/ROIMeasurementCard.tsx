@@ -6,7 +6,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-interface ROIMetricCardProps {
+interface ROIMeasurementCardProps {
   title: string;
   unit: string;
   target: string;
@@ -23,7 +23,7 @@ const hexToRgba = (hex: string, alpha: number): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export function ROIMetricCard({
+export function ROIMeasurementCard({
   title,
   unit,
   target,
@@ -31,7 +31,7 @@ export function ROIMetricCard({
   status,
   dimension,
   dimensionColor,
-}: ROIMetricCardProps) {
+}: ROIMeasurementCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
       <div className="p-3">
@@ -198,3 +198,4 @@ export function ROIMetricCard({
     </div>
   );
 }
+

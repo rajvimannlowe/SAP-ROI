@@ -3,13 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Info, TrendingUp, Filter } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
-import { SummaryCards } from "../../../../../components/dashboard/SummaryCards";
+import { MetricCard } from "../../../../../components/roi/MetricCard";
 import { InfoCard } from "../../../../../components/roi/InfoCard";
 import { StatusBadge } from "../../../../../components/roi/StatusBadge";
 import { DrilldownTable } from "../../../../../components/roi/DrilldownTable";
 import { getKPITableColumns } from "../../../../../data/moduleCockpitTableConfig";
 import {
-  getSummaryCards,
+  getMetricCards,
   getSubModuleCardConfig,
 } from "../../../../../data/moduleCockpitConfig";
 import { gradientStyles } from "./components/constants";
@@ -27,9 +27,9 @@ export function ModuleROICockpit() {
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
 
-  // Get summary cards from data config
-  const summaryCards = useMemo(() => {
-    return cockpitData ? getSummaryCards(cockpitData) : [];
+  // Get metric cards from data config
+  const metricCards = useMemo(() => {
+    return cockpitData ? getMetricCards(cockpitData) : [];
   }, [cockpitData]);
 
   // Get KPI table columns from data config
@@ -92,7 +92,7 @@ export function ModuleROICockpit() {
                 className="gap-2"
                 style={{ backgroundColor: "#4160F0" }}
                 onClick={() => {
-                  // Navigate to ROI aggregation view if needed
+                  navigate("/roi-aggregation");
                 }}
               >
                 <TrendingUp className="h-4 w-4" />
@@ -107,7 +107,17 @@ export function ModuleROICockpit() {
       />
 
       {/* Summary Metrics */}
-      <SummaryCards cards={summaryCards} columns={4} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {metricCards.map((card, index) => (
+          <MetricCard
+            key={index}
+            icon={card.icon}
+            value={card.value}
+            title={card.title}
+            description={card.description}
+          />
+        ))}
+      </div>
 
       {/* Sub-Module Health Monitor (as filters) */}
       <div className="space-y-4">
@@ -172,6 +182,13 @@ export function ModuleROICockpit() {
         }
         columns={kpiColumns}
         data={filteredKPIs}
+        onRowClick={(kpi) => {
+          navigate(
+            `/phase-i/catalog/${
+              blueprintId || "sap-s4hana"
+            }/blueprint/${moduleId}/cockpit/${kpi.id}`
+          );
+        }}
       />
 
       {/* Learning Dashboard */}

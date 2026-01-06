@@ -137,3 +137,4 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
   );
 }
 
+

@@ -1,4 +1,12 @@
-import { DollarSign, Zap, Shield, TrendingUp, User, CheckCircle, Clock } from "lucide-react";
+import {
+  DollarSign,
+  Zap,
+  Shield,
+  TrendingUp,
+  User,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
 export interface ROIIntent {
@@ -56,7 +64,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       label: "Cost Optimization",
       icon: DollarSign,
       color: "#059669",
-      description: "Reduce operational expenses and improve resource utilization",
+      description:
+        "Reduce operational expenses and improve resource utilization",
     },
     {
       id: "efficiency",
@@ -205,4 +214,3 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
     { id: "qm", name: "QM", label: "Quality Management", phase: "Phase 2" },
   ],
 };
-

@@ -134,7 +134,15 @@ export function DrilldownTable<T extends object = object>({
                     {column.renderHeader ? (
                       column.renderHeader()
                     ) : (
-                      <div className="flex items-center gap-2">
+                      <div
+                        className={`flex items-center gap-2 ${
+                          column.align === "right"
+                            ? "justify-end"
+                            : column.align === "center"
+                            ? "justify-center"
+                            : ""
+                        }`}
+                      >
                         <div
                           className="w-1 h-4 rounded-full shrink-0"
                           style={{
