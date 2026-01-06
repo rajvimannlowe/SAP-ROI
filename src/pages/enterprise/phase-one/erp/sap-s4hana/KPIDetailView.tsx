@@ -110,7 +110,13 @@ export function KPIDetailView() {
       icon: FileText,
       label: "Control Evidence",
       variant: "outline" as const,
-      onClick: () => {},
+      onClick: () => {
+        navigate(
+          `/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/blueprint/${moduleId}/cockpit/${kpiId}/evidence`
+        );
+      },
     },
     {
       icon: ClipboardList,
