@@ -1,8 +1,18 @@
 import { ReactNode } from "react";
-import { TrendingUp, Shield, Clock, BarChart3 } from "lucide-react";
-import { SummaryCard } from "../components/dashboard/SummaryCards";
+import { TrendingUp, Shield, CheckCircle, Activity, Clock, BarChart3, LucideIcon } from "lucide-react";
+import { SummaryCard } from "../components/roi/SummaryCards";
 import { getStatusColor } from "./statusMapping";
 import { ModuleCockpitData, SubModule } from "./moduleCockpitData";
+
+// Metric Card Props
+export interface MetricCardData {
+  icon: LucideIcon;
+  value: string;
+  title: string;
+  description: string;
+  color?: string;
+  showStatusDot?: boolean;
+}
 
 // Metric Colors - Centralized
 const METRIC_COLORS = {
@@ -47,6 +57,46 @@ export const getSummaryCards = (
       value: `${cockpitData.summaryMetrics.kpiStatus.green} / ${cockpitData.summaryMetrics.kpiStatus.amber} / ${cockpitData.summaryMetrics.kpiStatus.red}`,
       icon: BarChart3,
       color: METRIC_COLORS.kpiStatus,
+    },
+  ];
+};
+
+// Metric Cards Configuration - New design matching image
+export const getMetricCards = (
+  cockpitData: ModuleCockpitData
+): MetricCardData[] => {
+  return [
+    {
+      icon: TrendingUp,
+      value: cockpitData.summaryMetrics.overallROIHealth.value,
+      title: `${cockpitData.moduleName} Overall ROI Health`,
+      description: cockpitData.summaryMetrics.overallROIHealth.description,
+      color: getStatusColor(cockpitData.summaryMetrics.overallROIHealth.status),
+      showStatusDot: true,
+    },
+    {
+      icon: Shield,
+      value: cockpitData.summaryMetrics.financialValueAtRisk.value,
+      title: "Financial Value at Risk Protected",
+      description: cockpitData.summaryMetrics.financialValueAtRisk.description,
+      color: METRIC_COLORS.financialValue,
+      showStatusDot: true,
+    },
+    {
+      icon: CheckCircle,
+      value: cockpitData.summaryMetrics.controlCoverage.value,
+      title: "Control Coverage Percentage",
+      description: cockpitData.summaryMetrics.controlCoverage.description,
+      color: METRIC_COLORS.controlCoverage,
+      showStatusDot: true,
+    },
+    {
+      icon: Activity,
+      value: `${cockpitData.summaryMetrics.kpiStatus.green} / ${cockpitData.summaryMetrics.kpiStatus.amber} / ${cockpitData.summaryMetrics.kpiStatus.red}`,
+      title: "KPIs in Green / Amber / Red",
+      description: cockpitData.summaryMetrics.kpiStatus.description,
+      color: METRIC_COLORS.kpiStatus,
+      showStatusDot: false,
     },
   ];
 };

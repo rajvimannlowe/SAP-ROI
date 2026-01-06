@@ -1,6 +1,6 @@
 import { BarChart3 } from "lucide-react";
 import { ROIMetric } from "../../../../../../data/productBlueprintData";
-import { ROIMetricCard } from "../../../../../../components/roi/ROIMetricCard";
+import { ROIMeasurementCard } from "../../../../../../components/roi/ROIMeasurementCard";
 import { IconBadge } from "../../../../../../components/roi/IconBadge";
 import { SectionHeader } from "./SectionHeader";
 import { gradientStyles } from "./constants";
@@ -53,7 +53,7 @@ export function MetricsSection({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {metrics.map((metric) => (
-                <ROIMetricCard
+                <ROIMeasurementCard
                   key={metric.id}
                   {...metric}
                   dimensionColor={getDimensionColor(metric.dimension)}
