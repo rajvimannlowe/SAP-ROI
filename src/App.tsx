@@ -9,6 +9,7 @@ import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
 import { PhaseIROIPortfolio } from "./pages/enterprise/phase-one/erp/sap-s4hana/PhaseIROIPortfolio";
 import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROICatalogExplorer";
 import { ProductROIBlueprint } from "./pages/enterprise/phase-one/erp/sap-s4hana/ProductROIBlueprint";
+import RoiAggregation from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-aggregation";
 import { ModuleROICockpit } from "./pages/enterprise/phase-one/erp/sap-s4hana/ModuleROICockpit";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="phase-i/catalog" element={<ROICatalogExplorer />} />
             <Route path="phase-i/catalog/:id/blueprint" element={<ProductROIBlueprint />} />
             <Route path="phase-i/catalog/:id/blueprint/:moduleId/cockpit" element={<ModuleROICockpit />} />
+            <Route path="roi-aggregation" element={<RoiAggregation />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
