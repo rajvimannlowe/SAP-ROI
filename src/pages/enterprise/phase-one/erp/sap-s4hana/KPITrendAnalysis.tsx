@@ -66,7 +66,47 @@ export function KPITrendAnalysis() {
   const navigate = useNavigate();
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
-  const kpiDetail = cockpitData?.kpiDetails.find((kpi) => kpi.id === kpiId);
+  // Find by id (slug) or by converting name to slug format for ROI Intent table navigation
+  const kpiDetail = cockpitData?.kpiDetails.find((kpi) => {
+    // First try exact id match (for cockpit table navigation)
+    if (kpi.id === kpiId) return true;
+    
+    // Convert kpi.name to slug format and compare (for ROI Intent table navigation)
+    const nameSlug = kpi.name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+    if (nameSlug === kpiId) return true;
+    
+    // Try partial match - check if key words match
+    // This handles cases like "duplicate-payment-detection" matching "duplicate-payment-prevention"
+    const kpiIdLower = kpiId.toLowerCase();
+    const nameSlugLower = nameSlug.toLowerCase();
+    
+    // Extract key words (remove common suffixes like -detection, -prevention, -monitoring)
+    const normalizeSlug = (slug: string) => {
+      return slug
+        .replace(/-detection$/, "")
+        .replace(/-prevention$/, "")
+        .replace(/-monitoring$/, "")
+        .replace(/-compliance$/, "")
+        .replace(/-coverage$/, "")
+        .replace(/-accuracy$/, "");
+    };
+    
+    const normalizedKpiId = normalizeSlug(kpiIdLower);
+    const normalizedNameSlug = normalizeSlug(nameSlugLower);
+    
+    // If normalized versions match, consider it a match
+    if (normalizedKpiId === normalizedNameSlug) return true;
+    
+    // Also check if one contains the other (for partial matches)
+    if (normalizedKpiId.includes(normalizedNameSlug) || normalizedNameSlug.includes(normalizedKpiId)) {
+      return true;
+    }
+    
+    return false;
+  });
 
   if (!cockpitData || !kpiDetail) {
     return (

@@ -25,7 +25,10 @@ const ruleTypeColorMap = {
     Compliance: "#0891B2",
 };
 
-export const roiIntentTableColumns: TableColumn<ROIIntentTableRow>[] = [
+// Function to get table columns with navigation support
+export const getROIIntentTableColumns = (
+    onKpiClick?: (kpiId: string, row: ROIIntentTableRow) => void
+): TableColumn<ROIIntentTableRow>[] => [
     {
         key: "module",
         header: "Module",
@@ -48,6 +51,11 @@ export const roiIntentTableColumns: TableColumn<ROIIntentTableRow>[] = [
         accessor: (row) =>
             renderCellByType(row.kpiId, "textWithLink", {
                 textStyle: "short",
+                onClick: () => {
+                    if (onKpiClick) {
+                        onKpiClick(row.kpiId, row);
+                    }
+                },
             }),
     },
     {
@@ -207,7 +215,7 @@ export const roiIntentTableColumns: TableColumn<ROIIntentTableRow>[] = [
 
 // Table configuration with metadata
 export const roiIntentTableConfig = {
-    columns: roiIntentTableColumns,
+    getColumns: getROIIntentTableColumns,
     title: "ROI Intent KPI Details",
     subtitle:
         "Comprehensive view of KPI rules, controls, and ROI impact analysis",

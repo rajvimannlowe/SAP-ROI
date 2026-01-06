@@ -59,6 +59,7 @@ const TEXT_STYLES = {
 type RendererConfig = {
   textStyle?: "short" | "long" | "auto";
   badgeConfig?: SimpleColumnConfig["badgeConfig"];
+  onClick?: (value: string, row?: unknown) => void;
 };
 
 const columnRenderers = {
@@ -159,7 +160,7 @@ const columnRenderers = {
           ? TEXT_STYLES.long
           : TEXT_STYLES.short
         : TEXT_STYLES[textStyle];
-    
+
     const IconComponent = config?.badgeConfig?.icon;
     // Use colorMap if available, otherwise fall back to defaultColor
     const iconColor = getBadgeColor(
@@ -167,45 +168,50 @@ const columnRenderers = {
       config?.badgeConfig?.colorMap,
       config?.badgeConfig?.defaultColor || "#6366f1"
     );
-    
+
     return React.createElement(
       "div",
       { className: "flex items-center gap-2" },
-      IconComponent 
+      IconComponent
         ? React.createElement(IconComponent, {
             className: "w-4 h-4 shrink-0",
-            style: { color: iconColor }
+            style: { color: iconColor },
           })
-        : React.createElement(
-            "div",
-            {
-              className: "w-2 h-2 rounded-full shrink-0",
-              style: {
-                backgroundColor: iconColor,
-              },
-            }
-          ),
+        : React.createElement("div", {
+            className: "w-2 h-2 rounded-full shrink-0",
+            style: {
+              backgroundColor: iconColor,
+            },
+          }),
       React.createElement("p", { className: style }, value)
     );
   },
 
   textWithLink: (value: string, config?: RendererConfig) => {
     const textStyle = config?.textStyle || "auto";
-    const style =
+    // Get base style but remove color classes to ensure blue color is applied
+    const baseStyle =
       textStyle === "auto"
         ? value.length > 50
           ? TEXT_STYLES.long
           : TEXT_STYLES.short
         : TEXT_STYLES[textStyle];
-    
+
+    // Remove color classes (text-foreground, text-muted-foreground) to ensure blue color
+    const styleWithoutColor = baseStyle
+      .replace(/text-(foreground|muted-foreground)/g, "")
+      .trim();
+
     return React.createElement(
       "p",
-      { 
-        className: `${style} text-blue-600 hover:text-blue-800 cursor-pointer underline decoration-dotted`,
-        onClick: () => {
-          // Handle link click - could be customized via config
-          console.log("Link clicked:", value);
-        }
+      {
+        className: `${styleWithoutColor} text-blue-600 hover:text-blue-800 cursor-pointer underline decoration-dotted`,
+        onClick: (e: React.MouseEvent) => {
+          e.stopPropagation(); // Prevent row click if exists
+          if (config?.onClick) {
+            config.onClick(value);
+          }
+        },
       },
       value
     );
