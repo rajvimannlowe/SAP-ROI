@@ -110,7 +110,13 @@ export function KPITrendAnalysis() {
               variant="outline"
               size="sm"
               className="gap-2"
-              onClick={() => {}}
+              onClick={() => {
+                navigate(
+                  `/phase-i/catalog/${
+                    blueprintId || "sap-s4hana"
+                  }/blueprint/${moduleId}/cockpit/${kpiId}/evidence`
+                );
+              }}
             >
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Control Evidence</span>
