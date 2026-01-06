@@ -92,7 +92,7 @@ export function ModuleROICockpit() {
                 className="gap-2"
                 style={{ backgroundColor: "#4160F0" }}
                 onClick={() => {
-                  // Navigate to ROI aggregation view if needed
+                  navigate("/roi-aggregation");
                 }}
               >
                 <TrendingUp className="h-4 w-4" />

@@ -9,7 +9,7 @@ import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
 import { PhaseIROIPortfolio } from "./pages/enterprise/phase-one/erp/sap-s4hana/PhaseIROIPortfolio";
 import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROICatalogExplorer";
 import { ProductROIBlueprint } from "./pages/enterprise/phase-one/erp/sap-s4hana/ProductROIBlueprint";
-import RoiAggregation from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-aggregation";
+import { ROIAggregation } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROIAggregation";
 import { ModuleROICockpit } from "./pages/enterprise/phase-one/erp/sap-s4hana/ModuleROICockpit";
 import { KPIDetailView } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPIDetailView";
 import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPITrendAnalysis";
@@ -43,7 +43,7 @@ function App() {
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit"
               element={<ModuleROICockpit />}
             />
-            <Route path="roi-aggregation" element={<RoiAggregation />} />
+            <Route path="roi-aggregation" element={<ROIAggregation />} />
             <Route
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId"
               element={<KPIDetailView />}
