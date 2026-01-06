@@ -6,6 +6,7 @@ interface ROIIntentCardProps {
   icon: LucideIcon;
   label: string;
   description: string;
+  value: string;
   color: string;
 }
 
@@ -21,6 +22,7 @@ export function ROIIntentCard({
   icon: Icon,
   label,
   description,
+  value,
   color,
 }: ROIIntentCardProps) {
   const navigate = useNavigate();
@@ -72,6 +74,16 @@ export function ROIIntentCard({
                   {label}
                 </h3>
               </div>
+              {value && (
+                <div className="shrink-0">
+                  <p
+                    className="text-lg font-bold leading-none"
+                    style={{ color }}
+                  >
+                    {value}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Description */}

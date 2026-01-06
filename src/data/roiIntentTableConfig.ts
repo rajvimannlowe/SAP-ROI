@@ -55,7 +55,7 @@ export const roiIntentTableColumns: TableColumn<ROIIntentTableRow>[] = [
         header: "KPI Title",
         accessor: (row) =>
             renderCellByType(row.kpiTitle, "text", {
-                textStyle: "long",
+                textStyle: "short",
             }),
     },
     {
@@ -196,7 +196,7 @@ export const roiIntentTableColumns: TableColumn<ROIIntentTableRow>[] = [
         header: "Last Updated",
         align: "center",
         accessor: (row) => renderCellByType(row.lastUpdated, "textWithIcon", {
-            textStyle: "short",
+            textStyle: "long",
             badgeConfig: {
                 defaultColor: "#6B7280",
                 icon: Calendar

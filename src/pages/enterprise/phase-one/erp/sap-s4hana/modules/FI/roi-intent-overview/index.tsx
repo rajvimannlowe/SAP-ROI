@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
-import { SummaryCards } from "@/components/dashboard/SummaryCards"
 import { PageHeader } from "@/components/layout/PageHeader"
 import { useParams, Navigate } from "react-router-dom"
 import { SAP_S4HANA_BLUEPRINT } from "@/data/productBlueprintData"
 import { DrilldownTable } from "@/components/roi/DrilldownTable"
 import { SearchAndFilters } from "@/components/roi/SearchAndFilters"
+import { ROIIntentCard } from "@/components/roi/ROIIntentCard"
 import { roiIntentTableConfig } from "@/data/roiIntentTableConfig"
 import { getROIIntentDataByCategory, ROIIntentTableRow } from "@/data/roiIntentData"
+import { getROIIntentSummaryCards } from "@/data/roiIntentSummaryData"
 
 const RoiIntentOverview = () => {
     const { intentId } = useParams<{ intentId: string }>();
@@ -84,19 +85,8 @@ const RoiIntentOverview = () => {
         return <Navigate to="/phase-i/catalog/sap-s4hana/blueprint" replace />;
     }
 
-    // Filter metrics related to this intent
-    const relatedMetrics = [
-        ...SAP_S4HANA_BLUEPRINT.primaryMetrics,
-        ...SAP_S4HANA_BLUEPRINT.secondaryMetrics
-    ].filter(metric => metric.dimension === intentData.label);
-
-    // Create summary cards from related metrics
-    const summaryCards = relatedMetrics.map(metric => ({
-        title: metric.title,
-        value: metric.target,
-        icon: intentData.icon,
-        color: intentData.color
-    }));
+    // Get ROI intent summary cards data
+    const roiSummaryCards = getROIIntentSummaryCards(intentData.label);
 
     return (
         <div className="flex flex-col gap-6">
@@ -111,9 +101,19 @@ const RoiIntentOverview = () => {
                 />
             </div>
 
-            {/* Summary Cards Section */}
-            <div>
-                <SummaryCards cards={summaryCards} columns={4} />
+            {/* ROI Intent Cards Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {roiSummaryCards.map((card) => (
+                    <ROIIntentCard
+                        key={card.id}
+                        id={card.id}
+                        icon={card.icon}
+                        label={card.title}
+                        description={card.subtitle}
+                        value={card.value}
+                        color={card.color}
+                    />
+                ))}
             </div>
 
             {/* Filter & Search Section */}
