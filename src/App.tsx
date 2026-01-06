@@ -11,6 +11,7 @@ import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/
 import { ProductROIBlueprint } from "./pages/enterprise/phase-one/erp/sap-s4hana/ProductROIBlueprint";
 import RoiAggregation from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-aggregation";
 import { ModuleROICockpit } from "./pages/enterprise/phase-one/erp/sap-s4hana/ModuleROICockpit";
+import RoiIntentOverview from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-intent-overview";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="phase-i/catalog/:id/blueprint" element={<ProductROIBlueprint />} />
             <Route path="phase-i/catalog/:id/blueprint/:moduleId/cockpit" element={<ModuleROICockpit />} />
             <Route path="roi-aggregation" element={<RoiAggregation />} />
+            <Route path="roi-intent-overview/:intentId" element={<RoiIntentOverview />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
