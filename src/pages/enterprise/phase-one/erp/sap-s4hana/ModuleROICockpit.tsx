@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Info, TrendingUp, Filter } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
-import { MetricCard } from "../../../../../components/dashboard/MetricCard";
+import { MetricCard } from "../../../../../components/roi/MetricCard";
 import { InfoCard } from "../../../../../components/roi/InfoCard";
 import { StatusBadge } from "../../../../../components/roi/StatusBadge";
 import { DrilldownTable } from "../../../../../components/roi/DrilldownTable";

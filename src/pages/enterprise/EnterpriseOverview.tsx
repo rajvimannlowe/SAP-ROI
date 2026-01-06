@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { MOCK_DD_ITEMS } from "../../data/mockData";
-import { ROIMetricCards } from "../../components/dashboard/ROIMetricCards";
-import { PortfolioPhasingStructure } from "../../components/dashboard/PortfolioPhasingStructure";
-import { ROIValueLegend } from "../../components/dashboard/ROIValueLegend";
+import { ROIMetricCards } from "../../components/roi/ROIMetricCards";
+import { PortfolioPhasingStructure } from "../../components/roi/PortfolioPhasingStructure";
+import { ROIValueLegend } from "../../components/roi/ROIValueLegend";
 import { PageHeader } from "../../components/layout/PageHeader";
 
 export function EnterpriseOverview() {

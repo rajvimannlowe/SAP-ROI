@@ -17,7 +17,7 @@ import {
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
 import { InfoCard } from "../../../../../components/roi/InfoCard";
-import { MetricCard } from "../../../../../components/dashboard/MetricCard";
+import { MetricCard } from "../../../../../components/roi/MetricCard";
 import { Button } from "../../../../../components/ui/button";
 import { getStatusColor } from "../../../../../data/statusMapping";
 
@@ -94,13 +94,30 @@ export function KPIDetailView() {
   const statusBorder = hexToRgba(statusColor, 0.3);
 
   const actionButtons = [
-    { icon: TrendingUp, label: "Trend Analysis", variant: "outline" as const },
-    { icon: FileText, label: "Control Evidence", variant: "outline" as const },
+    {
+      icon: TrendingUp,
+      label: "Trend Analysis",
+      variant: "outline" as const,
+      onClick: () => {
+        navigate(
+          `/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/blueprint/${moduleId}/cockpit/${kpiId}/trend`
+        );
+      },
+    },
+    {
+      icon: FileText,
+      label: "Control Evidence",
+      variant: "outline" as const,
+      onClick: () => {},
+    },
     {
       icon: ClipboardList,
       label: "Action Tracker",
       variant: "default" as const,
       style: { backgroundColor: "#10b981" },
+      onClick: () => {},
     },
   ];
 
@@ -122,7 +139,7 @@ export function KPIDetailView() {
                 size="sm"
                 className="gap-2"
                 style={btn.style}
-                onClick={() => {}}
+                onClick={btn.onClick}
               >
                 <btn.icon className="h-4 w-4" />
                 <span className="hidden sm:inline">{btn.label}</span>
