@@ -2,7 +2,7 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 
 const Heading = () => {
     return (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl">
+        <div className="bg-linear-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl">
             <div className="flex items-center gap-4 mb-4">
                 <button className="flex items-center gap-2 text-blue-100 hover:text-white transition-colors">
                     <ArrowLeft className="h-4 w-4" />

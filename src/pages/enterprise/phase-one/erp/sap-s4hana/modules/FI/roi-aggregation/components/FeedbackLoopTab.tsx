@@ -86,7 +86,7 @@ const FeedbackLoopTab = () => {
 
       {/* Continuous Feedback Loop Indicator */}
       <div className="flex justify-center mt-8">
-        <div className="flex items-center gap-4 p-4 rounded-full bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200">
+        <div className="flex items-center gap-4 p-4 rounded-full bg-linear-to-r from-blue-50 to-purple-50 border border-blue-200">
           <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></div>
           <span className="text-sm font-medium text-blue-700">Continuous Feedback Loop Active</span>
           <div className="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></div>
