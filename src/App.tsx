@@ -11,6 +11,7 @@ import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/
 import { ProductROIBlueprint } from "./pages/enterprise/phase-one/erp/sap-s4hana/ProductROIBlueprint";
 import { ROIAggregation } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROIAggregation";
 import { ModuleROICockpit } from "./pages/enterprise/phase-one/erp/sap-s4hana/ModuleROICockpit";
+import RoiIntentOverview from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-intent-overview";
 import { KPIDetailView } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPIDetailView";
 import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPITrendAnalysis";
 import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/ControlEvidence";
@@ -57,6 +58,7 @@ function App() {
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/evidence"
               element={<ControlEvidence />}
             />
+            <Route path="roi-intent-overview/:intentId" element={<RoiIntentOverview />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />

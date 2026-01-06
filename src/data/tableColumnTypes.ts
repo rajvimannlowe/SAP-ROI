@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { StatusBadge, StatusType } from "../components/roi/StatusBadge";
+import { LucideIcon } from "lucide-react";
 
 // Column Types - Easy to extend
 export type ColumnType =
@@ -10,7 +11,9 @@ export type ColumnType =
   | "currency"
   | "percentage"
   | "date"
-  | "custom";
+  | "custom"
+  | "textWithIcon"
+  | "textWithLink";
 
 // Column Configuration
 export interface SimpleColumnConfig<T = object> {
@@ -22,6 +25,7 @@ export interface SimpleColumnConfig<T = object> {
   badgeConfig?: {
     colorMap?: Record<string, string>;
     defaultColor?: string;
+    icon?: LucideIcon;
   };
   textStyle?: "short" | "long" | "auto";
   customAccessor?: (row: T) => ReactNode;
@@ -146,6 +150,66 @@ const columnRenderers = {
       },
       value
     ),
+
+  textWithIcon: (value: string, config?: RendererConfig) => {
+    const textStyle = config?.textStyle || "auto";
+    const style =
+      textStyle === "auto"
+        ? value.length > 50
+          ? TEXT_STYLES.long
+          : TEXT_STYLES.short
+        : TEXT_STYLES[textStyle];
+    
+    const IconComponent = config?.badgeConfig?.icon;
+    // Use colorMap if available, otherwise fall back to defaultColor
+    const iconColor = getBadgeColor(
+      value,
+      config?.badgeConfig?.colorMap,
+      config?.badgeConfig?.defaultColor || "#6366f1"
+    );
+    
+    return React.createElement(
+      "div",
+      { className: "flex items-center gap-2" },
+      IconComponent 
+        ? React.createElement(IconComponent, {
+            className: "w-4 h-4 shrink-0",
+            style: { color: iconColor }
+          })
+        : React.createElement(
+            "div",
+            {
+              className: "w-2 h-2 rounded-full shrink-0",
+              style: {
+                backgroundColor: iconColor,
+              },
+            }
+          ),
+      React.createElement("p", { className: style }, value)
+    );
+  },
+
+  textWithLink: (value: string, config?: RendererConfig) => {
+    const textStyle = config?.textStyle || "auto";
+    const style =
+      textStyle === "auto"
+        ? value.length > 50
+          ? TEXT_STYLES.long
+          : TEXT_STYLES.short
+        : TEXT_STYLES[textStyle];
+    
+    return React.createElement(
+      "p",
+      { 
+        className: `${style} text-blue-600 hover:text-blue-800 cursor-pointer underline decoration-dotted`,
+        onClick: () => {
+          // Handle link click - could be customized via config
+          console.log("Link clicked:", value);
+        }
+      },
+      value
+    );
+  },
 };
 
 // Main Renderer - Renders cell based on column type

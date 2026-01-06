@@ -107,7 +107,7 @@ export function DrilldownTable<T extends object = object>({
         <div className="relative overflow-x-auto">
           <table
             className="w-full border-collapse"
-            style={{ tableLayout: "auto", width: "100%" }}
+            style={{ tableLayout: "auto", width: "100%", minWidth: "max-content" }}
           >
             <thead
               style={{

@@ -62,7 +62,7 @@ export function ProductROIBlueprint() {
                 onClick={() => setActiveSection(id)}
                 className={`group relative flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
-                    ? "bg-gradient-to-r from-[#4160F0] to-[#FF6700] text-white shadow-sm"
+                    ? "bg-linear-to-r from-[#4160F0] to-[#FF6700] text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                 }`}
               >

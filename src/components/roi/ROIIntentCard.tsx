@@ -1,9 +1,12 @@
 import { LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ROIIntentCardProps {
+  id: string;
   icon: LucideIcon;
   label: string;
   description: string;
+  value: string;
   color: string;
 }
 
@@ -15,13 +18,24 @@ const hexToRgba = (hex: string, alpha: number): string => {
 };
 
 export function ROIIntentCard({
+  id,
   icon: Icon,
   label,
   description,
+  value,
   color,
 }: ROIIntentCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/roi-intent-overview/${id}`);
+  };
+
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
+    <div 
+      className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="p-3">
         {/* Inner Card with Solid Color Background */}
         <div
@@ -60,6 +74,16 @@ export function ROIIntentCard({
                   {label}
                 </h3>
               </div>
+              {value && (
+                <div className="shrink-0">
+                  <p
+                    className="text-lg font-bold leading-none"
+                    style={{ color }}
+                  >
+                    {value}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Description */}

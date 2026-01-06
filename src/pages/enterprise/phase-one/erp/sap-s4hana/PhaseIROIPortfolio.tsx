@@ -39,7 +39,7 @@ export function PhaseIROIPortfolio() {
           <div key={categorySection.category} className="space-y-5">
             {/* Category Heading with Accent */}
             <div className="flex items-center gap-3">
-              <div className="w-1 h-8 rounded-full bg-gradient-to-b from-blue-500 to-blue-600" />
+              <div className="w-1 h-8 rounded-full bg-linear-to-b from-blue-500 to-blue-600" />
               <h2 className="text-xl font-bold text-foreground">
                 {categorySection.category}
               </h2>
