@@ -63,11 +63,11 @@ export function InfoCard({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-2.5 mb-3">
+            <div className="flex items-center gap-2.5 mb-3 pl-0">
               {Icon && iconGradient && (
                 <IconBadge gradient={iconGradient} icon={Icon} />
               )}
-              <h3 className="text-sm font-bold text-foreground">{title}</h3>
+              <h3 className="text-sm font-bold text-foreground flex-1">{title}</h3>
             </div>
             {value && (
               <p className="text-sm font-bold text-foreground mb-1.5">{value}</p>

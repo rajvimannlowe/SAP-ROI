@@ -114,6 +114,21 @@ export const subProcessData: SubProcessData[] = [
   }
 ];
 
+// Sub-Process Summary Statistics
+export interface SubProcessSummary {
+  healthyProcesses: number;
+  atRiskProcesses: number;
+  totalValueAtRisk: string;
+  activeActionItems: number;
+}
+
+export const subProcessSummary: SubProcessSummary = {
+  healthyProcesses: 3,
+  atRiskProcesses: 2,
+  totalValueAtRisk: "$13.4M",
+  activeActionItems: 11,
+};
+
 // ROI Feedback Loop Visualization Data
 export interface FeedbackLoopStep {
   id: string;

@@ -1,11 +1,5 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { IconBadge } from "@/components/roi/IconBadge";
+import { InfoCard } from "@/components/roi/InfoCard";
+import { SummaryCards, SummaryCard } from "@/components/roi/SummaryCards";
 import { roiScoreData } from "@/data/roiAggregationData";
 import { TrendingUp, AlertTriangle, Shield, DollarSign } from "lucide-react";
 
@@ -20,178 +14,158 @@ const getGradient = (color: string) =>
   `linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.8)} 100%)`;
 
 const OverviewTab = () => {
+  const summaryCards: SummaryCard[] = [
+    {
+      title: "Total KPIs",
+      value: "16",
+      icon: DollarSign,
+      color: "#2563eb",
+    },
+    {
+      title: "Automation Rate",
+      value: "85%",
+      icon: TrendingUp,
+      color: "#10b981",
+    },
+    {
+      title: "Total Value",
+      value: "$19.6M",
+      icon: Shield,
+      color: "#9333ea",
+    },
+    {
+      title: "Monitoring",
+      value: "24/7",
+      icon: AlertTriangle,
+      color: "#f59e0b",
+    },
+  ];
+
   return (
     <div className="space-y-4">
       {/* Main ROI Score Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* SAP FI Overall ROI Score */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-white" />
+        <InfoCard
+          icon={TrendingUp}
+          iconGradient={getGradient("#2563eb")}
+          title="SAP FI Overall ROI Score"
+          value={roiScoreData.score}
+          description={
+            <div className="space-y-3 mt-2">
+              <p className="text-sm text-foreground">{roiScoreData.description}</p>
+              <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded text-xs w-fit">
+                <AlertTriangle className="h-3 w-3 text-orange-600" />
+                <span className="text-orange-700 font-medium">
+                  {roiScoreData.criticalRisks} Critical,{" "}
+                  {roiScoreData.moderateRisks} Moderate Risks
+                </span>
               </div>
-              <div className="text-xs text-blue-700 font-medium uppercase">
-                SAP FI OVERALL ROI SCORE
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Health Status</span>
+                  <span className="text-sm font-semibold text-blue-600">
+                    Excellent
+                  </span>
+                </div>
+                <div className="w-full bg-blue-200 rounded-full h-2">
+                  <div
+                    className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                    style={{ width: "96%" }}
+                  ></div>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-1 bg-orange-100 px-2 py-1 rounded text-xs">
-              <AlertTriangle className="h-3 w-3 text-orange-600" />
-              <span className="text-orange-700 font-medium">
-                {roiScoreData.criticalRisks} Critical,{" "}
-                {roiScoreData.moderateRisks} Moderate Risks
-              </span>
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <div className="text-3xl font-bold text-blue-600 mb-1">
-              {roiScoreData.score}
-            </div>
-            <div className="text-sm text-blue-700">
-              {roiScoreData.description}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-blue-700">Health Status</span>
-              <span className="text-sm font-semibold text-blue-600">
-                Excellent
-              </span>
-            </div>
-            <div className="w-full bg-blue-200 rounded-full h-2">
-              <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-500"
-                style={{ width: "96%" }}
-              ></div>
-            </div>
-          </div>
-        </div>
+          }
+          borderColor={hexToRgba("#2563eb", 0.3)}
+          bgColor={hexToRgba("#2563eb", 0.05)}
+        />
 
         {/* Value at Risk Protected */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                <Shield className="h-5 w-5 text-white" />
+        <InfoCard
+          icon={Shield}
+          iconGradient={getGradient("#10b981")}
+          title="Value at Risk Protected"
+          value={roiScoreData.valueProtected}
+          description={
+            <div className="space-y-3 mt-2">
+              <p className="text-sm text-foreground">
+                Annual value protected by controls
+              </p>
+              <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded text-xs w-fit">
+                <Shield className="h-3 w-3 text-green-600" />
+                <span className="text-green-700 font-medium">
+                  2 of 3 sub-processes healthy
+                </span>
               </div>
-              <div className="text-xs text-green-700 font-medium uppercase">
-                VALUE AT RISK PROTECTED
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Protection Rate</span>
+                  <span className="text-sm font-semibold text-green-600">
+                    93.5%
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Controls effectively mitigating financial risks
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded text-xs">
-              <Shield className="h-3 w-3 text-green-600" />
-              <span className="text-green-700 font-medium">
-                2 of 3 sub-processes healthy
-              </span>
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <div className="text-3xl font-bold text-green-600 mb-1">
-              {roiScoreData.valueProtected}
-            </div>
-            <div className="text-sm text-green-700">
-              Annual value protected by controls
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-green-700">Protection Rate</span>
-              <span className="text-sm font-semibold text-green-600">
-                93.5%
-              </span>
-            </div>
-            <div className="text-xs text-green-600">
-              Controls effectively mitigating financial risks
-            </div>
-          </div>
-        </div>
+          }
+          borderColor={hexToRgba("#10b981", 0.3)}
+          bgColor={hexToRgba("#10b981", 0.05)}
+        />
 
         {/* Value at Risk Exposed */}
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="h-5 w-5 text-white" />
+        <InfoCard
+          icon={AlertTriangle}
+          iconGradient={getGradient("#ef4444")}
+          title="Value at Risk Exposed"
+          value={roiScoreData.valueExposed}
+          description={
+            <div className="space-y-3 mt-2">
+              <p className="text-sm text-foreground">
+                Potential exposure requiring remediation
+              </p>
+              <div className="flex items-center gap-1 bg-red-100 px-2 py-1 rounded text-xs w-fit">
+                <AlertTriangle className="h-3 w-3 text-red-600" />
+                <span className="text-red-700 font-medium">
+                  {roiScoreData.activeRemediations} active remediation actions
+                </span>
               </div>
-              <div className="text-xs text-red-700 font-medium uppercase">
-                VALUE AT RISK EXPOSED
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Risk Level</span>
+                  <span className="text-sm font-semibold text-red-600">
+                    Moderate
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Immediate attention required for risk mitigation
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-1 bg-red-100 px-2 py-1 rounded text-xs">
-              <AlertTriangle className="h-3 w-3 text-red-600" />
-              <span className="text-red-700 font-medium">
-                {roiScoreData.activeRemediations} active remediation actions
-              </span>
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <div className="text-3xl font-bold text-red-600 mb-1">
-              {roiScoreData.valueExposed}
-            </div>
-            <div className="text-sm text-red-700">
-              Potential exposure requiring remediation
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-red-700">Risk Level</span>
-              <span className="text-sm font-semibold text-red-600">
-                Moderate
-              </span>
-            </div>
-            <div className="text-xs text-red-600">
-              Immediate attention required for risk mitigation
-            </div>
-          </div>
-        </div>
+          }
+          borderColor={hexToRgba("#ef4444", 0.3)}
+          bgColor={hexToRgba("#ef4444", 0.05)}
+        />
       </div>
 
       {/* Key Metrics Summary */}
-      <Card
-        className="col-span-full"
-        style={{
-          borderColor: hexToRgba("#4160F0", 0.3),
-          backgroundColor: hexToRgba("#4160F0", 0.02),
-        }}
-      >
-        <CardHeader>
-          <div className="flex items-center gap-2.5">
-            <IconBadge gradient={getGradient("#4160F0")} icon={DollarSign} />
-            <div>
-              <CardTitle>Enterprise Financial Controls ROI Synthesis</CardTitle>
-              <CardDescription>
-                Comprehensive overview of financial control effectiveness
-              </CardDescription>
-            </div>
+      <InfoCard
+        icon={DollarSign}
+        iconGradient={getGradient("#4160F0")}
+        title="Enterprise Financial Controls ROI Synthesis"
+        description={
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground mb-4">
+              Comprehensive overview of financial control effectiveness
+            </p>
+            <SummaryCards cards={summaryCards} columns={4} />
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 rounded-lg bg-blue-50 border border-blue-200">
-              <div className="text-2xl font-bold text-blue-600">16</div>
-              <div className="text-sm text-blue-700">Total KPIs</div>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-green-50 border border-green-200">
-              <div className="text-2xl font-bold text-green-600">85%</div>
-              <div className="text-sm text-green-700">Automation Rate</div>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-purple-50 border border-purple-200">
-              <div className="text-2xl font-bold text-purple-600">$19.6M</div>
-              <div className="text-sm text-purple-700">Total Value</div>
-            </div>
-            <div className="text-center p-4 rounded-lg bg-orange-50 border border-orange-200">
-              <div className="text-2xl font-bold text-orange-600">24/7</div>
-              <div className="text-sm text-orange-700">Monitoring</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        }
+        borderColor={hexToRgba("#4160F0", 0.3)}
+        bgColor={hexToRgba("#4160F0", 0.02)}
+      />
     </div>
   );
 };
