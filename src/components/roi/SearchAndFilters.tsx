@@ -33,34 +33,34 @@ export function SearchAndFilters({
   const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <div>
-      <div className="flex flex-col lg:flex-row gap-4">
+    <div className="bg-card rounded-xl border border-border/50 shadow-sm p-3">
+      <div className="flex flex-col lg:flex-row gap-3 items-center justify-between">
         {/* Search Bar */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="relative flex-1 max-w-md group w-full lg:w-auto">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70 group-focus-within:text-[#4160F0] transition-colors duration-200 z-10" />
           <input
             type="text"
             placeholder={searchPlaceholder}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            className="relative w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border-2 border-[#4160F0]/40 bg-gradient-to-br from-[#4160F0]/8 to-[#4160F0]/3 text-foreground placeholder:text-muted-foreground/70 placeholder:font-normal focus:outline-none focus:bg-gradient-to-br focus:from-[#4160F0]/12 focus:to-[#4160F0]/5 transition-all duration-200 shadow-sm"
           />
         </div>
 
         {/* Filter Toggle Button */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full lg:w-auto justify-end">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`px-4 py-2.5 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2 ${
+            className={`group relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap overflow-hidden ${
               showFilters || activeFiltersCount > 0
-                ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm"
-                : "bg-background border-border text-foreground hover:bg-muted/50"
+                ? "bg-gradient-to-r from-[#4160F0] to-[#FF6700] text-white shadow-sm hover:shadow-md"
+                : "bg-gradient-to-r from-[#4160F0] to-[#FF6700] text-white shadow-sm hover:shadow-md hover:from-[#3550D9] hover:to-[#E65C00]"
             }`}
           >
-            <Filter className="h-4 w-4" />
-            <span>Filters</span>
+            <Filter className="relative h-4 w-4 text-white z-10" />
+            <span className="relative text-white z-10">Filters</span>
             {activeFiltersCount > 0 && (
-              <span className="px-2 py-0.5 text-xs font-bold bg-blue-600 text-white rounded-full">
+              <span className="relative px-2 py-0.5 text-xs font-bold bg-white/25 backdrop-blur-sm text-white rounded-full border border-white/30 shadow-sm z-10">
                 {activeFiltersCount}
               </span>
             )}
@@ -68,7 +68,7 @@ export function SearchAndFilters({
           {activeFiltersCount > 0 && (
             <button
               onClick={onClearFilters}
-              className="px-4 py-2.5 text-sm font-medium rounded-lg border-2 border-border bg-background text-foreground hover:bg-muted/50 transition-all flex items-center gap-2"
+              className="px-4 py-2.5 text-sm font-medium rounded-lg border-2 border-border/60 bg-background text-foreground hover:bg-muted/80 hover:border-border transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
             >
               <X className="h-4 w-4" />
               <span>Clear</span>
@@ -79,11 +79,11 @@ export function SearchAndFilters({
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="mt-4 pt-4 border-t border-border/50">
+        <div className="mt-4 pt-4 border-t border-border/50 animate-in fade-in-50 duration-200">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {filters.map((filter, index) => (
-              <div key={index}>
-                <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div key={index} className="space-y-2">
+                <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-1.5">
                   {filter.label}
                 </label>
                 <Dropdown
