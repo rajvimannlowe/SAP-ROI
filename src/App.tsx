@@ -9,6 +9,7 @@ import { EnterpriseOverview } from "./pages/enterprise/EnterpriseOverview";
 import { PhaseIROIPortfolio } from "./pages/enterprise/phase-one/erp/sap-s4hana/PhaseIROIPortfolio";
 import { ROICatalogExplorer } from "./pages/enterprise/phase-one/erp/sap-s4hana/ROICatalogExplorer";
 import { ProductROIBlueprint } from "./pages/enterprise/phase-one/erp/sap-s4hana/ProductROIBlueprint";
+import RoiAggregation from "./pages/enterprise/phase-one/erp/sap-s4hana/modules/FI/roi-aggregation";
 import { ModuleROICockpit } from "./pages/enterprise/phase-one/erp/sap-s4hana/ModuleROICockpit";
 import { KPIDetailView } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPIDetailView";
 import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPITrendAnalysis";
@@ -34,10 +35,23 @@ function App() {
             <Route path="enterprise" element={<EnterpriseOverview />} />
             <Route path="phase-i" element={<PhaseIROIPortfolio />} />
             <Route path="phase-i/catalog" element={<ROICatalogExplorer />} />
-            <Route path="phase-i/catalog/:id/blueprint" element={<ProductROIBlueprint />} />
-            <Route path="phase-i/catalog/:id/blueprint/:moduleId/cockpit" element={<ModuleROICockpit />} />
-            <Route path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId" element={<KPIDetailView />} />
-            <Route path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/trend" element={<KPITrendAnalysis />} />
+            <Route
+              path="phase-i/catalog/:id/blueprint"
+              element={<ProductROIBlueprint />}
+            />
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit"
+              element={<ModuleROICockpit />}
+            />
+            <Route path="roi-aggregation" element={<RoiAggregation />} />
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId"
+              element={<KPIDetailView />}
+            />
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/trend"
+              element={<KPITrendAnalysis />}
+            />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
