@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+import { Package, Target, Layers, CheckCircle2 } from "lucide-react";
 import { MOCK_DD_ITEMS } from "../../data/mockData";
-import { ROIMetricCards } from "../../components/roi/cards/ROIMetricCards";
+import { MetricCard } from "../../components/roi/cards/MetricCard";
+import { BRAND_COLORS } from "../../components/roi/cards/index";
 import { PortfolioPhasingStructure } from "../../components/roi/PortfolioPhasingStructure";
 import { ROIValueLegend } from "../../components/roi/ROIValueLegend";
 import { PageHeader } from "../../components/layout/PageHeader";
@@ -63,15 +65,36 @@ export function EnterpriseOverview() {
       />
 
       {/* ROI Metric Cards */}
-      <div>
-        <ROIMetricCards
-          totalProducts={roiStats.totalItems}
-          phaseIProducts={roiStats.phaseIProducts}
-          phaseIPercentage={roiStats.phaseIPercentage}
-          roiDimensions={roiStats.roiDimensions}
-          executionReady={roiStats.executionReady}
-          executionReadyPercentage={roiStats.executionReadyPercentage}
-          quarterlyGrowth={2}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <MetricCard
+          title="Total Products in ROI Catalog"
+          value={roiStats.totalItems}
+          subtitle={2 > 0 ? `+${2} this quarter` : undefined}
+          icon={Package}
+          color={BRAND_COLORS.PRIMARY}
+        />
+        <MetricCard
+          title="Phase I Products"
+          value={roiStats.phaseIProducts}
+          subtitle={`${roiStats.phaseIPercentage}% of portfolio`}
+          icon={Target}
+          highlight={true}
+          onClickPath="/phase-i"
+          color={BRAND_COLORS.PRIMARY}
+        />
+        <MetricCard
+          title="ROI Dimensions Covered"
+          value={roiStats.roiDimensions.length}
+          icon={Layers}
+          dimensions={roiStats.roiDimensions}
+          color={BRAND_COLORS.PURPLE}
+        />
+        <MetricCard
+          title="Execution-Ready Products"
+          value={roiStats.executionReady}
+          subtitle={`${roiStats.executionReadyPercentage}% readiness`}
+          icon={CheckCircle2}
+          color="#16A34A"
         />
       </div>
 

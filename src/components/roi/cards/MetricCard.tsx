@@ -1,13 +1,19 @@
 import { LucideIcon } from "lucide-react";
-import { hexToRgba, DEFAULT_COLORS, CARD_STYLES } from "./index";
+import { useNavigate } from "react-router-dom";
+import { hexToRgba, DEFAULT_COLORS, BRAND_COLORS, CARD_STYLES } from "./index";
 
 interface MetricCardProps {
   icon: LucideIcon;
-  value: string;
+  value: string | number;
   title: string;
-  description: string;
+  description?: string;
+  subtitle?: string;
   color?: string;
   showStatusDot?: boolean;
+  highlight?: boolean;
+  dimensions?: string[];
+  onClick?: () => void;
+  onClickPath?: string;
 }
 
 export function MetricCard({
@@ -15,19 +21,44 @@ export function MetricCard({
   value,
   title,
   description,
+  subtitle,
   color = DEFAULT_COLORS.SUCCESS,
   showStatusDot = false,
+  highlight = false,
+  dimensions,
+  onClick,
+  onClickPath,
 }: MetricCardProps) {
+  const navigate = useNavigate();
+  const cardColor = highlight ? BRAND_COLORS.PRIMARY : color;
+
+  const handleClick = () => {
+    if (onClickPath) {
+      navigate(onClickPath);
+    } else if (onClick) {
+      onClick();
+    }
+  };
+
+  const hasClick = highlight || onClick || onClickPath;
+
   return (
     <div
-      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION}`}
+      onClick={hasClick ? handleClick : undefined}
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} ${
+        highlight
+          ? "ring-2 ring-blue-500/30 border-blue-500/60 cursor-pointer"
+          : hasClick
+          ? "cursor-pointer"
+          : ""
+      }`}
     >
       <div className="p-3">
         <div
           className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
           style={{
-            backgroundColor: hexToRgba(color, 0.1),
-            borderColor: hexToRgba(color, 0.3),
+            backgroundColor: hexToRgba(cardColor, highlight ? 0.12 : 0.1),
+            borderColor: hexToRgba(cardColor, 0.3),
           }}
         >
           {showStatusDot && (
@@ -38,7 +69,7 @@ export function MetricCard({
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
               background: `radial-gradient(circle at top right, ${hexToRgba(
-                color,
+                cardColor,
                 0.2
               )}, transparent 70%)`,
             }}
@@ -49,7 +80,7 @@ export function MetricCard({
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 group-hover:scale-105 shrink-0 shadow-sm"
                 style={{
-                  background: color,
+                  background: cardColor,
                 }}
               >
                 <Icon className="h-5 w-5 text-white" />
@@ -57,7 +88,7 @@ export function MetricCard({
 
               <p
                 className="text-2xl font-bold leading-none"
-                style={{ color: color }}
+                style={{ color: cardColor }}
               >
                 {value}
               </p>
@@ -67,13 +98,35 @@ export function MetricCard({
               {title}
             </p>
 
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {description}
-            </p>
+            {subtitle && (
+              <p className="text-xs text-muted-foreground leading-tight">
+                {subtitle}
+              </p>
+            )}
+
+            {description && (
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {description}
+              </p>
+            )}
           </div>
         </div>
+
+        {dimensions && dimensions.length > 0 && (
+          <div className="px-1">
+            <div className="flex flex-wrap gap-1.5">
+              {dimensions.map((dim, index) => (
+                <span
+                  key={index}
+                  className="text-[10px] px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground font-medium border border-border/50"
+                >
+                  {dim}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
