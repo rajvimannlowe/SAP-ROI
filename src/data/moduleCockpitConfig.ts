@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { TrendingUp, Shield, CheckCircle, Activity, Clock, BarChart3, LucideIcon } from "lucide-react";
-import { SummaryCard } from "../components/roi/SummaryCards";
+import { SummaryCard } from "../components/roi/cards/SummaryCards";
 import { getStatusColor } from "./statusMapping";
 import { ModuleCockpitData, SubModule } from "./moduleCockpitData";
 

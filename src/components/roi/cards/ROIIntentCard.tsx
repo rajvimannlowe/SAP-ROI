@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { hexToRgba, CARD_STYLES } from "./index";
 
 interface ROIIntentCardProps {
   id: string;
@@ -9,13 +10,6 @@ interface ROIIntentCardProps {
   value: string;
   color: string;
 }
-
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
 
 export function ROIIntentCard({
   id,
@@ -32,12 +26,11 @@ export function ROIIntentCard({
   };
 
   return (
-    <div 
-      className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 cursor-pointer"
+    <div
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} cursor-pointer`}
       onClick={handleClick}
     >
       <div className="p-3">
-        {/* Inner Card with Solid Color Background */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
@@ -45,16 +38,17 @@ export function ROIIntentCard({
             borderColor: hexToRgba(color, 0.35),
           }}
         >
-          {/* Animated gradient overlay on hover */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at top right, ${hexToRgba(color, 0.25)}, transparent 70%)`,
+              background: `radial-gradient(circle at top right, ${hexToRgba(
+                color,
+                0.25
+              )}, transparent 70%)`,
             }}
           />
-          
+
           <div className="relative z-10">
-            {/* Icon and Label Row */}
             <div className="flex items-center gap-2.5 mb-2.5">
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-lg shrink-0"
@@ -86,8 +80,10 @@ export function ROIIntentCard({
               )}
             </div>
 
-            {/* Description */}
-            <div className="pt-2 border-t" style={{ borderColor: hexToRgba(color, 0.25) }}>
+            <div
+              className="pt-2 border-t"
+              style={{ borderColor: hexToRgba(color, 0.25) }}
+            >
               <p className="text-xs text-muted-foreground leading-relaxed">
                 {description}
               </p>
@@ -95,7 +91,6 @@ export function ROIIntentCard({
           </div>
         </div>
 
-        {/* Footer with Fresh Accent */}
         <div className="px-1">
           <div className="flex items-center gap-2">
             <div
@@ -114,3 +109,4 @@ export function ROIIntentCard({
     </div>
   );
 }
+

@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
-import { InfoCard } from "../../../../../components/roi/InfoCard";
-import { MetricCard } from "../../../../../components/roi/MetricCard";
+import { InfoCard } from "../../../../../components/roi/cards/InfoCard";
+import { MetricCard } from "../../../../../components/roi/cards/MetricCard";
 import { Button } from "../../../../../components/ui/button";
 import { getStatusColor } from "../../../../../data/statusMapping";
 
@@ -163,7 +163,13 @@ export function KPIDetailView() {
       label: "Action Tracker",
       variant: "default" as const,
       style: { backgroundColor: "#10b981" },
-      onClick: () => {},
+      onClick: () => {
+        navigate(
+          `/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/blueprint/${moduleId}/cockpit/${kpiId}/actions`
+        );
+      },
     },
   ];
 

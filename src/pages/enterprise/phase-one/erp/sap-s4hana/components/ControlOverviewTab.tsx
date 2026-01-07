@@ -1,5 +1,5 @@
 import { FileText } from "lucide-react";
-import { InfoCard } from "../../../../../../components/roi/InfoCard";
+import { InfoCard } from "../../../../../../components/roi/cards/InfoCard";
 import { SectionHeader } from "./SectionHeader";
 import {
   ControlEvidenceData,

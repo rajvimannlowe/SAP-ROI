@@ -15,6 +15,7 @@ import RoiIntentOverview from "./pages/enterprise/phase-one/erp/sap-s4hana/ROIIn
 import { KPIDetailView } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPIDetailView";
 import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPITrendAnalysis";
 import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/ControlEvidence";
+import { ActionTracker } from "./pages/enterprise/phase-one/erp/sap-s4hana/ActionTracker";
 import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTickets";
 
 function App() {
@@ -58,6 +59,10 @@ function App() {
             <Route
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/evidence"
               element={<ControlEvidence />}
+            />
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions"
+              element={<ActionTracker />}
             />
             <Route path="roi-intent-overview/:intentId" element={<RoiIntentOverview />} />
 
