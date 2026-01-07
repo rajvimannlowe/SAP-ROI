@@ -163,7 +163,13 @@ export function KPIDetailView() {
       label: "Action Tracker",
       variant: "default" as const,
       style: { backgroundColor: "#10b981" },
-      onClick: () => {},
+      onClick: () => {
+        navigate(
+          `/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/blueprint/${moduleId}/cockpit/${kpiId}/actions`
+        );
+      },
     },
   ];
 

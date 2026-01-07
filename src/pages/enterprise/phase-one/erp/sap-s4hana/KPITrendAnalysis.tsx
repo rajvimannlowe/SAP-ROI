@@ -165,7 +165,13 @@ export function KPITrendAnalysis() {
               size="sm"
               className="gap-2"
               style={{ backgroundColor: "#10b981" }}
-              onClick={() => {}}
+              onClick={() => {
+                navigate(
+                  `/phase-i/catalog/${
+                    blueprintId || "sap-s4hana"
+                  }/blueprint/${moduleId}/cockpit/${kpiId}/actions`
+                );
+              }}
             >
               <ClipboardList className="h-4 w-4" />
               <span className="hidden sm:inline">Action Tracker</span>
