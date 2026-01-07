@@ -15,6 +15,7 @@ import RoiIntentOverview from "./pages/enterprise/phase-one/erp/sap-s4hana/ROIIn
 import { KPIDetailView } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPIDetailView";
 import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KPITrendAnalysis";
 import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/ControlEvidence";
+import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTickets";
 
 function App() {
   return (
@@ -59,6 +60,8 @@ function App() {
               element={<ControlEvidence />}
             />
             <Route path="roi-intent-overview/:intentId" element={<RoiIntentOverview />} />
+
+            <Route path="deviation-tickets" element={<DeviationTickets />} />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
