@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { CatalogCard } from "../../../../../components/roi/CatalogCard";
+import { CatalogCard } from "../../../../../components/roi/cards/CatalogCard";
 import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import {

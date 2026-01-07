@@ -1,6 +1,6 @@
 import { CheckCircle2, User, FileText, Calendar } from "lucide-react";
 import { Card } from "../../../../../../components/ui/card";
-import { InfoCard } from "../../../../../../components/roi/InfoCard";
+import { InfoCard } from "../../../../../../components/roi/cards/InfoCard";
 import { ControlEvidenceData } from "../../../../../../data/controlEvidenceData";
 
 const hexToRgba = (hex: string, alpha: number): string => {

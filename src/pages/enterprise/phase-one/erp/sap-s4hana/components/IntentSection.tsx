@@ -1,5 +1,5 @@
 import { ROIIntent } from "../../../../../../data/productBlueprintData";
-import { ROIIntentCard } from "../../../../../../components/roi/ROIIntentCard";
+import { ROIIntentCard } from "../../../../../../components/roi/cards/ROIIntentCard";
 import { SectionHeader } from "./SectionHeader";
 
 interface IntentSectionProps {

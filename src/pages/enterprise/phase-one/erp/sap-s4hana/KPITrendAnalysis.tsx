@@ -15,8 +15,8 @@ import {
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
 import { StatusBadge } from "../../../../../components/roi/StatusBadge";
-import { InfoCard } from "../../../../../components/roi/InfoCard";
-import { MetricCard } from "../../../../../components/roi/MetricCard";
+import { InfoCard } from "../../../../../components/roi/cards/InfoCard";
+import { MetricCard } from "../../../../../components/roi/cards/MetricCard";
 import { PerformanceTrendChart } from "../../../../../components/roi/PerformanceTrendChart";
 import { Button } from "../../../../../components/ui/button";
 import { getStatusColor } from "../../../../../data/statusMapping";
@@ -165,7 +165,13 @@ export function KPITrendAnalysis() {
               size="sm"
               className="gap-2"
               style={{ backgroundColor: "#10b981" }}
-              onClick={() => {}}
+              onClick={() => {
+                navigate(
+                  `/phase-i/catalog/${
+                    blueprintId || "sap-s4hana"
+                  }/blueprint/${moduleId}/cockpit/${kpiId}/actions`
+                );
+              }}
             >
               <ClipboardList className="h-4 w-4" />
               <span className="hidden sm:inline">Action Tracker</span>

@@ -3,7 +3,7 @@ import { Grid } from "lucide-react";
 import { Button } from "../../../../../components/ui/button";
 import { PHASE_I_ROI_CATEGORIES } from "../../../../../data/phaseIROIData";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
-import { InvestmentCard } from "../../../../../components/roi/InvestmentCard";
+import { InvestmentCard } from "../../../../../components/roi/cards/InvestmentCard";
 
 export function PhaseIROIPortfolio() {
   const categories = PHASE_I_ROI_CATEGORIES;

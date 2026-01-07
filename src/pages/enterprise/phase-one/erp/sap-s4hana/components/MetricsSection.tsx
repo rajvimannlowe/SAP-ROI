@@ -1,6 +1,6 @@
 import { BarChart3 } from "lucide-react";
 import { ROIMetric } from "../../../../../../data/productBlueprintData";
-import { ROIMeasurementCard } from "../../../../../../components/roi/ROIMeasurementCard";
+import { ROIMeasurementCard } from "../../../../../../components/roi/cards/ROIMeasurementCard";
 import { IconBadge } from "../../../../../../components/roi/IconBadge";
 import { SectionHeader } from "./SectionHeader";
 import { gradientStyles } from "./constants";

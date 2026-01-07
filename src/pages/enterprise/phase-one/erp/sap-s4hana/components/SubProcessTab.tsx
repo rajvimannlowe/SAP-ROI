@@ -1,5 +1,5 @@
-import { InfoCard } from "@/components/roi/InfoCard";
-import { SummaryCards } from "@/components/roi/SummaryCards";
+import { InfoCard } from "@/components/roi/cards/InfoCard";
+import { SummaryCards } from "@/components/roi/cards/SummaryCards";
 import { StatusBadge } from "@/components/roi/StatusBadge";
 import { StatusType } from "@/data/statusMapping";
 import { subProcessData, subProcessSummary } from "@/data/roiAggregationData";

@@ -4,7 +4,7 @@ import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { SAP_S4HANA_BLUEPRINT } from "@/data/productBlueprintData";
 import { DrilldownTable } from "@/components/roi/DrilldownTable";
 import { SearchAndFilters } from "@/components/roi/SearchAndFilters";
-import { MetricCard } from "@/components/roi/MetricCard";
+import { MetricCard } from "@/components/roi/cards/MetricCard";
 import { roiIntentTableConfig } from "@/data/roiIntentTableConfig";
 import {
   getROIIntentDataByCategory,

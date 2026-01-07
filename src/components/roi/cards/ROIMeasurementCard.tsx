@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { hexToRgba, CARD_STYLES } from "./index";
 
 interface ROIMeasurementCardProps {
   title: string;
@@ -16,13 +17,6 @@ interface ROIMeasurementCardProps {
   dimensionColor: string;
 }
 
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
-
 export function ROIMeasurementCard({
   title,
   unit,
@@ -33,9 +27,10 @@ export function ROIMeasurementCard({
   dimensionColor,
 }: ROIMeasurementCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300">
+    <div
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION}`}
+    >
       <div className="p-3">
-        {/* Inner Card with Solid Color Background - Consistent with other cards */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
@@ -43,7 +38,6 @@ export function ROIMeasurementCard({
             borderColor: hexToRgba(dimensionColor, 0.3),
           }}
         >
-          {/* Subtle hover effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
@@ -55,7 +49,6 @@ export function ROIMeasurementCard({
           />
 
           <div className="relative z-10 space-y-3">
-            {/* Header: Title and Status */}
             <div>
               <div className="flex items-start justify-between gap-2 mb-2">
                 <h4 className="text-xs font-bold text-foreground leading-tight flex-1">
@@ -79,7 +72,6 @@ export function ROIMeasurementCard({
                 </div>
               </div>
 
-              {/* Dimension Badge */}
               <div className="flex items-center gap-1.5">
                 <div
                   className="w-1.5 h-1.5 rounded-full transition-transform duration-300 group-hover:scale-125"
@@ -101,7 +93,6 @@ export function ROIMeasurementCard({
               </div>
             </div>
 
-            {/* Metrics Grid - Centered */}
             <div
               className="grid grid-cols-3 gap-2 pt-2 border-t"
               style={{ borderColor: hexToRgba(dimensionColor, 0.2) }}
@@ -179,7 +170,6 @@ export function ROIMeasurementCard({
           </div>
         </div>
 
-        {/* Footer Indicator - Centered */}
         <div className="flex items-center justify-center px-1">
           <div className="flex items-center gap-1.5">
             <div
