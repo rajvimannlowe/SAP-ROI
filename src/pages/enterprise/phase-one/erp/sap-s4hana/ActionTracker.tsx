@@ -178,7 +178,8 @@ export function ActionTracker() {
           <div className="flex flex-wrap items-center gap-2">
             <Button
               size="sm"
-              className="gap-2 bg-gradient-to-r from-[#4160F0] to-[#FF6700] text-white hover:from-[#3550D9] hover:to-[#E65C00] shadow-sm"
+              className="gap-2 bg-linear-to-r from-[#4160F0] to-[#FF6700] text-white hover:from-[#3550D9] hover:to-[#E65C00] shadow-sm"
+              onClick={() => navigate(`/phase-i/catalog/${blueprintId || "sap-s4hana"}/blueprint/${moduleId}/cockpit/${kpiId}/actions/deviation-tickets`)}
             >
               <AlertTriangle className="h-4 w-4" />
               <span className="hidden sm:inline">Deviation Tickets</span>
