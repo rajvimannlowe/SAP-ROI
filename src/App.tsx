@@ -64,9 +64,16 @@ function App() {
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions"
               element={<ActionTracker />}
             />
-            <Route path="roi-intent-overview/:intentId" element={<RoiIntentOverview />} />
 
-            <Route path="deviation-tickets" element={<DeviationTickets />} />
+            <Route 
+              path="roi-intent-overview/:intentId" 
+              element={<RoiIntentOverview />} 
+            />
+
+            <Route 
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets" 
+              element={<DeviationTickets />} 
+            />
 
             {/* Catch all - redirect to enterprise */}
             <Route path="*" element={<Navigate to="/enterprise" replace />} />
