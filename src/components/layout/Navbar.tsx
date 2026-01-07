@@ -36,7 +36,7 @@ export function Navbar() {
   if (!user) return null;
 
   return (
-    <div className="h-16 border-b border-border/50 bg-background/95 backdrop-blur-sm shadow-sm flex items-center justify-between px-6 lg:px-8">
+    <div className="h-16 border-b border-border/50 bg-background/95 backdrop-blur-sm shadow-sm flex items-center justify-between px-6 lg:px-8 relative z-50">
       {/* Left Section - Branding */}
       <div className="flex items-center gap-3">
         <div 

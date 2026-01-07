@@ -95,8 +95,8 @@ export function Dropdown({
 
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-          <div className="absolute z-20 mt-2 w-full min-w-[200px] rounded-md border-2 border-[#4160F0]/20 bg-popover shadow-lg">
+          <div className="fixed inset-0 z-[100]" onClick={() => setIsOpen(false)} />
+          <div className="absolute z-[101] mt-2 w-full min-w-[200px] rounded-md border-2 border-[#4160F0]/20 bg-popover shadow-lg">
             <div className="p-1 max-h-[300px] overflow-auto">
               {options.map((option) => (
                 <button
