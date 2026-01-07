@@ -9,6 +9,7 @@ interface MetricCardProps {
   description?: string;
   subtitle?: string;
   color?: string;
+  backgroundColor?: string;
   showStatusDot?: boolean;
   highlight?: boolean;
   dimensions?: string[];
@@ -23,6 +24,7 @@ export function MetricCard({
   description,
   subtitle,
   color = DEFAULT_COLORS.SUCCESS,
+  backgroundColor,
   showStatusDot = false,
   highlight = false,
   dimensions,
@@ -57,7 +59,7 @@ export function MetricCard({
         <div
           className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
           style={{
-            backgroundColor: hexToRgba(cardColor, highlight ? 0.12 : 0.1),
+            backgroundColor: backgroundColor || hexToRgba(cardColor, highlight ? 0.12 : 0.1),
             borderColor: hexToRgba(cardColor, 0.3),
           }}
         >
