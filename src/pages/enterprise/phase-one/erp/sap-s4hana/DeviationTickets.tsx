@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/layout/PageHeader"
 import { DrilldownTable } from "@/components/roi/DrilldownTable"
 import { MetricCard } from "@/components/roi/MetricCard"
 import { FileText, AlertTriangle, Clock, RotateCcw } from "lucide-react"
-import { deviationTicketColumns } from "@/data/ticketDeviationTableConfig"
+import { deviationTicketColumns } from "@/data/ticketDeviationTableConfig.tsx"
 import { deviationTicketData } from "@/data/ticketDeviationData"
 import { SearchAndFilters } from "@/components/roi/SearchAndFilters"
 

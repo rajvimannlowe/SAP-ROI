@@ -1,6 +1,7 @@
 import { TableColumn } from "@/components/roi/DrilldownTable";
 import { renderCellByType } from "./tableColumnTypes";
 import { User, Calendar } from "lucide-react";
+import { SeverityWithTooltip } from "@/components/roi/SeverityWithTooltip";
 
 export interface DeviationTicketData {
   ticketId: string;
@@ -26,6 +27,7 @@ const statusColorMap = {
   "In Progress": "#EA580C",
   Closed: "#059669",
 };
+
 
 export const deviationTicketColumns: TableColumn<DeviationTicketData>[] = [
   {
@@ -74,13 +76,12 @@ export const deviationTicketColumns: TableColumn<DeviationTicketData>[] = [
   {
     key: "severity",
     header: "Severity",
-    accessor: (row) =>
-      renderCellByType(row.severity, "badge", {
-        badgeConfig: {
-          colorMap: severityColorMap,
-          defaultColor: "#6366F1",
-        },
-      }),
+    accessor: (row) => (
+      <SeverityWithTooltip 
+        severity={row.severity} 
+        colorMap={severityColorMap} 
+      />
+    ),
     align: "center",
     width: "100px",
   },
