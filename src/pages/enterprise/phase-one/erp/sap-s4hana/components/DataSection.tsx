@@ -1,6 +1,6 @@
 import { Database, Zap, Clock, CheckCircle2 } from "lucide-react";
 import { ProductBlueprint } from "../../../../../../data/productBlueprintData";
-import { InfoCard } from "../../../../../../components/roi/InfoCard";
+import { InfoCard } from "../../../../../../components/roi/cards/InfoCard";
 import { IconBadge } from "../../../../../../components/roi/IconBadge";
 import { SectionHeader } from "./SectionHeader";
 import { gradientStyles } from "./constants";

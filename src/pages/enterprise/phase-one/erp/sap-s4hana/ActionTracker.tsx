@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Download, Bell, AlertTriangle } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { Button } from "../../../../../components/ui/button";
-import { SummaryCards } from "../../../../../components/roi/SummaryCards";
+import { SummaryCards } from "../../../../../components/roi/cards/SummaryCards";
 import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
 import {
   getActionTrackerData,
@@ -12,7 +12,7 @@ import {
   convertActionToCatalogItem,
 } from "../../../../../data/actionTrackerData";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
-import { CatalogCard } from "../../../../../components/roi/CatalogCard";
+import { CatalogCard } from "../../../../../components/roi/cards/CatalogCard";
 
 export function ActionTracker() {
   const {

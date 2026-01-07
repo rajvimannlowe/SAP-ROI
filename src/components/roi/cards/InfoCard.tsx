@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import { IconBadge } from "./IconBadge";
+import { IconBadge } from "../IconBadge";
+import { hexToRgba, BRAND_COLORS, CARD_STYLES } from "./index";
 
 interface InfoCardProps {
   icon?: LucideIcon;
@@ -10,7 +11,6 @@ interface InfoCardProps {
   description?: string | ReactNode;
   borderColor?: string;
   bgColor?: string;
-  // Filter functionality (optional)
   onClick?: () => void;
   isSelected?: boolean;
   filterLabel?: {
@@ -25,8 +25,8 @@ export function InfoCard({
   title,
   value,
   description,
-  borderColor = "rgba(65, 96, 240, 0.2)",
-  bgColor = "rgba(65, 96, 240, 0.05)",
+  borderColor = hexToRgba(BRAND_COLORS.PRIMARY, 0.2),
+  bgColor = hexToRgba(BRAND_COLORS.PRIMARY, 0.05),
   onClick,
   isSelected = false,
   filterLabel,
@@ -37,16 +37,15 @@ export function InfoCard({
   return (
     <Component
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md transition-all duration-300 text-left ${
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} ${CARD_STYLES.TRANSITION} text-left ${
         hasFilter
           ? isSelected
-            ? "ring-2 ring-[#4160F0]/30 border-[#4160F0]/50 shadow-lg"
-            : "hover:shadow-xl hover:border-[#4160F0]/40"
-          : "hover:shadow-xl hover:border-border/70"
+            ? `ring-2 ring-[${BRAND_COLORS.PRIMARY}]/30 border-[${BRAND_COLORS.PRIMARY}]/50 ${CARD_STYLES.HOVER_SHADOW}`
+            : `hover:${CARD_STYLES.HOVER_SHADOW} hover:border-[${BRAND_COLORS.PRIMARY}]/40`
+          : `hover:${CARD_STYLES.HOVER_SHADOW} hover:border-border/70`
       }`}
     >
       <div className="p-3">
-        {/* Inner Card with Solid Color Background - Consistent with other cards */}
         <div
           className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
           style={{
@@ -54,11 +53,13 @@ export function InfoCard({
             borderColor: borderColor,
           }}
         >
-          {/* Subtle hover effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at top right, ${bgColor.replace('0.05', '0.15')}, transparent 70%)`,
+              background: `radial-gradient(circle at top right, ${bgColor.replace(
+                "0.05",
+                "0.15"
+              )}, transparent 70%)`,
             }}
           />
 
@@ -67,10 +68,14 @@ export function InfoCard({
               {Icon && iconGradient && (
                 <IconBadge gradient={iconGradient} icon={Icon} />
               )}
-              <h3 className="text-sm font-bold text-foreground flex-1">{title}</h3>
+              <h3 className="text-sm font-bold text-foreground flex-1">
+                {title}
+              </h3>
             </div>
             {value && (
-              <p className="text-sm font-bold text-foreground mb-1.5">{value}</p>
+              <p className="text-sm font-bold text-foreground mb-1.5">
+                {value}
+              </p>
             )}
             {description && (
               <div className="text-xs text-muted-foreground leading-relaxed">
@@ -81,7 +86,6 @@ export function InfoCard({
                 )}
               </div>
             )}
-            {/* Filter indicator */}
             {hasFilter && filterLabel && (
               <div className="flex items-center justify-center gap-1.5 mt-2">
                 <div
@@ -89,13 +93,15 @@ export function InfoCard({
                     isSelected ? "opacity-100" : "opacity-50"
                   }`}
                   style={{
-                    backgroundColor: isSelected ? "#4160F0" : "#94a3b8",
+                    backgroundColor: isSelected
+                      ? BRAND_COLORS.PRIMARY
+                      : "#94a3b8",
                   }}
                 />
                 <span
                   className={`text-[9px] font-medium ${
                     isSelected
-                      ? "text-[#4160F0]"
+                      ? `text-[${BRAND_COLORS.PRIMARY}]`
                       : "text-muted-foreground"
                   }`}
                 >

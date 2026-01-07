@@ -1,14 +1,7 @@
-import { Package, Target, Layers, CheckCircle2 } from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-
-// Helper function to convert hex to rgba
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
+import { Package, Target, Layers, CheckCircle2 } from "lucide-react";
+import { LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { hexToRgba, BRAND_COLORS, CARD_STYLES } from "./index";
 
 interface ROIMetricCardProps {
   title: string;
@@ -20,33 +13,32 @@ interface ROIMetricCardProps {
   color?: string;
 }
 
-function ROIMetricCard({ 
-  title, 
-  value, 
-  subtitle, 
-  icon: Icon, 
+function ROIMetricCard({
+  title,
+  value,
+  subtitle,
+  icon: Icon,
   highlight = false,
   dimensions,
-  color = '#4160F0',
+  color = BRAND_COLORS.PRIMARY,
 }: ROIMetricCardProps) {
-  const cardColor = highlight ? '#4160F0' : color;
+  const cardColor = highlight ? BRAND_COLORS.PRIMARY : color;
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
     if (highlight) {
-      navigate('/phase-i');
+      navigate("/phase-i");
     }
   };
-  
+
   return (
     <div
       onClick={handleClick}
-      className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 ${
-        highlight ? 'ring-2 ring-blue-500/30 border-blue-500/60 cursor-pointer' : ''
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} ${
+        highlight ? "ring-2 ring-blue-500/30 border-blue-500/60 cursor-pointer" : ""
       }`}
     >
       <div className="p-3">
-        {/* Inner Card with Solid Color Background - Consistent with other cards */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
@@ -54,18 +46,18 @@ function ROIMetricCard({
             borderColor: hexToRgba(cardColor, 0.3),
           }}
         >
-          {/* Subtle hover effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at top right, ${hexToRgba(cardColor, 0.2)}, transparent 70%)`,
+              background: `radial-gradient(circle at top right, ${hexToRgba(
+                cardColor,
+                0.2
+              )}, transparent 70%)`,
             }}
           />
 
           <div className="relative z-10">
-            {/* Icon and Value Row */}
             <div className="flex items-center justify-between gap-3 mb-3">
-              {/* Icon Square - Solid color background */}
               <div
                 className="flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 group-hover:scale-105 shrink-0 shadow-sm"
                 style={{
@@ -74,8 +66,7 @@ function ROIMetricCard({
               >
                 <Icon className="h-5 w-5 text-white" />
               </div>
-              
-              {/* Value - Right aligned */}
+
               <p
                 className="text-2xl font-bold leading-none"
                 style={{ color: cardColor }}
@@ -83,20 +74,19 @@ function ROIMetricCard({
                 {value}
               </p>
             </div>
-            
-            {/* Title */}
+
             <p className="text-sm font-semibold text-foreground leading-tight mb-1">
               {title}
             </p>
-            
-            {/* Subtitle */}
+
             {subtitle && (
-              <p className="text-xs text-muted-foreground leading-tight">{subtitle}</p>
+              <p className="text-xs text-muted-foreground leading-tight">
+                {subtitle}
+              </p>
             )}
           </div>
         </div>
 
-        {/* Dimensions section - Footer area */}
         {dimensions && dimensions.length > 0 && (
           <div className="px-1">
             <div className="flex flex-wrap gap-1.5">
@@ -140,28 +130,30 @@ export function ROIMetricCards({
       <ROIMetricCard
         title="Total Products in ROI Catalog"
         value={totalProducts}
-        subtitle={quarterlyGrowth > 0 ? `+${quarterlyGrowth} this quarter` : undefined}
+        subtitle={
+          quarterlyGrowth > 0 ? `+${quarterlyGrowth} this quarter` : undefined
+        }
         icon={Package}
-        color="#4160F0"
+        color={BRAND_COLORS.PRIMARY}
       />
-      
+
       <ROIMetricCard
         title="Phase I Products"
         value={phaseIProducts}
         subtitle={`${phaseIPercentage}% of portfolio`}
         icon={Target}
         highlight={true}
-        color="#4160F0"
+        color={BRAND_COLORS.PRIMARY}
       />
-      
+
       <ROIMetricCard
         title="ROI Dimensions Covered"
         value={roiDimensions.length}
         icon={Layers}
         dimensions={roiDimensions}
-        color="#9333EA"
+        color={BRAND_COLORS.PURPLE}
       />
-      
+
       <ROIMetricCard
         title="Execution-Ready Products"
         value={executionReady}

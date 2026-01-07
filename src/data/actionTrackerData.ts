@@ -1,6 +1,6 @@
 import React from "react";
 import { LucideIcon, AlertTriangle, Clock, TrendingUp, User, FileText, DollarSign, Gauge, Settings, Database, Calendar, Target, Link2, BarChart3 } from "lucide-react";
-import { SummaryCard } from "../components/roi/SummaryCards";
+import { SummaryCard } from "../components/roi/cards/SummaryCards";
 import { CatalogItem } from "./roiCatalogData";
 
 export type ActionStatus = "OPEN" | "IN_PROGRESS" | "COMPLETED" | "CLOSED";

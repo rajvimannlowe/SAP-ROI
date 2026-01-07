@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { CheckCircle2, AlertCircle, Clock } from "lucide-react";
-import { MetricCard } from "../../../../../../components/roi/MetricCard";
+import { MetricCard } from "../../../../../../components/roi/cards/MetricCard";
 import { DrilldownTable } from "../../../../../../components/roi/DrilldownTable";
 import { ControlEvidenceData } from "../../../../../../data/controlEvidenceData";
 import { periodPerformanceColumns } from "../../../../../../data/controlEvidenceTableConfig";

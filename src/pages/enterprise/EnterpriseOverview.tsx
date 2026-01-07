@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { MOCK_DD_ITEMS } from "../../data/mockData";
-import { ROIMetricCards } from "../../components/roi/ROIMetricCards";
+import { ROIMetricCards } from "../../components/roi/cards/ROIMetricCards";
 import { PortfolioPhasingStructure } from "../../components/roi/PortfolioPhasingStructure";
 import { ROIValueLegend } from "../../components/roi/ROIValueLegend";
 import { PageHeader } from "../../components/layout/PageHeader";

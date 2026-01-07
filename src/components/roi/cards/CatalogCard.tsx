@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { CatalogItem } from "../../data/roiCatalogData";
-import { Badge } from "../ui/badge";
+import { CatalogItem } from "../../../data/roiCatalogData";
+import { Badge } from "../../ui/badge";
 import {
   Calendar,
   User,
@@ -9,7 +9,19 @@ import {
   FileText,
   ExternalLink,
 } from "lucide-react";
-import { ActionItem } from "../../data/actionTrackerData";
+import { ActionItem } from "../../../data/actionTrackerData";
+import {
+  hexToRgba,
+  getStatusColor,
+  getPriorityColor,
+  getCategoryColor,
+  getROIDimensionColor,
+  BRAND_COLORS,
+  PRIORITY_COLORS,
+  DEFAULT_COLORS,
+  CARD_GRADIENTS,
+  CARD_STYLES,
+} from "./index";
 
 interface CatalogCardProps {
   item: CatalogItem;
@@ -19,14 +31,6 @@ interface CatalogCardProps {
   kpiDetailPath?: string;
   evidencePath?: string;
 }
-
-// Helper function to convert hex to rgba
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
 
 export function CatalogCard({
   item,
@@ -38,37 +42,17 @@ export function CatalogCard({
 }: CatalogCardProps) {
   const isActionVariant = variant === "action" && actionData;
 
-  // Get category color for action cards
-  const getCategoryColor = (category: string): string => {
-    const colorMap: Record<string, string> = {
-      PROCESS: "#4160F0", // Brand blue
-      DATA: "#10b981", // Emerald green
-      SYSTEM: "#FF6700", // Brand orange
-      BEHAVIOUR: "#8b5cf6", // Purple
-    };
-    return colorMap[category] || "#6366F1";
-  };
-
-  // Get status color - suitable colors
-  const getStatusColor = (status: string): string => {
-    const colorMap: Record<string, string> = {
-      OPEN: "#4160F0", // Brand blue - open items need attention
-      IN_PROGRESS: "#FF6700", // Brand orange - work in progress
-      COMPLETED: "#10b981", // Green - successfully completed
-      CLOSED: "#6b7280", // Gray - closed/archived
-    };
-    return colorMap[status] || "#4160F0";
-  };
-
   const categoryColor = isActionVariant
     ? getCategoryColor(actionData.rootCauseCategory)
-    : "#4160F0";
+    : BRAND_COLORS.PRIMARY;
   const statusColor = isActionVariant
     ? getStatusColor(actionData.status)
-    : "#4160F0";
+    : BRAND_COLORS.PRIMARY;
 
   const content = (
-    <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-lg transition-all duration-300 h-[580px] flex flex-col">
+    <div
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} h-[580px] flex flex-col`}
+    >
       <div className="p-4 flex flex-col flex-1 overflow-hidden min-h-0">
         {/* Action Header with ID and Badges */}
         {isActionVariant && (
@@ -88,14 +72,7 @@ export function CatalogCard({
               <Badge
                 className="text-[9px] font-semibold px-1.5 py-0.5 text-white border-0"
                 style={{
-                  backgroundColor:
-                    actionData.priority === "CRITICAL"
-                      ? "#dc2626"
-                      : actionData.priority === "HIGH"
-                      ? "#ef4444"
-                      : actionData.priority === "MEDIUM"
-                      ? "#FF6700"
-                      : "#6b7280",
+                  backgroundColor: getPriorityColor(actionData.priority),
                 }}
               >
                 {actionData.priority}
@@ -104,7 +81,7 @@ export function CatalogCard({
                 <Badge
                   className="text-[9px] font-semibold px-1.5 py-0.5 text-white border-0"
                   style={{
-                    backgroundColor: "#dc2626",
+                    backgroundColor: PRIORITY_COLORS.OVERDUE,
                   }}
                 >
                   OVERDUE
@@ -118,8 +95,7 @@ export function CatalogCard({
         <div
           className="rounded-lg p-3 mb-3 shadow-sm border shrink-0"
           style={{
-            background:
-              "linear-gradient(135deg, rgba(147, 197, 253, 0.15) 0%, rgba(196, 181, 253, 0.12) 50%, rgba(251, 146, 60, 0.08) 100%)",
+            background: CARD_GRADIENTS.DEFAULT,
             borderColor: "rgba(191, 219, 254, 0.4)",
           }}
         >
@@ -186,16 +162,7 @@ export function CatalogCard({
                 <div className="flex gap-1 items-center flex-wrap">
                   {item.roiDimensions.map((dim, idx) => {
                     const Icon = dim.icon;
-                    const getDimensionColor = (label: string): string => {
-                      const colorMap: Record<string, string> = {
-                        "Process Efficiency": "#2563EB",
-                        "Cash Flow & Working Capital": "#059669",
-                        "Compliance Risk": "#7C3AED",
-                        "Technology Optimization": "#EA580C",
-                      };
-                      return colorMap[label] || "#6366F1";
-                    };
-                    const color = getDimensionColor(dim.label);
+                    const color = getROIDimensionColor(dim.label);
                     return (
                       <div
                         key={idx}
@@ -237,22 +204,7 @@ export function CatalogCard({
               <div className="flex gap-1 items-center flex-nowrap">
                 {item.roiDimensions.map((dim, idx) => {
                   const Icon = dim.icon;
-                  // Fresh, vibrant colors for ROI dimensions
-                  const getDimensionColor = (label: string): string => {
-                    const colorMap: Record<string, string> = {
-                      Cost: "#059669",
-                      Efficiency: "#2563EB",
-                      Compliance: "#7C3AED",
-                      Revenue: "#EA580C",
-                      Experience: "#DB2777",
-                      "Process Efficiency": "#2563EB",
-                      "Cash Flow & Working Capital": "#059669",
-                      "Compliance Risk": "#7C3AED",
-                      "Technology Optimization": "#EA580C",
-                    };
-                    return colorMap[label] || "#6366F1";
-                  };
-                  const color = getDimensionColor(dim.label);
+                  const color = getROIDimensionColor(dim.label);
                   return (
                     <div
                       key={idx}
@@ -301,9 +253,7 @@ export function CatalogCard({
                       className="flex items-start text-xs text-foreground"
                     >
                       <Target className="w-2.5 h-2.5 text-purple-600 mt-0.5 mr-1.5 shrink-0" />
-                      <span className="leading-snug line-clamp-2">
-                        {metric}
-                      </span>
+                      <span className="leading-snug line-clamp-2">{metric}</span>
                     </li>
                   ))}
                 </ul>
@@ -339,7 +289,7 @@ export function CatalogCard({
                       <Badge
                         className="text-[9px] font-semibold px-1.5 py-0.5 text-white border-0"
                         style={{
-                          backgroundColor: "#dc2626",
+                          backgroundColor: PRIORITY_COLORS.OVERDUE,
                         }}
                       >
                         OVERDUE
@@ -353,7 +303,7 @@ export function CatalogCard({
                   </span>
                   <span
                     className="text-xs font-medium flex items-start gap-1.5 max-w-[70%] text-right"
-                    style={{ color: "#10b981" }}
+                    style={{ color: DEFAULT_COLORS.SUCCESS }}
                   >
                     <TrendingUp className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                     <span className="leading-relaxed line-clamp-2">
@@ -370,7 +320,7 @@ export function CatalogCard({
                       to={evidencePath}
                       onClick={(e) => e.stopPropagation()}
                       className="text-xs font-medium flex items-center gap-1.5 hover:underline transition-colors"
-                      style={{ color: "#4160F0" }}
+                      style={{ color: BRAND_COLORS.PRIMARY }}
                     >
                       <FileText className="h-3.5 w-3.5" />
                       <span className="truncate">
@@ -381,7 +331,7 @@ export function CatalogCard({
                   ) : (
                     <span
                       className="text-xs font-medium flex items-center gap-1.5"
-                      style={{ color: "#4160F0" }}
+                      style={{ color: BRAND_COLORS.PRIMARY }}
                     >
                       <FileText className="h-3.5 w-3.5" />
                       <span className="truncate">
@@ -475,3 +425,4 @@ export function CatalogCard({
 
   return <Link to={`/phase-i/catalog/${item.id}/blueprint`}>{content}</Link>;
 }
+

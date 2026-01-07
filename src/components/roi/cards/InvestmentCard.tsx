@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, LucideIcon } from "lucide-react";
-import { InvestmentCard as InvestmentCardType } from "../../../data/phaseIROIData";
-
-// Helper function to convert hex to rgba
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
+import { InvestmentCard as InvestmentCardType } from "../../../../data/phaseIROIData";
+import {
+  hexToRgba,
+  getROIDimensionColor,
+  BRAND_COLORS,
+  CARD_STYLES,
+} from "./index";
 
 interface InvestmentCardProps {
   investment: InvestmentCardType;
@@ -16,23 +14,11 @@ interface InvestmentCardProps {
 
 export function InvestmentCard({ investment }: InvestmentCardProps) {
   const isHighlighted = investment.highlighted;
-  const accentColor = isHighlighted ? "#4160F0" : "#9333EA";
-
-  // Map dimensions to their standard fresh colors (matching catalog data)
-  const getDimensionColor = (label: string): string => {
-    const colorMap: Record<string, string> = {
-      Cost: "#16A34A",
-      Efficiency: "#4160F0",
-      Compliance: "#6B7280",
-      Revenue: "#FF6700",
-      Experience: "#9333EA",
-    };
-    return colorMap[label] || "#4160F0";
-  };
+  const accentColor = isHighlighted ? BRAND_COLORS.PRIMARY : BRAND_COLORS.PURPLE;
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card shadow-md hover:shadow-xl hover:border-border/70 transition-all duration-300 ${
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} ${
         isHighlighted ? "ring-2 ring-blue-500/30 border-blue-500/60" : ""
       }`}
     >
@@ -44,7 +30,6 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
       </div>
 
       <div className="p-3">
-        {/* Inner Card with Solid Color Background - Consistent with other cards */}
         <div
           className="rounded-lg p-3.5 mb-3 shadow-sm border relative overflow-hidden"
           style={{
@@ -52,16 +37,17 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
             borderColor: hexToRgba(accentColor, 0.3),
           }}
         >
-          {/* Subtle hover effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at top right, ${hexToRgba(accentColor, 0.2)}, transparent 70%)`,
+              background: `radial-gradient(circle at top right, ${hexToRgba(
+                accentColor,
+                0.2
+              )}, transparent 70%)`,
             }}
           />
 
           <div className="relative z-10 space-y-3">
-            {/* Title Section */}
             <div>
               <h3 className="text-base font-bold text-foreground leading-tight">
                 {investment.title}
@@ -77,7 +63,7 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
                 {investment.roiDimensions.map((dim, index) => {
                   const Icon = dim.icon as LucideIcon;
                   const isActive = dim.active;
-                  const color = getDimensionColor(dim.label);
+                  const color = getROIDimensionColor(dim.label);
 
                   return (
                     <div
@@ -100,7 +86,10 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
             </div>
 
             {/* Key Personas Section */}
-            <div className="space-y-2 pt-2 border-t" style={{ borderColor: hexToRgba(accentColor, 0.2) }}>
+            <div
+              className="space-y-2 pt-2 border-t"
+              style={{ borderColor: hexToRgba(accentColor, 0.2) }}
+            >
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                 Key Personas
               </p>
@@ -136,5 +125,4 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
     </div>
   );
 }
-
 
