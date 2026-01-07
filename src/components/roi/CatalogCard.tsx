@@ -216,7 +216,7 @@ export function CatalogCard({
                 </div>
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                   ROOT CAUSE CATEGORY
                 </span>
                 <Badge
