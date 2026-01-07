@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import { IconBadge } from "../IconBadge";
 import { hexToRgba, BRAND_COLORS, CARD_STYLES } from "./index";
 
 interface InfoCardProps {
@@ -66,7 +65,9 @@ export function InfoCard({
           <div className="relative z-10">
             <div className="flex items-center gap-2.5 mb-3 pl-0">
               {Icon && iconGradient && (
-                <IconBadge gradient={iconGradient} icon={Icon} />
+                <div className="p-1.5 rounded-lg" style={{ background: iconGradient }}>
+                  <Icon className="h-4 w-4 text-white" />
+                </div>
               )}
               <h3 className="text-sm font-bold text-foreground flex-1">
                 {title}
