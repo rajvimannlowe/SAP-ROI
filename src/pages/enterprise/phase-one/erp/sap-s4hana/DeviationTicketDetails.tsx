@@ -11,9 +11,9 @@ const DeviationTicketDetails = () => {
     const pageTitle = ticket ? `${ticket.ticketId} - ${ticket.relatedKPI}` : ticketId || "Ticket Details";
 
     return (
-        <div>
+        <div className="min-h-screen bg-gray-50/30">
             {/* Page Header Section */}
-            <div>
+            <div className="mb-8">
                 <PageHeader
                     title={pageTitle}
                     subtitle={"ROI Ticket – Detail & Root Cause Analysis"}
@@ -35,14 +35,14 @@ const DeviationTicketDetails = () => {
             </div>
 
             {/* Investigation Objectives */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-blue-100 border border-blue-200">
+            <div className="bg-blue-50/80 border border-blue-200/60 rounded-xl p-6 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2.5 rounded-xl bg-blue-100/80 border border-blue-200/60 shadow-sm">
                         <Bubbles className="h-5 w-5 text-blue-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">Investigation Objective</h3>
                 </div>
-                <div className="pl-12">
+                <div className="pl-14">
                     <p className="text-sm text-muted-foreground leading-relaxed">
                         This analysis focuses on understanding systemic factors and learning opportunities. The goal is continuous improvement through structured investigation, not individual accountability or blame assignment.
                     </p>
@@ -50,9 +50,9 @@ const DeviationTicketDetails = () => {
             </div>
             
             {/* Ticket Overview Section */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg bg-gray-100 border border-gray-200">
+            <div className="bg-white border border-gray-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-2.5 rounded-xl bg-gray-100/80 border border-gray-200/60 shadow-sm">
                         <FileText className="h-5 w-5 text-gray-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">Section 1: Ticket Overview</h3>
@@ -61,9 +61,9 @@ const DeviationTicketDetails = () => {
                 {ticket ? (
                     <>
                         {/* Ticket Details Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                             {/* Left Column */}
-                            <div className="space-y-4">
+                            <div className="space-y-6">
                                 {/* Ticket ID */}
                                 <div className="flex items-start gap-3">
                                     <FileText className="h-4 w-4 text-blue-600 mt-1" />
@@ -96,10 +96,10 @@ const DeviationTicketDetails = () => {
                                     <AlertTriangle className="h-4 w-4 text-blue-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">SEVERITY</p>
-                                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                                            ticket.severity === 'High' ? 'bg-red-100 text-red-800' :
-                                            ticket.severity === 'Medium' ? 'bg-orange-100 text-orange-800' :
-                                            'bg-green-100 text-green-800'
+                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${
+                                            ticket.severity === 'High' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
+                                            ticket.severity === 'Medium' ? 'bg-orange-100/80 text-orange-800 border border-orange-200/60' :
+                                            'bg-green-100/80 text-green-800 border border-green-200/60'
                                         }`}>
                                             {ticket.severity}
                                         </span>
@@ -108,7 +108,7 @@ const DeviationTicketDetails = () => {
                             </div>
 
                             {/* Right Column */}
-                            <div className="space-y-4">
+                            <div className="space-y-6">
                                 {/* Date Raised */}
                                 <div className="flex items-start gap-3">
                                     <Calendar className="h-4 w-4 text-blue-600 mt-1" />
@@ -132,10 +132,10 @@ const DeviationTicketDetails = () => {
                                     <Clock className="h-4 w-4 text-blue-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">CURRENT STATUS</p>
-                                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                                            ticket.status === 'Open' ? 'bg-red-100 text-red-800' :
-                                            ticket.status === 'In Progress' ? 'bg-orange-100 text-orange-800' :
-                                            'bg-green-100 text-green-800'
+                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${
+                                            ticket.status === 'Open' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
+                                            ticket.status === 'In Progress' ? 'bg-orange-100/80 text-orange-800 border border-orange-200/60' :
+                                            'bg-green-100/80 text-green-800 border border-green-200/60'
                                         }`}>
                                             {ticket.status}
                                         </span>
@@ -154,12 +154,12 @@ const DeviationTicketDetails = () => {
                         </div>
 
                         {/* Business Impact Description */}
-                        <div className="border-t border-gray-200 pt-6">
-                            <div className="flex items-start gap-3 mb-3">
+                        <div className="border-t border-gray-200/60 pt-8">
+                            <div className="flex items-start gap-3 mb-4">
                                 <Info className="h-4 w-4 text-blue-600 mt-1" />
                                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">BUSINESS IMPACT DESCRIPTION</p>
                             </div>
-                            <div className="pl-7">
+                            <div className="pl-7 mt-2">
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {ticket.businessImpactDescription}
                                 </p>
@@ -174,9 +174,9 @@ const DeviationTicketDetails = () => {
             </div>
 
             {/* Root Cause Analysis */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg bg-purple-100 border border-purple-200">
+            <div className="bg-purple-50/80 border border-purple-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-2.5 rounded-xl bg-purple-100/80 border border-purple-200/60 shadow-sm">
                         <Target className="h-5 w-5 text-purple-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">Section 2: Root Cause Analysis</h3>
@@ -185,21 +185,21 @@ const DeviationTicketDetails = () => {
                 {ticket ? (
                     <>
                         {/* Root Cause Category */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                            <div className="flex items-center gap-3 mb-2">
+                        <div className="bg-blue-50/80 border border-blue-200/60 rounded-xl p-6 mb-8 shadow-sm">
+                            <div className="flex items-center gap-3 mb-3">
                                 <Target className="h-4 w-4 text-blue-600" />
                                 <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">ROOT CAUSE CATEGORY</p>
                             </div>
-                            <p className="text-lg font-semibold text-blue-800 ml-7">{ticket.rootCause.rootCauseCategory}</p>
+                            <p className="text-xl font-semibold text-blue-800 ml-7">{ticket.rootCause.rootCauseCategory}</p>
                         </div>
 
                         {/* Detailed Root Cause Narrative */}
-                        <div className="mb-6">
+                        <div className="mb-8">
                             <div className="flex items-center gap-3 mb-3">
                                 <BookOpen className="h-4 w-4 text-purple-600" />
                                 <p className="text-xs font-medium text-purple-600 uppercase tracking-wide">DETAILED ROOT CAUSE NARRATIVE</p>
                             </div>
-                            <div className="bg-white border border-purple-100 rounded-lg p-4 ml-7">
+                            <div className="bg-white border border-purple-100/60 rounded-xl p-6 ml-7 shadow-sm">
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {ticket.rootCause.rootCauseDescription}
                                 </p>
@@ -212,7 +212,7 @@ const DeviationTicketDetails = () => {
                                 <List className="h-4 w-4 text-purple-600" />
                                 <p className="text-xs font-medium text-purple-600 uppercase tracking-wide">CONTRIBUTING FACTORS</p>
                             </div>
-                            <div className="ml-7 space-y-3 bg-white p-4 rounded-lg">
+                            <div className="ml-7 space-y-4 bg-white p-6 rounded-xl shadow-sm border border-purple-100/60">
                                 {ticket.rootCause.contributingFactors.map((factor, index) => (
                                     <div key={index} className="flex items-start gap-3">
                                         <div className="shrink-0 w-6 h-6 bg-purple-100 border border-purple-200 rounded-full flex items-center justify-center">
@@ -234,9 +234,9 @@ const DeviationTicketDetails = () => {
             </div>
 
             {/* Actions */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 rounded-lg bg-green-100 border border-green-200">
+            <div className="bg-green-50/80 border border-green-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-2.5 rounded-xl bg-green-100/80 border border-green-200/60 shadow-sm">
                         <CheckCircle className="h-5 w-5 text-green-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">Section 3: Corrective & Preventive Actions</h3>
@@ -245,12 +245,12 @@ const DeviationTicketDetails = () => {
                 {ticket ? (
                     <>
                         {/* Immediate Fix (Corrective Action) */}
-                        <div className="mb-6">
+                        <div className="mb-8">
                             <div className="flex items-center gap-3 mb-3">
                                 <Wrench className="h-4 w-4 text-green-600" />
                                 <p className="text-xs font-medium text-green-600 uppercase tracking-wide">IMMEDIATE FIX (CORRECTIVE ACTION)</p>
                             </div>
-                            <div className="bg-green-100 border border-green-200 rounded-lg p-4 ml-7">
+                            <div className="bg-green-100/80 border border-green-200/60 rounded-xl p-6 ml-7 shadow-sm">
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {ticket.actions.correctiveAction}
                                 </p>
@@ -258,12 +258,12 @@ const DeviationTicketDetails = () => {
                         </div>
 
                         {/* Preventive Action (Long-term Solution) */}
-                        <div className="mb-6">
+                        <div className="mb-8">
                             <div className="flex items-center gap-3 mb-3">
                                 <Shield className="h-4 w-4 text-green-600" />
                                 <p className="text-xs font-medium text-green-600 uppercase tracking-wide">PREVENTIVE ACTION (LONG-TERM SOLUTION)</p>
                             </div>
-                            <div className="bg-white border border-green-200 rounded-lg p-4 ml-7">
+                            <div className="bg-white border border-green-200/60 rounded-xl p-6 ml-7 shadow-sm">
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     {ticket.actions.preventiveAction}
                                 </p>
@@ -271,8 +271,8 @@ const DeviationTicketDetails = () => {
                         </div>
 
                         {/* Control Enhancement Required */}
-                        <div className="bg-white border border-green-200 rounded-lg p-4">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white border border-green-200/60 rounded-xl p-6 shadow-sm">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {/* Control Enhancement Required */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
@@ -283,7 +283,7 @@ const DeviationTicketDetails = () => {
                                         {ticket.actions.controlEnhancement.isRequired ? 'Yes' : 'No'}
                                     </p>
                                     {ticket.actions.controlEnhancement.isRequired && (
-                                        <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded">
+                                        <div className="mt-3 p-4 bg-green-50/80 border border-green-200/60 rounded-lg shadow-sm">
                                             <p className="text-xs text-green-700 leading-relaxed">
                                                 {ticket.actions.controlEnhancement.description}
                                             </p>
