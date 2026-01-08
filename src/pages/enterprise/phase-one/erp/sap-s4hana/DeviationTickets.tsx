@@ -8,7 +8,7 @@ import { SearchAndFilters } from "@/components/roi/SearchAndFilters"
 import { MetricCard } from "@/components/roi/cards/MetricCard"
 import { InfoCard } from "@/components/roi/cards/InfoCard"
 import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 const deviationTicketSummaryCards = [
     {
@@ -42,6 +42,7 @@ const deviationTicketSummaryCards = [
 
 const DeviationTickets = () => {
     const navigate = useNavigate()
+    const { id, moduleId, kpiId } = useParams()
     // Search and filter state
     const [searchValue, setSearchValue] = useState("")
     const [selectedSeverity, setSelectedSeverity] = useState("")
@@ -112,8 +113,9 @@ const DeviationTickets = () => {
                             <Button
                                 size="sm"
                                 className="gap-2 bg-linear-to-r from-[#4160F0] to-[#FF6700] text-white hover:from-[#3550D9] hover:to-[#E65C00] shadow-sm"
-                                //   onClick={() => navigate(`/`)}
-                                onClick={() => alert(`Navigate to Deviation Analysis`)}
+                                onClick={() => {
+                                    navigate(`/phase-i/catalog/${id || 'sap-s4hana'}/blueprint/${moduleId || 'fi'}/cockpit/${kpiId || 'duplicate-payment-detection'}/actions/deviation-tickets/deviation-analysis`);
+                                }}
                             >
                                 <AlertTriangle className="h-4 w-4" />
                                 <span className="hidden sm:inline">Deviation Analysis</span>

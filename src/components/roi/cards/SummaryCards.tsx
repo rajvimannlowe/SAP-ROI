@@ -68,9 +68,14 @@ export function SummaryCards({
             </div>
 
             <div className="px-3 pb-3 pt-1.5 bg-card">
-              <p className="text-xs font-semibold text-muted-foreground truncate">
+              <p className="text-xs font-semibold text-foreground truncate mb-1">
                 {card.title}
               </p>
+              {card.description && (
+                <p className="text-[10px] text-muted-foreground truncate">
+                  {card.description}
+                </p>
+              )}
             </div>
           </div>
         );
