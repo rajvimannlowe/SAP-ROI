@@ -1,8 +1,10 @@
 import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
-import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare, Lightbulb, Link, Activity } from "lucide-react"
+import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare, Lightbulb, Link, Activity, History } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { deviationTicketData } from "@/data/ticketDeviationData"
+import { InfoCard } from "@/components/roi/cards/InfoCard"
+import { BRAND_COLORS, hexToRgba } from "@/components/roi/cards/index"
 
 const DeviationTicketDetails = () => {
     const { ticketId } = useParams<{ ticketId: string }>();
@@ -457,6 +459,88 @@ const DeviationTicketDetails = () => {
                         <p className="text-muted-foreground">Learning data not available</p>
                     </div>
                 )}
+            </div>
+            
+            {/* Audit Trail */}
+            <div className="bg-linear-to-br from-slate-50 to-gray-50/50 border border-slate-200/70 rounded-2xl p-8 mb-8 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-3 rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 shadow-lg">
+                        <History className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-slate-800">Audit Trail</h3>
+                        <p className="text-sm text-slate-600 mt-1">Track all changes and activities</p>
+                    </div>
+                </div>
+
+                {ticket ? (
+                    <div className="relative">
+                        {/* Enhanced Timeline Line */}
+                        <div className="absolute left-7 top-0 bottom-0 w-1 bg-linear-to-b from-emerald-400 via-teal-400 to-slate-300/60 rounded-full shadow-sm"></div>
+                        
+                        <div className="space-y-8">
+                            {ticket.auditTrail.trails.map((trail, index) => (
+                                <div key={index} className="relative group">
+                                    {/* Enhanced Timeline Node */}
+                                    <div className="absolute left-5 top-5 w-6 h-6 bg-white border-3 border-emerald-400 rounded-full shadow-lg z-10 group-hover:scale-110 transition-transform duration-200">
+                                        <div className="absolute inset-1.5 bg-linear-to-br from-emerald-500 to-teal-600 rounded-full"></div>
+                                    </div>
+                                    
+                                    {/* Enhanced Content Card */}
+                                    <div className="ml-16 bg-white/80 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-emerald-300/60 hover:bg-white group-hover:translate-x-1">
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 bg-linear-to-br from-emerald-100 to-teal-100 border border-emerald-200/60 rounded-xl flex items-center justify-center shadow-sm">
+                                                    <span className="text-sm font-bold text-emerald-700">{index + 1}</span>
+                                                </div>
+                                                <div>
+                                                    <p className="text-base font-bold text-slate-800">{trail.user}</p>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                                        <p className="text-sm text-slate-600">{trail.timestamp}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="ml-14 pl-5 border-l-3 border-gradient-to-b from-emerald-200 to-teal-200 relative">
+                                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-linear-to-b from-emerald-400 to-teal-400 rounded-full"></div>
+                                            <p className="text-sm text-slate-700 leading-relaxed font-medium bg-linear-to-r from-slate-50 to-emerald-50/30 p-4 rounded-xl border border-slate-200/50">
+                                                {trail.action}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-center py-16">
+                        <div className="w-20 h-20 bg-linear-to-br from-slate-100 to-gray-100 border border-slate-200/70 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                            <History className="h-10 w-10 text-slate-500" />
+                        </div>
+                        <p className="text-slate-700 font-bold text-lg mb-2">Audit trail data not available</p>
+                        <p className="text-sm text-slate-500">No activity records found for this ticket</p>
+                    </div>
+                )}
+            </div>
+
+            {/* Learning-Oriented Investigation Framework */}
+            <div className="mb-8">
+                <InfoCard
+                    icon={BookOpen}
+                    iconGradient="linear-gradient(135deg, #4160F0 0%, #6366F1 100%)"
+                    title="Learning-Oriented Investigation Framework"
+                    description={
+                        <div className="space-y-3">
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                                This structured investigation approach prioritizes organizational learning over individual accountability. By documenting root causes, contributing factors, and preventive actions, we build institutional knowledge and strengthen controls systematically.
+                            </p>
+                        </div>
+                    }
+                    borderColor={hexToRgba(BRAND_COLORS.PRIMARY, 0.3)}
+                    bgColor={hexToRgba(BRAND_COLORS.PRIMARY, 0.08)}
+                />
             </div>
         </div>
     )
