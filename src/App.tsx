@@ -17,6 +17,7 @@ import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KP
 import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/ControlEvidence";
 import { ActionTracker } from "./pages/enterprise/phase-one/erp/sap-s4hana/ActionTracker";
 import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTickets";
+import DeviationAnalysis from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationAnalysis";
 
 function App() {
   return (
@@ -73,6 +74,11 @@ function App() {
             <Route 
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets" 
               element={<DeviationTickets />} 
+            />
+
+            <Route 
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/deviation-analysis" 
+              element={<DeviationAnalysis />} 
             />
 
             {/* Catch all - redirect to enterprise */}
