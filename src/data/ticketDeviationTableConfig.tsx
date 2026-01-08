@@ -13,7 +13,41 @@ export interface DeviationTicketData {
   estCost: string;
   assignedTo: string;
   status: string;
+  dateRaised: string;
   dueDate: string;
+  businessImpactDescription: string;
+  rootCause: {
+    rootCauseCategory: string;
+    rootCauseDescription: string;
+    contributingFactors: string[];
+  };
+  actions: {
+    correctiveAction: string;
+    preventiveAction: string;
+    controlEnhancement: {
+      isRequired: boolean;
+      description: string;
+    };
+  };
+  approval: {
+    isRequired: boolean;
+    approver: string;
+    approverDesignation: string;
+    approvalStatus: string;
+    approvalDate: string;
+    closureNotes: string;
+  };
+  learnings: {
+    learningDescription: string;
+    relatedTickets: string[];
+  };
+  auditTrail: {
+    trails: Array<{
+      timestamp: string;
+      user: string;
+      action: string;
+    }>;
+  };
 }
 
 const severityColorMap = {
@@ -29,7 +63,7 @@ const statusColorMap = {
 };
 
 
-export const deviationTicketColumns: TableColumn<DeviationTicketData>[] = [
+export const getDeviationTicketColumns = (navigate: (path: string) => void): TableColumn<DeviationTicketData>[] => [
   {
     key: "ticketId",
     header: "Ticket ID",
@@ -37,7 +71,7 @@ export const deviationTicketColumns: TableColumn<DeviationTicketData>[] = [
       renderCellByType(row.ticketId, "textWithLink", {
         textStyle: "short",
         onClick: () => {
-          alert(`Clicked on ticket: ${row.ticketId}`);
+          navigate(`/phase-i/catalog/sap-s4hana/blueprint/fi/cockpit/duplicate-payment-detection/actions/deviation-tickets/${row.ticketId}`);
         },
       }),
     align: "left",
