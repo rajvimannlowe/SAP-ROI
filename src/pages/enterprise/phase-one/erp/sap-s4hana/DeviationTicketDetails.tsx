@@ -1,19 +1,52 @@
 import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
 import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare, Lightbulb, Link, Activity, History } from "lucide-react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
+import { useEffect, useRef } from "react"
 import { deviationTicketData } from "@/data/ticketDeviationData"
 import { InfoCard } from "@/components/roi/cards/InfoCard"
 import { BRAND_COLORS, hexToRgba } from "@/components/roi/cards/index"
 
 const DeviationTicketDetails = () => {
     const { ticketId } = useParams<{ ticketId: string }>();
+    const navigate = useNavigate();
+    const topRef = useRef<HTMLDivElement>(null);
 
     const ticket = deviationTicketData.find(t => t.ticketId === ticketId);
     const pageTitle = ticket ? `${ticket.ticketId} - ${ticket.relatedKPI}` : ticketId || "Ticket Details";
 
+    // Scroll to top when component mounts or ticketId changes
+    useEffect(() => {
+        // Try multiple methods to ensure scroll works
+        const scrollToTop = () => {
+            // Method 1: Instant scroll using scrollTo
+            window.scrollTo(0, 0);
+            
+            // Method 2: Set scrollTop directly
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            
+            // Method 3: Use ref if available
+            if (topRef.current) {
+                topRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        };
+
+        // Execute immediately
+        scrollToTop();
+        
+        // Also execute after a small delay to handle any async rendering
+        setTimeout(scrollToTop, 50);
+        setTimeout(scrollToTop, 200);
+    }, [ticketId]);
+
+    const handleRelatedTicketClick = (relatedTicketId: string) => {
+        // Navigate to the related ticket details page
+        navigate(`/phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/${relatedTicketId}`);
+    };
+
     return (
-        <div className="min-h-screen bg-gray-50/30">
+        <div ref={topRef} className="min-h-screen bg-gray-50/30">
             {/* Page Header Section */}
             <div className="mb-8">
                 <PageHeader
@@ -430,9 +463,13 @@ const DeviationTicketDetails = () => {
                                 </div>
                                 <div className="ml-7 space-y-2">
                                     {ticket.learnings.relatedTickets.map((relatedTicket, index) => (
-                                        <div key={index} className="inline-flex items-center px-3 py-1.5 bg-blue-100/80 text-blue-800 rounded-full text-xs font-medium border border-blue-200/60 shadow-sm mr-2 mb-2">
+                                        <button
+                                            key={index}
+                                            onClick={() => handleRelatedTicketClick(relatedTicket)}
+                                            className="inline-flex items-center px-3 py-1.5 bg-blue-100/80 text-blue-800 rounded-full text-xs font-medium border border-blue-200/60 shadow-sm mr-2 mb-2 hover:bg-blue-200/80 hover:border-blue-300/60 hover:shadow-md transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-1"
+                                        >
                                             {relatedTicket}
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
                             </div>
