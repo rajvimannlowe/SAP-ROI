@@ -1,12 +1,12 @@
 import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
-import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck } from "lucide-react"
+import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { deviationTicketData } from "@/data/ticketDeviationData"
 
 const DeviationTicketDetails = () => {
     const { ticketId } = useParams<{ ticketId: string }>();
-    
+
     const ticket = deviationTicketData.find(t => t.ticketId === ticketId);
     const pageTitle = ticket ? `${ticket.ticketId} - ${ticket.relatedKPI}` : ticketId || "Ticket Details";
 
@@ -48,7 +48,7 @@ const DeviationTicketDetails = () => {
                     </p>
                 </div>
             </div>
-            
+
             {/* Ticket Overview Section */}
             <div className="bg-white border border-gray-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center gap-4 mb-8">
@@ -96,11 +96,10 @@ const DeviationTicketDetails = () => {
                                     <AlertTriangle className="h-4 w-4 text-blue-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">SEVERITY</p>
-                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${
-                                            ticket.severity === 'High' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
+                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${ticket.severity === 'High' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
                                             ticket.severity === 'Medium' ? 'bg-orange-100/80 text-orange-800 border border-orange-200/60' :
-                                            'bg-green-100/80 text-green-800 border border-green-200/60'
-                                        }`}>
+                                                'bg-green-100/80 text-green-800 border border-green-200/60'
+                                            }`}>
                                             {ticket.severity}
                                         </span>
                                     </div>
@@ -132,11 +131,10 @@ const DeviationTicketDetails = () => {
                                     <Clock className="h-4 w-4 text-blue-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">CURRENT STATUS</p>
-                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${
-                                            ticket.status === 'Open' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
+                                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${ticket.status === 'Open' ? 'bg-red-100/80 text-red-800 border border-red-200/60' :
                                             ticket.status === 'In Progress' ? 'bg-orange-100/80 text-orange-800 border border-orange-200/60' :
-                                            'bg-green-100/80 text-green-800 border border-green-200/60'
-                                        }`}>
+                                                'bg-green-100/80 text-green-800 border border-green-200/60'
+                                            }`}>
                                             {ticket.status}
                                         </span>
                                     </div>
@@ -272,7 +270,7 @@ const DeviationTicketDetails = () => {
 
                         {/* Control Enhancement Required */}
                         <div className="bg-white border border-green-200/60 rounded-xl p-6 shadow-sm">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {/* Control Enhancement Required */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
@@ -291,27 +289,30 @@ const DeviationTicketDetails = () => {
                                     )}
                                 </div>
 
-                                {/* Action Owner */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <UserCheck className="h-4 w-4 text-green-600" />
-                                        <p className="text-xs font-medium text-green-600 uppercase tracking-wide">ACTION OWNER</p>
+                                <div className="grid grid-cols-1 gap-2">
+                                    {/* Action Owner */}
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <UserCheck className="h-4 w-4 text-green-600" />
+                                            <p className="text-xs font-medium text-green-600 uppercase tracking-wide">ACTION OWNER</p>
+                                        </div>
+                                        <p className="text-sm font-medium text-foreground">
+                                            {ticket.approval.approver} ({ticket.approval.approverDesignation})
+                                        </p>
                                     </div>
-                                    <p className="text-sm font-medium text-foreground">
-                                        {ticket.approval.approver} ({ticket.approval.approverDesignation})
-                                    </p>
+
+                                    {/* Target Closure Date */}
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Calendar className="h-4 w-4 text-green-600" />
+                                            <p className="text-xs font-medium text-green-600 uppercase tracking-wide">TARGET CLOSURE DATE</p>
+                                        </div>
+                                        <p className="text-sm font-medium text-foreground">
+                                            {ticket.dueDate}
+                                        </p>
+                                    </div>
                                 </div>
 
-                                {/* Target Closure Date */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <Calendar className="h-4 w-4 text-green-600" />
-                                        <p className="text-xs font-medium text-green-600 uppercase tracking-wide">TARGET CLOSURE DATE</p>
-                                    </div>
-                                    <p className="text-sm font-medium text-foreground">
-                                        {ticket.dueDate}
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </>
@@ -323,8 +324,80 @@ const DeviationTicketDetails = () => {
             </div>
 
             {/* Approval */}
-            <div>
-                
+            <div className="bg-orange-50/80 border border-orange-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-2.5 rounded-xl bg-orange-100/80 border border-orange-200/60 shadow-sm">
+                        <ClipboardCheck className="h-5 w-5 text-orange-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Approval</h3>
+                </div>
+
+                {ticket ? (
+                    <>
+                        {/* Approval Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                            {/* Approval Required */}
+                            <div className="bg-white border border-orange-200/60 rounded-xl p-6 shadow-sm">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <FileCheck className="h-4 w-4 text-orange-600" />
+                                    <p className="text-xs font-medium text-orange-600 uppercase tracking-wide">APPROVAL REQUIRED</p>
+                                </div>
+                                <div className="ml-7">
+                                    <p className="text-sm font-medium text-foreground">
+                                        {ticket.approval.isRequired ? 'Yes' : 'No'}
+                                    </p>
+                                    {ticket.approval.isRequired && (
+                                        <div className="mt-6">
+                                            <p className="text-xs text-muted-foreground">Approver:</p>
+                                            <p className="text-sm font-medium text-foreground">
+                                                {ticket.approval.approver} ({ticket.approval.approverDesignation})
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Approval Status */}
+                            <div className="bg-white border border-orange-200/60 rounded-xl p-6 shadow-sm">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <Clock className="h-4 w-4 text-orange-600" />
+                                    <p className="text-xs font-medium text-orange-600 uppercase tracking-wide">APPROVAL STATUS</p>
+                                </div>
+                                <div className="ml-7">
+                                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium shadow-sm ${ticket.approval.approvalStatus === 'Approved' ? 'bg-green-100/80 text-green-800 border border-green-200/60' :
+                                        ticket.approval.approvalStatus === 'Pending' ? 'bg-orange-100/80 text-orange-800 border border-orange-200/60' :
+                                            'bg-red-100/80 text-red-800 border border-red-200/60'
+                                        }`}>
+                                        {ticket.approval.approvalStatus}
+                                    </span>
+                                    {ticket.approval.approvalDate && (
+                                        <div className="mt-6">
+                                            <p className="text-xs text-muted-foreground">Expected Date:</p>
+                                            <p className="text-sm font-medium text-foreground">{ticket.approval.approvalDate}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Closure Notes */}
+                        <div>
+                            <div className="flex items-center gap-3 mb-4">
+                                <MessageSquare className="h-4 w-4 text-orange-600" />
+                                <p className="text-xs font-medium text-orange-600 uppercase tracking-wide">CLOSURE NOTES</p>
+                            </div>
+                            <div className="bg-white border border-orange-100/60 rounded-xl p-6 ml-7 shadow-sm">
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    {ticket.approval.closureNotes}
+                                </p>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-center py-8">
+                        <p className="text-muted-foreground">Approval data not available</p>
+                    </div>
+                )}
             </div>
         </div>
     )
