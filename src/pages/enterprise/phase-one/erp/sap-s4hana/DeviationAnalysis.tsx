@@ -1,8 +1,8 @@
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InfoCard } from "@/components/roi/cards/InfoCard";
 import { SummaryCards, SummaryCard } from "@/components/roi/cards/SummaryCards";
 import { DeviationHeatmap } from "@/components/roi/DeviationHeatmap";
+import { MetricCard } from "@/components/roi/cards/MetricCard";
 import {
   topRepeatingKPIs,
   topRepeatingRootCauses,
@@ -11,7 +11,7 @@ import {
   repeatTicketTrendData,
   strategicInsights,
 } from "@/data/deviationAnalysisData";
-import { ResponsiveBar } from "@nivo/bar";
+import { BarChart3D } from "@/components/roi/BarChart3D";
 import {
   AlertTriangle,
   TrendingDown,
@@ -52,7 +52,7 @@ export default function DeviationAnalysis() {
   }));
 
   return (
-    <div className="flex flex-col gap-8 pb-8">
+    <div className="flex flex-col gap-6 pb-8">
       {/* Page Header */}
       <PageHeader
         title="SAP FI - Repeat Deviations & Learning Dashboard"
@@ -73,426 +73,487 @@ export default function DeviationAnalysis() {
         bgColor="rgba(153, 9, 224, 0.08)"
       />
 
-      {/* Top Insights Section - Compact */}
-      <Card className="border-border/50 shadow-lg">
-        <CardHeader className="pb-3">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-[#4160F0] to-[#FF6700]">
-              <BarChart3 className="h-4 w-4 text-white" />
+      {/* Top Insights Section - Using InfoCard */}
+      <InfoCard
+        icon={BarChart3}
+        iconGradient="linear-gradient(135deg, #4160F0 0%, #FF6700 100%)"
+        title="Top Insights - Where to Focus"
+        description={
+          <div className="space-y-4 mt-3">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Target className="h-3.5 w-3.5 text-[#DC2626]" />
+                <h4 className="text-xs font-semibold text-foreground">
+                  Top Repeating KPIs
+                </h4>
+              </div>
+              <SummaryCards
+                cards={topRepeatingKPIs.map(
+                  (kpi): SummaryCard => ({
+                    title: kpi.name,
+                    value: kpi.deviationCount,
+                    icon: Target,
+                    color: "#DC2626",
+                    description: `${kpi.lastUpdated} • ${kpi.estimatedAnnualRisk} risk`,
+                  })
+                )}
+                columns={4}
+              />
             </div>
-            <CardTitle className="text-lg font-bold text-foreground">
-              Top Insights - Where to Focus
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          {/* Top Repeating KPIs - Compact */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Target className="h-3.5 w-3.5 text-[#DC2626]" />
-              <h3 className="text-sm font-semibold text-foreground">
-                Top Repeating KPIs
-              </h3>
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="h-3.5 w-3.5 text-[#EA580C]" />
+                <h4 className="text-xs font-semibold text-foreground">
+                  Top Repeating Root Causes
+                </h4>
+              </div>
+              <SummaryCards
+                cards={topRepeatingRootCauses.map(
+                  (cause): SummaryCard => ({
+                    title: cause.name,
+                    value: cause.occurrences,
+                    icon: AlertTriangle,
+                    color: "#EA580C",
+                    description: `${cause.lastUpdated} • ${cause.affectedItems} ${cause.affectedType}`,
+                  })
+                )}
+                columns={4}
+              />
             </div>
-            <SummaryCards
-              cards={topRepeatingKPIs.map(
-                (kpi): SummaryCard => ({
-                  title: kpi.name,
-                  value: kpi.deviationCount,
-                  icon: Target,
-                  color: "#DC2626",
-                  description: `${kpi.lastUpdated} • ${kpi.estimatedAnnualRisk} risk`,
-                })
-              )}
-              columns={4}
-            />
-          </div>
-
-          {/* Top Repeating Root Causes - Compact */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <AlertTriangle className="h-3.5 w-3.5 text-[#EA580C]" />
-              <h3 className="text-sm font-semibold text-foreground">
-                Top Repeating Root Causes
-              </h3>
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <RotateCcw className="h-3.5 w-3.5 text-[#9909e0]" />
+                <h4 className="text-xs font-semibold text-foreground">
+                  Processes with Highest Frequency
+                </h4>
+              </div>
+              <SummaryCards
+                cards={processesWithFrequency.map(
+                  (process): SummaryCard => ({
+                    title: process.name,
+                    value: process.occurrences,
+                    icon: RotateCcw,
+                    color: "#9909e0",
+                    description: `${process.lastUpdated} • ${process.kpisImpacted} KPIs`,
+                  })
+                )}
+                columns={3}
+              />
             </div>
-            <SummaryCards
-              cards={topRepeatingRootCauses.map(
-                (cause): SummaryCard => ({
-                  title: cause.name,
-                  value: cause.occurrences,
-                  icon: AlertTriangle,
-                  color: "#EA580C",
-                  description: `${cause.lastUpdated} • ${cause.affectedItems} ${cause.affectedType}`,
-                })
-              )}
-              columns={4}
-            />
           </div>
-
-          {/* Processes with Highest Frequency - Compact */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <RotateCcw className="h-3.5 w-3.5 text-[#9909e0]" />
-              <h3 className="text-sm font-semibold text-foreground">
-                Processes with Highest Frequency
-              </h3>
-            </div>
-            <SummaryCards
-              cards={processesWithFrequency.map(
-                (process): SummaryCard => ({
-                  title: process.name,
-                  value: process.occurrences,
-                  icon: RotateCcw,
-                  color: "#9909e0",
-                  description: `${process.lastUpdated} • ${process.kpisImpacted} KPIs`,
-                })
-              )}
-              columns={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
+        }
+        borderColor="rgba(65, 96, 240, 0.3)"
+        bgColor="rgba(65, 96, 240, 0.08)"
+      />
 
       {/* Heatmap Section */}
       <DeviationHeatmap data={heatmapData} />
 
-      {/* Repeat Tickets Trend Over Time - Enhanced */}
-      <Card className="border-2 border-border/50 shadow-xl overflow-hidden">
-        <CardHeader className="pb-4 bg-gradient-to-r from-[#9909e0]/5 to-transparent border-b border-border/50">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-bold flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-[#9909e0] to-[#8b5cf6] shadow-md">
-                <TrendingDown className="h-5 w-5 text-white" />
-              </div>
-              <span>Repeat Tickets Trend Over Time</span>
-            </CardTitle>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/20">
-              <TrendingDown className="h-4 w-4 text-[#10b981]" />
-              <span className="text-xs font-semibold text-[#10b981]">
-                {reductionPercent}% Improvement
-              </span>
+      {/* Repeat Tickets Trend Over Time - Compact */}
+      <InfoCard
+        icon={TrendingDown}
+        iconGradient="linear-gradient(135deg, #9909e0 0%, #8b5cf6 100%)"
+        title="Repeat Tickets Trend Analysis"
+        value={`${reductionPercent}% Improvement`}
+        description={
+          <div className="space-y-4">
+            <p className="text-xs text-muted-foreground">
+              Tracking repeat deviation patterns over time
+            </p>
+
+            {/* Key Metrics Cards - Using MetricCard Component */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <MetricCard
+                icon={AlertTriangle}
+                value={`${peakMonth.percentage}%`}
+                title="Peak Rate"
+                description={`${peakMonth.month} • ${peakMonth.repeatTickets} tickets`}
+                color="#DC2626"
+                backgroundColor="rgba(220, 38, 38, 0.1)"
+                showStatusDot={true}
+              />
+              <MetricCard
+                icon={TrendingDown}
+                value={`${latestMonth.percentage}%`}
+                title="Current Rate"
+                description={`${latestMonth.month} • ${latestMonth.repeatTickets} tickets`}
+                color="#10b981"
+                backgroundColor="rgba(16, 185, 129, 0.1)"
+              />
+              <MetricCard
+                icon={TrendingDown}
+                value={`${reductionPercent}%`}
+                title="Reduction"
+                description={`${absoluteReduction} fewer tickets`}
+                color="#10b981"
+                backgroundColor="rgba(16, 185, 129, 0.1)"
+              />
+              <MetricCard
+                icon={Clock}
+                value="6 Months"
+                title="Trend Period"
+                description="Jul 2024 - Dec 2024"
+                color="#9909e0"
+                backgroundColor="rgba(153, 9, 224, 0.1)"
+              />
             </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <div style={{ height: "450px" }}>
-            <ResponsiveBar
-              data={barChartData}
-              keys={["Repeat Tickets"]}
-              indexBy="month"
-              margin={{ top: 50, right: 130, bottom: 80, left: 60 }}
-              padding={0.4}
-              valueScale={{ type: "linear" }}
-              indexScale={{ type: "band", round: true }}
-              colors={(bar) => {
-                const value = bar.data["Repeat Tickets"] as number;
-                if (value >= 9) return "#DC2626"; // Critical - Red
-                if (value >= 7) return "#EA580C"; // High - Orange
-                if (value >= 5) return "#F59E0B"; // Medium - Yellow
-                return "#10b981"; // Low - Green
-              }}
-              axisTop={null}
-              axisRight={null}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: -45,
-                legend: "Month",
-                legendPosition: "middle",
-                legendOffset: 60,
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: "Number of Repeat Tickets",
-                legendPosition: "middle",
-                legendOffset: -50,
-              }}
-              labelSkipWidth={12}
-              labelSkipHeight={12}
-              labelTextColor="#ffffff"
-              borderRadius={8}
-              tooltip={({ value, indexValue, data }) => (
-                <div
-                  className="bg-white p-4 rounded-xl border-2 shadow-xl"
-                  style={{
-                    borderColor: "#9909e0",
+
+            {/* Chart Section - Compact */}
+            <div className="border border-border/50 rounded-lg overflow-hidden bg-card shadow-md">
+              <div className="p-3 border-b border-border/50 bg-muted/30">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="h-4 w-4 text-[#9909e0]" />
+                    <span className="text-sm font-bold">
+                      Repeat Tickets Count & Percentage Trend
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded bg-[#9909e0]" />
+                      <span className="text-muted-foreground">
+                        Repeat Tickets
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full border-2 border-[#10b981]" />
+                      <span className="text-muted-foreground">Percentage</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-3">
+                {/* Combined Chart: Bar + Line - Compact & 3D */}
+                <BarChart3D
+                  data={barChartData}
+                  keys={["Repeat Tickets"]}
+                  indexBy="month"
+                  height={400}
+                  margin={{ top: 40, right: 100, bottom: 50, left: 60 }}
+                  padding={0.6}
+                  xAxisLabel="Month"
+                  yAxisLabel="Repeat Tickets Count"
+                  getColor={(value) => {
+                    if (value >= 9) return "#DC2626"; // Critical - Red
+                    if (value >= 7) return "#EA580C"; // High - Orange
+                    if (value >= 5) return "#F59E0B"; // Medium - Yellow
+                    return "#10b981"; // Low - Green
                   }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 rounded-full bg-[#9909e0]" />
-                    <strong className="text-sm font-bold">{indexValue}</strong>
-                  </div>
-                  <div className="text-lg font-bold text-[#9909e0] mb-1">
-                    {value} repeat tickets
-                  </div>
-                  <div className="flex items-center gap-4 text-xs">
-                    <span className="text-muted-foreground">
-                      {data.percentage}% of total
-                    </span>
-                    <span className="text-muted-foreground">
-                      {data["Total Tickets"]} total tickets
-                    </span>
-                  </div>
-                </div>
-              )}
-              theme={{
-                text: {
-                  fill: "hsl(var(--muted-foreground))",
-                  fontSize: 12,
-                  fontWeight: 500,
-                },
-                grid: {
-                  line: {
-                    stroke: "hsl(var(--border))",
-                    strokeWidth: 1,
-                    strokeDasharray: "4 4",
-                  },
-                },
-                axis: {
-                  domain: {
-                    line: {
-                      stroke: "hsl(var(--border))",
-                      strokeWidth: 2,
-                    },
-                  },
-                  ticks: {
-                    line: {
-                      stroke: "hsl(var(--border))",
-                      strokeWidth: 1,
-                    },
-                    text: {
-                      fill: "hsl(var(--muted-foreground))",
-                      fontSize: 11,
-                    },
-                  },
-                },
-              }}
-            />
-          </div>
+                  showLineOverlay={true}
+                  lineData={repeatTicketTrendData.map((item) => ({
+                    x: item.month,
+                    y: item.percentage,
+                  }))}
+                  lineColor="#10b981"
+                  tooltip={({ value, indexValue, data }) => {
+                    const barValue = value as number;
+                    let barColor = "#10b981";
+                    if (barValue >= 9) barColor = "#DC2626";
+                    else if (barValue >= 7) barColor = "#EA580C";
+                    else if (barValue >= 5) barColor = "#F59E0B";
 
-          {/* Trend Summary - Enhanced */}
-          <div className="mt-6 relative overflow-hidden rounded-xl border-2 border-[#10b981]/30 bg-gradient-to-br from-[#10b981]/10 via-[#10b981]/5 to-transparent p-5 shadow-lg">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#10b981]/5 rounded-full blur-2xl" />
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 rounded-lg bg-[#10b981] shadow-md">
-                  <TrendingDown className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-foreground">
-                    Positive Trend: {reductionPercent}% Reduction in Repeat Rate
-                  </h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Significant improvement achieved
+                    return (
+                      <div
+                        className="bg-white p-4 rounded-xl border-2 shadow-2xl min-w-[220px] z-50"
+                        style={{
+                          borderColor: barColor,
+                          boxShadow: `0 10px 25px rgba(0,0,0,0.15), 0 0 0 1px ${barColor}20`,
+                        }}
+                      >
+                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border/30">
+                          <div
+                            className="w-4 h-4 rounded"
+                            style={{ backgroundColor: barColor }}
+                          />
+                          <strong className="text-sm font-bold text-foreground">
+                            {indexValue}
+                          </strong>
+                        </div>
+                        <div className="space-y-2.5">
+                          <div>
+                            <div className="text-xs text-muted-foreground mb-1">
+                              Repeat Tickets
+                            </div>
+                            <div
+                              className="text-2xl font-bold"
+                              style={{ color: barColor }}
+                            >
+                              {value} tickets
+                            </div>
+                          </div>
+                          <div className="pt-2 border-t border-border/20 space-y-1.5">
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-muted-foreground">
+                                Percentage:
+                              </span>
+                              <span className="font-semibold text-foreground">
+                                {data.percentage}%
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-muted-foreground">
+                                Total Tickets:
+                              </span>
+                              <span className="font-semibold text-foreground">
+                                {data["Total Tickets"]}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-muted-foreground">
+                                Repeat Rate:
+                              </span>
+                              <span
+                                className="font-semibold"
+                                style={{ color: barColor }}
+                              >
+                                {data.percentage}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Key Insights - Compact */}
+            <div className="space-y-3">
+              <InfoCard
+                icon={CheckCircle2}
+                iconGradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                title={`Positive Trend: ${reductionPercent}% Reduction in Repeat Rate`}
+                description={
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The repeat ticket rate decreased from a peak of{" "}
+                    <strong className="text-[#DC2626]">
+                      {peakMonth.percentage}%
+                    </strong>{" "}
+                    in <strong>{peakMonth.month}</strong> to{" "}
+                    <strong className="text-[#10b981]">
+                      {latestMonth.percentage}%
+                    </strong>{" "}
+                    in <strong>{latestMonth.month}</strong>, representing a{" "}
+                    <strong className="text-[#10b981]">
+                      {reductionPercent}% improvement
+                    </strong>
+                    .
                   </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
-                <div className="p-3 rounded-lg bg-white/50 border border-[#10b981]/20">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Peak Rate
-                  </div>
-                  <div className="text-lg font-bold text-[#DC2626]">
-                    {peakMonth.percentage}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {peakMonth.month}
-                  </div>
-                </div>
-                <div className="p-3 rounded-lg bg-white/50 border border-[#10b981]/20">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Current Rate
-                  </div>
-                  <div className="text-lg font-bold text-[#10b981]">
-                    {latestMonth.percentage}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {latestMonth.month}
-                  </div>
-                </div>
-                <div className="p-3 rounded-lg bg-white/50 border border-[#10b981]/20">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Absolute Reduction
-                  </div>
-                  <div className="text-lg font-bold text-[#10b981]">
-                    {absoluteReductionPercent}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {absoluteReduction} tickets
-                  </div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                The repeat ticket rate decreased from a peak of{" "}
-                {peakMonth.percentage}% in {peakMonth.month} to{" "}
-                {latestMonth.percentage}% in {latestMonth.month}, representing a{" "}
-                {reductionPercent}% improvement. This is attributed to control
-                enhancements implemented in the Q4 2024 feedback loop, with the
-                absolute repeat ticket count declining from{" "}
-                {peakMonth.repeatTickets} to {latestMonth.repeatTickets} (
-                {absoluteReductionPercent}% reduction), indicating systematic
-                learning.
-              </p>
+                }
+                borderColor="rgba(16, 185, 129, 0.3)"
+                bgColor="rgba(16, 185, 129, 0.08)"
+                onClick={() => {
+                  console.log("Positive Trend insight clicked");
+                  // Add navigation or action here
+                }}
+              />
+
+              <InfoCard
+                icon={Zap}
+                iconGradient="linear-gradient(135deg, #9909e0 0%, #8b5cf6 100%)"
+                title="Systematic Learning Achieved"
+                description={
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The absolute repeat ticket count declined from{" "}
+                    <strong>{peakMonth.repeatTickets}</strong> to{" "}
+                    <strong className="text-[#10b981]">
+                      {latestMonth.repeatTickets}
+                    </strong>{" "}
+                    (
+                    <strong className="text-[#10b981]">
+                      {absoluteReductionPercent}% reduction
+                    </strong>
+                    ), indicating systematic learning and effective control
+                    enhancements implemented in the Q4 2024 feedback loop.
+                  </p>
+                }
+                borderColor="rgba(153, 9, 224, 0.3)"
+                bgColor="rgba(153, 9, 224, 0.08)"
+                onClick={() => {
+                  console.log("Systematic Learning insight clicked");
+                  // Add navigation or action here
+                }}
+              />
+
+              <InfoCard
+                icon={Target}
+                iconGradient="linear-gradient(135deg, #F59E0B 0%, #EA580C 100%)"
+                title="Continuous Improvement Path"
+                description={
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The consistent downward trend demonstrates that process
+                    improvements, automation enhancements, and policy
+                    clarifications are effectively reducing repeat deviations,
+                    fostering a mature control environment.
+                  </p>
+                }
+                borderColor="rgba(245, 158, 11, 0.3)"
+                bgColor="rgba(245, 158, 11, 0.08)"
+                onClick={() => {
+                  console.log("Continuous Improvement insight clicked");
+                  // Add navigation or action here
+                }}
+              />
             </div>
           </div>
-        </CardContent>
-      </Card>
+        }
+        borderColor="rgba(153, 9, 224, 0.3)"
+        bgColor="rgba(153, 9, 224, 0.08)"
+      />
 
-      {/* Strategic Insights & Recommended Actions - Enhanced */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-3 pb-2 border-b-2 border-border/50">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-[#4160F0] to-[#FF6700]">
-            <Lightbulb className="h-5 w-5 text-white" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground">
-            Strategic Insights & Recommended Actions
-          </h2>
-        </div>
-
-        {/* System Insight */}
-        {strategicInsights
-          .filter((insight) => insight.type === "system")
-          .map((insight) => (
-            <InfoCard
-              key={insight.title}
-              icon={Lightbulb}
-              iconGradient="linear-gradient(135deg, #2563EB 0%, #4160F0 100%)"
-              title={insight.title}
-              description={
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {insight.issue}
-                  </p>
-                  <div className="pt-2 border-t border-border/30">
-                    <p className="text-xs font-semibold text-foreground mb-1">
-                      RECOMMENDATION:
-                    </p>
-                    <p className="text-sm text-foreground leading-relaxed">
-                      {insight.recommendation}
-                    </p>
-                  </div>
-                </div>
-              }
-              borderColor="rgba(37, 99, 235, 0.3)"
-              bgColor="rgba(37, 99, 235, 0.08)"
-            />
-          ))}
-
-        {/* Control Design Insights */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-[#10b981]" />
-            <h3 className="text-base font-semibold text-foreground">
-              Where Control Design Must Evolve
-            </h3>
-            <div className="flex-1 h-px bg-gradient-to-r from-[#10b981]/30 to-transparent" />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Strategic Insights & Recommended Actions - Compact */}
+      <InfoCard
+        icon={Lightbulb}
+        iconGradient="linear-gradient(135deg, #4160F0 0%, #FF6700 100%)"
+        title="Strategic Insights & Recommended Actions"
+        description={
+          <div className="space-y-4 mt-3">
+            {/* System Insight */}
             {strategicInsights
-              .filter((insight) => insight.type === "control")
+              .filter((insight) => insight.type === "system")
               .map((insight) => (
                 <InfoCard
                   key={insight.title}
-                  icon={Settings}
-                  iconGradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                  icon={Lightbulb}
+                  iconGradient="linear-gradient(135deg, #2563EB 0%, #4160F0 100%)"
                   title={insight.title}
                   description={
                     <div className="space-y-3">
-                      <div>
-                        <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
-                          <AlertTriangle className="h-3.5 w-3.5 text-red-600" />
-                          <span className="text-red-700">ISSUE:</span>
-                        </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed pl-5">
-                          {insight.issue}
-                        </p>
-                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {insight.issue}
+                      </p>
                       <div className="pt-2 border-t border-border/30">
-                        <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
-                          <Lightbulb className="h-3.5 w-3.5 text-blue-600" />
-                          <span className="text-blue-700">RECOMMENDATION:</span>
+                        <p className="text-xs font-semibold text-foreground mb-1">
+                          RECOMMENDATION:
                         </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed pl-5">
+                        <p className="text-sm text-foreground leading-relaxed">
                           {insight.recommendation}
                         </p>
                       </div>
-                      {insight.expectedImpact && (
-                        <div className="pt-2 border-t border-border/30 flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4 text-[#10b981]" />
-                          <p className="text-sm font-semibold text-[#10b981]">
-                            Expected impact: {insight.expectedImpact}
-                          </p>
-                        </div>
-                      )}
                     </div>
                   }
-                  borderColor="rgba(16, 185, 129, 0.3)"
-                  bgColor="rgba(16, 185, 129, 0.08)"
+                  borderColor="rgba(37, 99, 235, 0.3)"
+                  bgColor="rgba(37, 99, 235, 0.08)"
                 />
               ))}
-          </div>
-        </div>
 
-        {/* Training/Policy Insights */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-[#F59E0B]" />
-            <h3 className="text-base font-semibold text-foreground">
-              Where Training or Policy Change Is Required
-            </h3>
-            <div className="flex-1 h-px bg-gradient-to-r from-[#F59E0B]/30 to-transparent" />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {strategicInsights
-              .filter((insight) => insight.type === "training")
-              .map((insight) => (
-                <InfoCard
-                  key={insight.title}
-                  icon={Users}
-                  iconGradient="linear-gradient(135deg, #F59E0B 0%, #EA580C 100%)"
-                  title={insight.title}
-                  description={
-                    <div className="space-y-3">
-                      <div>
-                        <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
-                          <FileText className="h-3.5 w-3.5 text-orange-600" />
-                          <span className="text-orange-700">FINDING:</span>
-                        </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed pl-5">
-                          {insight.issue}
-                        </p>
-                      </div>
-                      <div className="pt-2 border-t border-border/30">
-                        <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
-                          <Zap className="h-3.5 w-3.5 text-blue-600" />
-                          <span className="text-blue-700">
-                            ACTION REQUIRED:
-                          </span>
-                        </p>
-                        <p className="text-sm text-muted-foreground leading-relaxed pl-5">
-                          {insight.recommendation}
-                        </p>
-                      </div>
-                      {insight.timeline && (
-                        <div className="pt-2 border-t border-border/30 flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-[#F59E0B]" />
-                          <p className="text-sm font-semibold text-[#F59E0B]">
-                            Timeline: {insight.timeline}
-                          </p>
+            {/* Control Design Insights */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Settings className="h-4 w-4 text-[#10b981]" />
+                <h3 className="text-sm font-semibold text-foreground">
+                  Where Control Design Must Evolve
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                {strategicInsights
+                  .filter((insight) => insight.type === "control")
+                  .map((insight) => (
+                    <InfoCard
+                      key={insight.title}
+                      icon={Settings}
+                      iconGradient="linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                      title={insight.title}
+                      description={
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
+                              <AlertTriangle className="h-3.5 w-3.5 text-red-600" />
+                              <span className="text-red-700">ISSUE:</span>
+                            </p>
+                            <p className="text-sm text-muted-foreground leading-relaxed pl-5">
+                              {insight.issue}
+                            </p>
+                          </div>
+                          <div className="pt-2 border-t border-border/30">
+                            <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
+                              <Lightbulb className="h-3.5 w-3.5 text-blue-600" />
+                              <span className="text-blue-700">
+                                RECOMMENDATION:
+                              </span>
+                            </p>
+                            <p className="text-sm text-muted-foreground leading-relaxed pl-5">
+                              {insight.recommendation}
+                            </p>
+                          </div>
+                          {insight.expectedImpact && (
+                            <div className="pt-2 border-t border-border/30 flex items-center gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-[#10b981]" />
+                              <p className="text-sm font-semibold text-[#10b981]">
+                                Expected impact: {insight.expectedImpact}
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  }
-                  borderColor="rgba(245, 158, 11, 0.3)"
-                  bgColor="rgba(245, 158, 11, 0.08)"
-                />
-              ))}
+                      }
+                      borderColor="rgba(16, 185, 129, 0.3)"
+                      bgColor="rgba(16, 185, 129, 0.08)"
+                    />
+                  ))}
+              </div>
+            </div>
+
+            {/* Training/Policy Insights */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Users className="h-4 w-4 text-[#F59E0B]" />
+                <h3 className="text-sm font-semibold text-foreground">
+                  Where Training or Policy Change Is Required
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                {strategicInsights
+                  .filter((insight) => insight.type === "training")
+                  .map((insight) => (
+                    <InfoCard
+                      key={insight.title}
+                      icon={Users}
+                      iconGradient="linear-gradient(135deg, #F59E0B 0%, #EA580C 100%)"
+                      title={insight.title}
+                      description={
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
+                              <FileText className="h-3.5 w-3.5 text-orange-600" />
+                              <span className="text-orange-700">FINDING:</span>
+                            </p>
+                            <p className="text-sm text-muted-foreground leading-relaxed pl-5">
+                              {insight.issue}
+                            </p>
+                          </div>
+                          <div className="pt-2 border-t border-border/30">
+                            <p className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
+                              <Zap className="h-3.5 w-3.5 text-blue-600" />
+                              <span className="text-blue-700">
+                                ACTION REQUIRED:
+                              </span>
+                            </p>
+                            <p className="text-sm text-muted-foreground leading-relaxed pl-5">
+                              {insight.recommendation}
+                            </p>
+                          </div>
+                          {insight.timeline && (
+                            <div className="pt-2 border-t border-border/30 flex items-center gap-2">
+                              <Clock className="h-4 w-4 text-[#F59E0B]" />
+                              <p className="text-sm font-semibold text-[#F59E0B]">
+                                Timeline: {insight.timeline}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      }
+                      borderColor="rgba(245, 158, 11, 0.3)"
+                      bgColor="rgba(245, 158, 11, 0.08)"
+                    />
+                  ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        }
+        borderColor="rgba(65, 96, 240, 0.3)"
+        bgColor="rgba(65, 96, 240, 0.08)"
+      />
 
       {/* Footer Message */}
       <InfoCard
