@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/layout/PageHeader"
 import { Button } from "@/components/ui/button"
-import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare } from "lucide-react"
+import { Bubbles, FileText, TrendingUp, Building, AlertTriangle, Calendar, User, Clock, DollarSign, Info, Target, BookOpen, List, CheckCircle, Wrench, Shield, UserCheck, ClipboardCheck, FileCheck, MessageSquare, Lightbulb, Link, Activity } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { deviationTicketData } from "@/data/ticketDeviationData"
 
@@ -396,6 +396,65 @@ const DeviationTicketDetails = () => {
                 ) : (
                     <div className="text-center py-8">
                         <p className="text-muted-foreground">Approval data not available</p>
+                    </div>
+                )}
+            </div>
+            
+            {/* Learnings */}
+            <div className="bg-blue-50/80 border border-blue-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="p-2.5 rounded-xl bg-blue-100/80 border border-blue-200/60 shadow-sm">
+                        <Lightbulb className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Lessons Learned & Knowledge Transfer</h3>
+                </div>
+
+                {ticket ? (
+                    <>
+                        {/* Learning Description */}
+                        <div className="bg-white border border-blue-100/60 rounded-xl p-6 mb-8 shadow-sm">
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                {ticket.learnings.learningDescription}
+                            </p>
+                        </div>
+
+                        {/* Bottom Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Related Tickets */}
+                            <div className="bg-white border border-blue-200/60 rounded-xl p-6 shadow-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <Link className="h-4 w-4 text-blue-600" />
+                                    <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">RELATED TICKETS</p>
+                                </div>
+                                <div className="ml-7 space-y-2">
+                                    {ticket.learnings.relatedTickets.map((relatedTicket, index) => (
+                                        <div key={index} className="inline-flex items-center px-3 py-1.5 bg-blue-100/80 text-blue-800 rounded-full text-xs font-medium border border-blue-200/60 shadow-sm mr-2 mb-2">
+                                            {relatedTicket}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Audit Trail Activity */}
+                            <div className="bg-white border border-blue-200/60 rounded-xl p-6 shadow-sm">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <Activity className="h-4 w-4 text-blue-600" />
+                                    <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">AUDIT TRAIL ACTIVITY</p>
+                                </div>
+                                <div className="ml-7">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-2xl font-bold text-blue-600">
+                                            {ticket.auditTrail.trails.length}
+                                        </span>
+                                        <span className="text-sm text-muted-foreground">Logged events</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-center py-8">
+                        <p className="text-muted-foreground">Learning data not available</p>
                     </div>
                 )}
             </div>
