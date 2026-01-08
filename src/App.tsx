@@ -17,6 +17,7 @@ import { KPITrendAnalysis } from "./pages/enterprise/phase-one/erp/sap-s4hana/KP
 import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/ControlEvidence";
 import { ActionTracker } from "./pages/enterprise/phase-one/erp/sap-s4hana/ActionTracker";
 import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTickets";
+import DeviationTicketDetails from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTicketDetails";
 import DeviationAnalysis from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationAnalysis";
 
 function App() {
@@ -66,19 +67,24 @@ function App() {
               element={<ActionTracker />}
             />
 
-            <Route 
-              path="roi-intent-overview/:intentId" 
-              element={<RoiIntentOverview />} 
+            <Route
+              path="roi-intent-overview/:intentId"
+              element={<RoiIntentOverview />}
             />
 
-            <Route 
-              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets" 
-              element={<DeviationTickets />} 
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets"
+              element={<DeviationTickets />}
             />
 
-            <Route 
-              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/deviation-analysis" 
-              element={<DeviationAnalysis />} 
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/:ticketId"
+              element={<DeviationTicketDetails />}
+            />
+
+            <Route
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/deviation-analysis"
+              element={<DeviationAnalysis />}
             />
 
             {/* Catch all - redirect to enterprise */}

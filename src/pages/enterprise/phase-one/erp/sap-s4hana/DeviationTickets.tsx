@@ -2,7 +2,7 @@ import { useState, useMemo } from "react"
 import { PageHeader } from "@/components/layout/PageHeader"
 import { DrilldownTable } from "@/components/roi/DrilldownTable"
 import { FileText, AlertTriangle, RotateCcw, Shield, TrendingUp, FileCheck, CheckCircle } from "lucide-react"
-import { deviationTicketColumns } from "@/data/ticketDeviationTableConfig.tsx"
+import { getDeviationTicketColumns } from "@/data/ticketDeviationTableConfig.tsx"
 import { deviationTicketData } from "@/data/ticketDeviationData"
 import { SearchAndFilters } from "@/components/roi/SearchAndFilters"
 import { MetricCard } from "@/components/roi/cards/MetricCard"
@@ -171,7 +171,7 @@ const DeviationTickets = () => {
             {/* Deviation Ticket Table Section */}
             <div>
                 <DrilldownTable
-                    columns={deviationTicketColumns}
+                    columns={getDeviationTicketColumns(navigate)}
                     data={filteredData}
                     title="Deviation Tickets"
                     subtitle="Control failures and ROI leakage incidents requiring attention"
