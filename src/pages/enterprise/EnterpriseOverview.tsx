@@ -8,48 +8,57 @@ import { ROIValueLegend } from "../../components/roi/ROIValueLegend";
 import { PageHeader } from "../../components/layout/PageHeader";
 
 export function EnterpriseOverview() {
-  // Calculate ROI Dashboard statistics
+  // ROI Dashboard statistics - using dummy data values
   const roiStats = useMemo(() => {
-    const totalItems = MOCK_DD_ITEMS.length;
-    const highRisk = MOCK_DD_ITEMS.filter(
-      (item) => item.status === "High Risk"
-    ).length;
-    const needsReview = MOCK_DD_ITEMS.filter(
-      (item) => item.status === "Needs Review"
-    ).length;
-    const comfortable = MOCK_DD_ITEMS.filter(
-      (item) => item.status === "Comfortable"
-    ).length;
-
-    // Get unique ROI dimensions (DD Domains)
-    const uniqueDomains = Array.from(
-      new Set(MOCK_DD_ITEMS.map((item) => item.ddDomain))
-    );
+    // Set dummy data values as specified
+    const totalItems = 104;
+    const phaseIProducts = 1;
+    const roiDimensionsCount = 11;
+    const executionReady = 0;
 
     // Calculate percentages
     const phaseIPercentage =
-      totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
+      totalItems > 0 ? Math.round((phaseIProducts / totalItems) * 100) : 0;
     const executionReadyPercentage =
-      totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
+      totalItems > 0 ? Math.round((executionReady / totalItems) * 100) : 0;
 
-    // Calculate value distribution percentages (simulated based on status distribution)
-    // High Risk = Value Protection, Needs Review = Value Realization, Comfortable = Strategic Position
+    // ROI dimensions list
+    const roiDimensions = [
+      "Revenue",
+      "Efficiency",
+      "Experience",
+      "Compliance",
+      "Cost",
+      "Risk",
+      "Innovation",
+      "Agility",
+      "Resilience",
+      "Quality",
+      "Safety",
+    ];
+
+    // Calculate remaining products for Phase II and Phase III
+    const remainingProducts = totalItems - phaseIProducts - executionReady;
+    const phaseIIProducts = Math.floor(remainingProducts / 2);
+    const phaseIIIProducts = remainingProducts - phaseIIProducts;
+
+    // Calculate value distribution percentages
     const valueProtection =
-      totalItems > 0 ? Math.round((highRisk / totalItems) * 100) : 0;
+      totalItems > 0 ? Math.round((phaseIProducts / totalItems) * 100) : 0;
     const valueRealization =
-      totalItems > 0 ? Math.round((needsReview / totalItems) * 100) : 0;
+      totalItems > 0 ? Math.round((phaseIIProducts / totalItems) * 100) : 0;
     const strategicPosition =
-      totalItems > 0 ? Math.round((comfortable / totalItems) * 100) : 0;
+      totalItems > 0 ? Math.round((phaseIIIProducts / totalItems) * 100) : 0;
 
     return {
       totalItems,
-      phaseIProducts: highRisk,
+      phaseIProducts,
       phaseIPercentage,
-      roiDimensions: uniqueDomains,
-      executionReady: comfortable,
+      roiDimensions,
+      executionReady,
       executionReadyPercentage,
-      phaseIIProducts: needsReview,
-      phaseIIIProducts: comfortable,
+      phaseIIProducts,
+      phaseIIIProducts,
       valueProtection,
       valueRealization,
       strategicPosition,
