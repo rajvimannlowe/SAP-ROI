@@ -36,17 +36,37 @@ export function InfoCard({
   return (
     <Component
       onClick={onClick}
-      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} ${CARD_STYLES.TRANSITION} text-left ${
-        hasFilter
-          ? isSelected
-            ? `ring-2 ring-[${BRAND_COLORS.PRIMARY}]/30 border-[${BRAND_COLORS.PRIMARY}]/50 ${CARD_STYLES.HOVER_SHADOW}`
-            : `hover:${CARD_STYLES.HOVER_SHADOW} hover:border-[${BRAND_COLORS.PRIMARY}]/40`
-          : `hover:${CARD_STYLES.HOVER_SHADOW} hover:border-border/70`
+      className={`group relative overflow-hidden ${
+        CARD_STYLES.BORDER_RADIUS
+      } border bg-card ${CARD_STYLES.SHADOW} ${
+        CARD_STYLES.TRANSITION
+      } text-left cursor-pointer ${
+        hasFilter && !isSelected
+          ? `border-border/50 hover:${CARD_STYLES.HOVER_SHADOW}`
+          : hasFilter && isSelected
+          ? `${CARD_STYLES.HOVER_SHADOW}`
+          : `border-border/50 hover:${CARD_STYLES.HOVER_SHADOW} hover:border-border/70`
       }`}
+      style={
+        hasFilter && isSelected
+          ? {
+              borderColor: BRAND_COLORS.PRIMARY,
+              borderWidth: "2px",
+              boxShadow: `0 0 0 2px ${hexToRgba(
+                BRAND_COLORS.PRIMARY,
+                0.2
+              )}, 0 4px 12px ${hexToRgba(BRAND_COLORS.PRIMARY, 0.15)}`,
+            }
+          : hasFilter && !isSelected
+          ? {
+              borderColor: "rgba(148, 163, 184, 0.5)",
+            }
+          : undefined
+      }
     >
-      <div className="p-3">
+      <div className="p-2.5">
         <div
-          className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
+          className="rounded-lg p-2.5 shadow-sm border relative overflow-hidden"
           style={{
             backgroundColor: bgColor,
             borderColor: borderColor,
@@ -63,51 +83,67 @@ export function InfoCard({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-2.5 mb-3 pl-0">
-              {Icon && iconGradient && (
-                <div className="p-1.5 rounded-lg" style={{ background: iconGradient }}>
-                  <Icon className="h-4 w-4 text-white" />
-                </div>
+            <div className="flex items-center justify-between gap-2 mb-1.5">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                {Icon && iconGradient && (
+                  <div
+                    className="p-1.5 rounded-md shrink-0"
+                    style={{ background: iconGradient }}
+                  >
+                    <Icon className="h-4 w-4 text-white" />
+                  </div>
+                )}
+                <h3 className="text-sm font-bold text-foreground leading-tight line-clamp-1">
+                  {title}
+                </h3>
+              </div>
+              {value && (
+                <p className="text-sm font-bold text-foreground shrink-0">
+                  {value}
+                </p>
               )}
-              <h3 className="text-sm font-bold text-foreground flex-1">
-                {title}
-              </h3>
             </div>
-            {value && (
-              <p className="text-sm font-bold text-foreground mb-1.5">
-                {value}
-              </p>
-            )}
             {description && (
-              <div className="text-xs text-muted-foreground leading-relaxed">
+              <div className="text-xs text-muted-foreground leading-snug mb-1.5">
                 {typeof description === "string" ? (
-                  <p>{description}</p>
+                  <p className="line-clamp-1">{description}</p>
                 ) : (
                   description
                 )}
               </div>
             )}
             {hasFilter && filterLabel && (
-              <div className="flex items-center justify-center gap-1.5 mt-2">
-                <div
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    isSelected ? "opacity-100" : "opacity-50"
-                  }`}
-                  style={{
-                    backgroundColor: isSelected
-                      ? BRAND_COLORS.PRIMARY
-                      : "#94a3b8",
-                  }}
-                />
-                <span
-                  className={`text-[9px] font-medium ${
-                    isSelected
-                      ? `text-[${BRAND_COLORS.PRIMARY}]`
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {isSelected ? filterLabel.active : filterLabel.inactive}
-                </span>
+              <div className="mt-1.5">
+                {isSelected ? (
+                  <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#4160F0]/10 border border-[#4160F0]/30">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full animate-pulse shrink-0"
+                      style={{
+                        backgroundColor: BRAND_COLORS.PRIMARY,
+                      }}
+                    />
+                    <span
+                      className="text-[9px] font-semibold uppercase tracking-wider"
+                      style={{
+                        color: BRAND_COLORS.PRIMARY,
+                      }}
+                    >
+                      {filterLabel.active}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-50 border border-blue-200/60 group-hover:bg-blue-100 group-hover:border-blue-300 transition-colors">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{
+                        backgroundColor: "#64748b",
+                      }}
+                    />
+                    <span className="text-[9px] font-semibold text-blue-700">
+                      {filterLabel.inactive}
+                    </span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -116,4 +152,3 @@ export function InfoCard({
     </Component>
   );
 }
-

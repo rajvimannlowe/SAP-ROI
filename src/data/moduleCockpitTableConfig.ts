@@ -3,11 +3,24 @@ import { KPIDetail } from "./moduleCockpitData";
 import { TableColumn } from "../components/roi/DrilldownTable";
 
 // KPI Table Column Configuration - Simple and Easy to Understand
-export const KPI_TABLE_COLUMNS: SimpleColumnConfig<KPIDetail>[] = [
+export const getKPI_TABLE_COLUMNS = (
+  onKpiClick?: (kpi: KPIDetail) => void
+): SimpleColumnConfig<KPIDetail>[] => [
   {
     key: "name",
     header: "KPI Name",
-    type: "text",
+    type: "textWithLink",
+    customAccessor: (row) => {
+      return renderCellByType(row.name, "textWithLink", {
+        textStyle: "short",
+        row: row,
+        onClick: (value, rowData) => {
+          if (onKpiClick && rowData) {
+            onKpiClick(rowData as KPIDetail);
+          }
+        },
+      });
+    },
   },
   {
     key: "businessRiskPrevented",
@@ -59,8 +72,10 @@ const createColumnAccessor = <T extends object>(
 };
 
 // Get KPI table columns
-export const getKPITableColumns = (): TableColumn<KPIDetail>[] => {
-  return KPI_TABLE_COLUMNS.map((config) => ({
+export const getKPITableColumns = (
+  onKpiClick?: (kpi: KPIDetail) => void
+): TableColumn<KPIDetail>[] => {
+  return getKPI_TABLE_COLUMNS(onKpiClick).map((config) => ({
     key: String(config.key),
     header: config.header,
     align: config.align || "left",

@@ -52,13 +52,31 @@ export function ModuleROICockpit() {
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
 
-  // Get metric cards from data config
-  const metricCards = useMemo(() => {
-    return cockpitData ? getMetricCards(cockpitData) : [];
+  // Get unique sub-modules (ensure no duplicates)
+  const uniqueSubModules = useMemo(() => {
+    if (!cockpitData) return [];
+    const seen = new Set<string>();
+    return cockpitData.subModules.filter((subModule) => {
+      if (seen.has(subModule.id)) {
+        return false;
+      }
+      seen.add(subModule.id);
+      return true;
+    });
   }, [cockpitData]);
 
-  // Get KPI table columns from data config
-  const kpiColumns = useMemo(() => getKPITableColumns(), []);
+  // Get KPI table columns from data config with navigation
+  const kpiColumns = useMemo(
+    () =>
+      getKPITableColumns((kpi) => {
+        navigate(
+          `/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/blueprint/${moduleId}/cockpit/${kpi.id}`
+        );
+      }),
+    [navigate, blueprintId, moduleId]
+  );
 
   // Filter KPIs based on selected sub-modules
   const filteredKPIs = useMemo(() => {
@@ -69,6 +87,94 @@ export function ModuleROICockpit() {
           selectedSubModuleIds.includes(kpi.subModuleId)
         );
   }, [cockpitData, selectedSubModuleIds]);
+
+  // Calculate metrics based on filtered KPIs
+  const calculateFilteredMetrics = useMemo(() => {
+    if (!cockpitData) return null;
+
+    const kpisToUse = selectedSubModuleIds.length === 0 
+      ? cockpitData.kpiDetails 
+      : filteredKPIs;
+    const totalKPIs = kpisToUse.length;
+    
+    // Calculate KPI status counts based on StatusType
+    const greenCount = kpisToUse.filter((kpi) => {
+      return kpi.status === "Optimal" || kpi.status === "Active";
+    }).length;
+    const amberCount = kpisToUse.filter((kpi) => {
+      return kpi.status === "Monitor" || kpi.status === "Warning" || kpi.status === "Planned";
+    }).length;
+    const redCount = kpisToUse.filter((kpi) => {
+      return kpi.status === "Error" || kpi.status === "Action";
+    }).length;
+    
+    // Calculate overall ROI health (percentage of green KPIs)
+    const overallHealth = totalKPIs > 0 ? Math.round((greenCount / totalKPIs) * 100) : 0;
+    const healthStatus = overallHealth >= 80 ? "Optimal" : overallHealth >= 60 ? "Monitor" : "Critical";
+    
+    // Calculate control coverage (active controls / total)
+    const activeControls = kpisToUse.filter((kpi) => {
+      return kpi.status !== "Planned" && kpi.status !== "Action";
+    }).length;
+    const controlCoverage = totalKPIs > 0 ? Math.round((activeControls / totalKPIs) * 100) : 0;
+    
+    // Estimate financial value at risk (proportional to selected KPIs)
+    const baseValue = parseFloat(cockpitData.summaryMetrics.financialValueAtRisk.value.replace(/[^0-9.]/g, "")) || 0;
+    const valueAtRisk = selectedSubModuleIds.length === 0 
+      ? baseValue 
+      : Math.round((baseValue * totalKPIs) / cockpitData.kpiDetails.length * 100) / 100;
+
+    return {
+      overallROIHealth: {
+        value: `${overallHealth}%`,
+        status: healthStatus,
+        description: selectedSubModuleIds.length === 0 
+          ? cockpitData.summaryMetrics.overallROIHealth.description
+          : `Based on ${totalKPIs} KPIs from selected sub-modules`,
+      },
+      financialValueAtRisk: {
+        value: `$${valueAtRisk}M`,
+        description: selectedSubModuleIds.length === 0
+          ? cockpitData.summaryMetrics.financialValueAtRisk.description
+          : `Estimated value protected for selected sub-modules`,
+      },
+      controlCoverage: {
+        value: `${controlCoverage}%`,
+        total: totalKPIs,
+        active: activeControls,
+        description: selectedSubModuleIds.length === 0
+          ? cockpitData.summaryMetrics.controlCoverage.description
+          : `${activeControls} of ${totalKPIs} controls active in selected sub-modules`,
+      },
+      kpiStatus: {
+        green: greenCount,
+        amber: amberCount,
+        red: redCount,
+        total: totalKPIs,
+        description: selectedSubModuleIds.length === 0
+          ? cockpitData.summaryMetrics.kpiStatus.description
+          : `${totalKPIs} KPIs in selected sub-modules`,
+      },
+    };
+  }, [cockpitData, filteredKPIs, selectedSubModuleIds]);
+
+  // Get metric cards based on filtered data
+  const metricCards = useMemo(() => {
+    if (!cockpitData || !calculateFilteredMetrics) return [];
+    
+    // Create a temporary cockpit data object with filtered metrics
+    const filteredCockpitData = {
+      ...cockpitData,
+      summaryMetrics: {
+        overallROIHealth: calculateFilteredMetrics.overallROIHealth,
+        financialValueAtRisk: calculateFilteredMetrics.financialValueAtRisk,
+        controlCoverage: calculateFilteredMetrics.controlCoverage,
+        kpiStatus: calculateFilteredMetrics.kpiStatus,
+      },
+    };
+    
+    return getMetricCards(filteredCockpitData);
+  }, [cockpitData, calculateFilteredMetrics]);
 
   if (!cockpitData) {
     return (
@@ -95,11 +201,12 @@ export function ModuleROICockpit() {
   };
 
   const handleSelectAll = () => {
+    if (!cockpitData) return;
     const allSelected =
       selectedSubModuleIds.length === 0 ||
-      selectedSubModuleIds.length === cockpitData.subModules.length;
+      selectedSubModuleIds.length === uniqueSubModules.length;
     setSelectedSubModuleIds(
-      allSelected ? [] : cockpitData.subModules.map((sm) => sm.id)
+      allSelected ? [] : uniqueSubModules.map((sm) => sm.id)
     );
   };
 
@@ -161,13 +268,13 @@ export function ModuleROICockpit() {
           >
             <Filter className="h-3.5 w-3.5" />
             {selectedSubModuleIds.length === 0 ||
-            selectedSubModuleIds.length === cockpitData.subModules.length
+            selectedSubModuleIds.length === uniqueSubModules.length
               ? "Deselect All"
               : "Select All"}
           </button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {cockpitData.subModules.map((subModule) => {
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+          {uniqueSubModules.map((subModule) => {
             const isSelected = selectedSubModuleIds.includes(subModule.id);
             const config = getSubModuleCardConfig(
               subModule,

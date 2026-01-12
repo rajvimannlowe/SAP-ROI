@@ -60,6 +60,7 @@ type RendererConfig = {
   textStyle?: "short" | "long" | "auto";
   badgeConfig?: SimpleColumnConfig["badgeConfig"];
   onClick?: (value: string, row?: unknown) => void;
+  row?: unknown; // Store row for onClick handler
 };
 
 const columnRenderers = {
@@ -209,7 +210,7 @@ const columnRenderers = {
         onClick: (e: React.MouseEvent) => {
           e.stopPropagation(); // Prevent row click if exists
           if (config?.onClick) {
-            config.onClick(value);
+            config.onClick(value, config.row);
           }
         },
       },

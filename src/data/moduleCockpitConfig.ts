@@ -125,11 +125,11 @@ export const getSubModuleCardConfig = (
     value: `${subModule.healthPercentage}%`,
     description: null, // Will be set in component with StatusBadge
     borderColor: isSelected
-      ? hexToRgba(selectedColor, 0.3)
+      ? hexToRgba(selectedColor, 0.5)
       : hexToRgba(statusColor, 0.3),
     bgColor: isSelected
-      ? hexToRgba(selectedColor, 0.1)
-      : hexToRgba(statusColor, 0.1),
+      ? hexToRgba(selectedColor, 0.15)
+      : hexToRgba(statusColor, 0.08),
     onClick: () => onToggle(subModule.id),
     isSelected,
   };
