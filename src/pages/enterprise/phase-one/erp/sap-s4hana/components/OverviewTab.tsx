@@ -1,5 +1,5 @@
 import { InfoCard } from "@/components/roi/cards/InfoCard";
-import { SummaryCards, SummaryCard } from "@/components/roi/cards/SummaryCards";
+import { SummaryCard } from "@/components/roi/cards/SummaryCards";
 import { roiScoreData } from "@/data/roiAggregationData";
 import { TrendingUp, AlertTriangle, Shield, DollarSign } from "lucide-react";
 
