@@ -115,7 +115,7 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
         <div className="px-1">
           <Link
             to={`/phase-i/catalog/${investment.id}/modules`}
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#4160F0] hover:text-[#3a55d8] transition-colors group"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#4160F0] hover:text-[#3a55d8] transition-colors group cursor-pointer"
           >
             <span>Click to view Product Module</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

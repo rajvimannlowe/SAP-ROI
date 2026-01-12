@@ -47,19 +47,36 @@ export function MetricCard({
   return (
     <div
       onClick={hasClick ? handleClick : undefined}
-      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} ${
+      className={`group relative overflow-hidden ${
+        CARD_STYLES.BORDER_RADIUS
+      } border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${
+        CARD_STYLES.HOVER_SHADOW
+      } ${CARD_STYLES.TRANSITION} ${
         highlight
           ? "ring-2 ring-blue-500/30 border-blue-500/60 cursor-pointer"
           : hasClick
           ? "cursor-pointer"
           : ""
       }`}
+      role={hasClick ? "button" : undefined}
+      tabIndex={hasClick ? 0 : undefined}
+      onKeyDown={
+        hasClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleClick();
+              }
+            }
+          : undefined
+      }
     >
       <div className="p-3">
         <div
           className="rounded-lg p-3.5 shadow-sm border relative overflow-hidden"
           style={{
-            backgroundColor: backgroundColor || hexToRgba(cardColor, highlight ? 0.12 : 0.1),
+            backgroundColor:
+              backgroundColor || hexToRgba(cardColor, highlight ? 0.12 : 0.1),
             borderColor: hexToRgba(cardColor, 0.3),
           }}
         >

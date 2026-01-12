@@ -51,9 +51,9 @@ export function CatalogCard({
 
   const content = (
     <div
-      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} h-[580px] flex flex-col`}
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} flex flex-col`}
     >
-      <div className="p-4 flex flex-col flex-1 overflow-hidden min-h-0">
+      <div className="p-4 flex flex-col">
         {/* Action Header with ID and Badges */}
         {isActionVariant && (
           <div className="mb-3 flex items-center justify-between gap-2">
@@ -227,8 +227,8 @@ export function CatalogCard({
           )}
         </div>
 
-        {/* Content Section - Scrollable */}
-        <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-1">
+        {/* Content Section */}
+        <div className="space-y-3">
           {isActionVariant ? (
             <>
               {/* Issue Description - Compact */}
@@ -319,7 +319,7 @@ export function CatalogCard({
                     <Link
                       to={evidencePath}
                       onClick={(e) => e.stopPropagation()}
-                      className="text-xs font-medium flex items-center gap-1.5 hover:underline transition-colors"
+                      className="text-xs font-medium flex items-center gap-1.5 hover:underline transition-colors cursor-pointer"
                       style={{ color: BRAND_COLORS.PRIMARY }}
                     >
                       <FileText className="h-3.5 w-3.5" />
@@ -330,7 +330,7 @@ export function CatalogCard({
                     </Link>
                   ) : (
                     <span
-                      className="text-xs font-medium flex items-center gap-1.5"
+                      className="text-xs font-medium flex items-center gap-1.5 cursor-pointer"
                       style={{ color: BRAND_COLORS.PRIMARY }}
                     >
                       <FileText className="h-3.5 w-3.5" />
@@ -353,24 +353,6 @@ export function CatalogCard({
             </>
           ) : (
             <>
-              {/* Primary ROI Metrics */}
-              <div>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
-                  Primary ROI Metrics
-                </p>
-                <ul className="space-y-0.5">
-                  {item.primaryROIMetrics.map((metric, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start text-xs text-foreground"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-emerald-600 mt-1.5 mr-1.5 shrink-0" />
-                      <span className="leading-tight">{metric}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               {/* Data Sources */}
               <div>
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
@@ -420,9 +402,9 @@ export function CatalogCard({
   }
 
   if (onClick) {
-    return <div onClick={onClick}>{content}</div>;
+    return <div onClick={onClick} className="cursor-pointer">{content}</div>;
   }
 
-  return <Link to={`/phase-i/catalog/${item.id}/blueprint`}>{content}</Link>;
+  return <Link to={`/phase-i/catalog/${item.id}/modules`} className="cursor-pointer">{content}</Link>;
 }
 

@@ -4,16 +4,43 @@ import { CatalogCard } from "../../../../../components/roi/cards/CatalogCard";
 import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import {
-  ROI_CATALOG_ITEMS,
   CATEGORY_OPTIONS,
   VENDOR_OPTIONS,
   ROI_DIMENSION_OPTIONS,
   PERSONA_OPTIONS,
   INTEGRATION_METHOD_OPTIONS,
 } from "../../../../../data/roiCatalogData";
+import { PHASE_I_ROI_CATEGORIES, InvestmentCard } from "../../../../../data/phaseIROIData";
+import { CatalogItem } from "../../../../../data/roiCatalogData";
 import { ModulesSection } from "./components/ModulesSection";
 import { ModuleFlowSelection } from "./components/ModuleFlowSelection";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
+
+// Convert InvestmentCard to CatalogItem format
+const convertInvestmentToCatalogItem = (investment: InvestmentCard): CatalogItem => {
+  return {
+    id: investment.id,
+    category: investment.category,
+    productSuite: investment.title,
+    vendor: investment.company,
+    roiDimensions: investment.roiDimensions.map(dim => ({
+      label: dim.label,
+      icon: dim.icon,
+      color: dim.color || "#4160F0",
+    })),
+    primaryROIMetrics: [], // Not displayed but required by interface
+    dataSources: ["System Integration", "Data Warehouse", "Analytics Platform"], // Default data sources
+    integrationMethod: "API + Database", // Default integration method
+    updateFrequency: "Real-time", // Default update frequency
+  };
+};
+
+// Get all catalog items from portfolio data
+const getAllCatalogItems = (): CatalogItem[] => {
+  return PHASE_I_ROI_CATEGORIES.flatMap(category =>
+    category.investments.map(convertInvestmentToCatalogItem)
+  );
+};
 
 interface FilterState {
   category: string;
@@ -38,18 +65,29 @@ const toDropdownOptions = (options: typeof CATEGORY_OPTIONS) =>
   options.map((opt) => ({ value: opt.value, label: opt.label }));
 
 // Mapping catalog item IDs to blueprint data
+// Portfolio data uses blueprint IDs (like "sap-s4hana"), so we map them directly
 const catalogToBlueprintMap: Record<string, string> = {
   "1": "sap-s4hana",
+  "sap-s4hana": "sap-s4hana",
+  "salesforce": "salesforce",
+  "snowflake": "snowflake",
   // Add more mappings as needed
 };
 
 // Reverse mapping: blueprint ID to catalog ID
 const blueprintToCatalogMap: Record<string, string> = {
-  "sap-s4hana": "1",
+  "sap-s4hana": "sap-s4hana", // Use blueprint ID directly for portfolio data
+  "salesforce": "salesforce",
+  "snowflake": "snowflake",
   // Add more mappings as needed
 };
 
 const getBlueprintByCatalogId = (catalogId: string) => {
+  // For portfolio data, catalogId is the blueprint ID
+  if (catalogId === "sap-s4hana") {
+    return SAP_S4HANA_BLUEPRINT;
+  }
+  // Check if it's a mapped ID
   const blueprintId = catalogToBlueprintMap[catalogId];
   if (blueprintId === "sap-s4hana") {
     return SAP_S4HANA_BLUEPRINT;
@@ -58,13 +96,15 @@ const getBlueprintByCatalogId = (catalogId: string) => {
 };
 
 // Get catalog ID from blueprint ID or return the ID if it's already a catalog ID
+// For portfolio data, IDs are blueprint IDs (like "sap-s4hana"), so we return them as-is
 const getCatalogId = (id: string): string => {
-  // If it's already a catalog ID (numeric), return it
-  if (catalogToBlueprintMap[id]) {
-    return id;
+  // For portfolio data, IDs are already blueprint IDs, so return as-is
+  // Only map if it's a legacy numeric ID
+  if (blueprintToCatalogMap[id]) {
+    return blueprintToCatalogMap[id];
   }
-  // Otherwise, try to map from blueprint ID
-  return blueprintToCatalogMap[id] || id;
+  // Otherwise, return the ID as-is (it's already a blueprint ID from portfolio data)
+  return id;
 };
 
 export function ROICatalogExplorer() {
@@ -122,8 +162,10 @@ export function ROICatalogExplorer() {
     }
   }, [selectedProductId, productIdFromRoute, navigate]);
 
+  const allCatalogItems = useMemo(() => getAllCatalogItems(), []);
+
   const filteredItems = useMemo(() => {
-    return ROI_CATALOG_ITEMS.filter((item) => {
+    return allCatalogItems.filter((item) => {
       // Search filter
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
@@ -141,7 +183,7 @@ export function ROICatalogExplorer() {
         return false;
       }
 
-      // Vendor filter
+      // Vendor filter (maps to company in portfolio data)
       if (filters.vendor !== "all" && item.vendor !== filters.vendor) {
         return false;
       }
@@ -154,9 +196,10 @@ export function ROICatalogExplorer() {
         if (!hasDimension) return false;
       }
 
-      // Integration Method filter
+      // Integration Method filter (skip if not available in portfolio data)
       if (
         filters.integrationMethod !== "all" &&
+        item.integrationMethod &&
         item.integrationMethod !== filters.integrationMethod
       ) {
         return false;
@@ -164,7 +207,7 @@ export function ROICatalogExplorer() {
 
       return true;
     });
-  }, [filters]);
+  }, [filters, allCatalogItems]);
 
   const updateFilter = (key: keyof FilterState, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -263,7 +306,7 @@ export function ROICatalogExplorer() {
         // Convert to catalog ID if needed
         const catalogId = getCatalogId(selectedProductId);
         const blueprint = getBlueprintByCatalogId(catalogId);
-        const selectedItem = ROI_CATALOG_ITEMS.find(item => item.id === catalogId);
+        const selectedItem = allCatalogItems.find(item => item.id === selectedProductId || item.id === catalogId);
         
         if (blueprint && blueprint.subModules) {
           return (
