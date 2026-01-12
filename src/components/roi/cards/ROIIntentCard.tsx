@@ -98,21 +98,6 @@ export function ROIIntentCard({
             </div>
           </div>
         </div>
-
-        <div className="px-1">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-2 h-2 rounded-full transition-transform duration-300 group-hover:scale-125"
-              style={{
-                backgroundColor: color,
-                boxShadow: `0 0 8px ${hexToRgba(color, 0.5)}`,
-              }}
-            />
-            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-              ROI Dimension
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

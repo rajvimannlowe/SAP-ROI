@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { SAP_S4HANA_BLUEPRINT } from "@/data/productBlueprintData";
+import { ROI_INTENT_COUNTS } from "@/data/roiIntentCountsData";
 import { DrilldownTable } from "@/components/roi/DrilldownTable";
 import { SearchAndFilters } from "@/components/roi/SearchAndFilters";
 import { MetricCard } from "@/components/roi/cards/MetricCard";
@@ -23,10 +24,33 @@ const RoiIntentOverview = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedImpactLevel, setSelectedImpactLevel] = useState("");
 
-  // Find the intent data based on the intentId
-  const intentData = SAP_S4HANA_BLUEPRINT.roiIntents.find(
-    (intent) => intent.id === intentId
-  );
+  // Find the intent data - first check ROI_INTENT_COUNTS, then fall back to blueprint
+  const intentData = useMemo(() => {
+    // First try to find in ROI_INTENT_COUNTS
+    const intentWithCount = ROI_INTENT_COUNTS.find(
+      (intent) => intent.id === intentId
+    );
+    if (intentWithCount) {
+      return {
+        id: intentWithCount.id,
+        label: intentWithCount.label,
+        description: intentWithCount.description,
+        color: intentWithCount.color,
+      };
+    }
+    // Fall back to blueprint intents
+    const blueprintIntent = SAP_S4HANA_BLUEPRINT.roiIntents.find(
+      (intent) => intent.id === intentId
+    );
+    return blueprintIntent
+      ? {
+          id: blueprintIntent.id,
+          label: blueprintIntent.label,
+          description: blueprintIntent.description,
+          color: blueprintIntent.color,
+        }
+      : null;
+  }, [intentId]);
 
   // Get base table data based on the selected intent category
   const baseTableData = useMemo(() => {
