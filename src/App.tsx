@@ -46,6 +46,10 @@ function App() {
               element={<ROICatalogExplorer />}
             />
             <Route
+              path="phase-i/catalog/:id/modules/:moduleId/flow"
+              element={<ROICatalogExplorer />}
+            />
+            <Route
               path="phase-i/catalog/:id/blueprint"
               element={<ProductROIBlueprint />}
             />

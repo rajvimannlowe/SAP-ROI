@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Info, TrendingUp, Filter } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
@@ -15,12 +15,37 @@ import {
 import { gradientStyles } from "./components/constants";
 import { Button } from "../../../../../components/ui/button";
 
+// Mapping blueprint ID to catalog ID
+const blueprintToCatalogMap: Record<string, string> = {
+  "sap-s4hana": "1",
+  // Add more mappings as needed
+};
+
+const getCatalogId = (blueprintId: string): string => {
+  return blueprintToCatalogMap[blueprintId] || blueprintId;
+};
+
 export function ModuleROICockpit() {
   const { moduleId, id: blueprintId } = useParams<{
     moduleId: string;
     id: string;
   }>();
+  const location = useLocation();
   const navigate = useNavigate();
+  
+  // Get catalogId from location state or calculate from blueprintId
+  const stateCatalogId = (location.state as { catalogId?: string })?.catalogId;
+  const catalogId = stateCatalogId || (blueprintId ? getCatalogId(blueprintId) : "1");
+  
+  // Determine back navigation path
+  const getBackPath = () => {
+    // Always go back to flow selection if we have moduleId
+    if (moduleId) {
+      return `/phase-i/catalog/${catalogId}/modules/${moduleId}/flow`;
+    }
+    // Fallback to blueprint if no moduleId
+    return `/phase-i/catalog/${blueprintId || "sap-s4hana"}/blueprint`;
+  };
   const [selectedSubModuleIds, setSelectedSubModuleIds] = useState<string[]>(
     []
   );
@@ -83,8 +108,8 @@ export function ModuleROICockpit() {
       <PageHeader
         title={`SAP ${cockpitData.moduleName} - ROI Cockpit`}
         subtitle={`SAP S/4HANA ${cockpitData.moduleLabel}`}
-        backTo={`/phase-i/catalog/${blueprintId || "sap-s4hana"}/blueprint`}
-        backLabel="Back to Blueprint"
+        backTo={getBackPath()}
+        backLabel="Back to Flow Selection"
         rightContent={
           <div className="flex flex-col items-end gap-2">
             <div className="flex items-center gap-2">

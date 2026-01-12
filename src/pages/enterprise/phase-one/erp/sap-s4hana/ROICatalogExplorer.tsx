@@ -69,14 +69,19 @@ const getCatalogId = (id: string): string => {
 
 export function ROICatalogExplorer() {
   const navigate = useNavigate();
-  const { id: productIdFromRoute } = useParams<{ id?: string }>();
+  const { id: productIdFromRoute, moduleId: moduleIdFromRoute } = useParams<{ 
+    id?: string;
+    moduleId?: string;
+  }>();
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(
     productIdFromRoute || null
   );
-  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(
+    moduleIdFromRoute || null
+  );
 
-  // Sync selectedProductId with route parameter
+  // Sync selectedProductId and selectedModuleId with route parameters
   useEffect(() => {
     if (productIdFromRoute) {
       // Convert blueprint ID to catalog ID if needed
@@ -96,7 +101,15 @@ export function ROICatalogExplorer() {
         return prev;
       });
     }
-  }, [productIdFromRoute]);
+    
+    // Sync moduleId from route
+    if (moduleIdFromRoute) {
+      setSelectedModuleId(moduleIdFromRoute);
+    } else if (!moduleIdFromRoute && selectedModuleId) {
+      // Clear module selection if route doesn't have moduleId
+      setSelectedModuleId(null);
+    }
+  }, [productIdFromRoute, moduleIdFromRoute]);
 
   // Update route when product is selected
   useEffect(() => {
@@ -237,7 +250,11 @@ export function ROICatalogExplorer() {
               moduleId={selectedModuleId}
               moduleName={selectedModule.name}
               moduleLabel={selectedModule.label}
-              onBack={() => setSelectedModuleId(null)}
+              catalogId={catalogId}
+              onBack={() => {
+                setSelectedModuleId(null);
+                navigate(`/phase-i/catalog/${catalogId}/modules`);
+              }}
             />
           );
         }
@@ -265,7 +282,11 @@ export function ROICatalogExplorer() {
               <ModulesSection
                 subModules={blueprint.subModules}
                 activeModuleId="fi"
-                onModuleClick={(moduleId) => setSelectedModuleId(moduleId)}
+                onModuleClick={(moduleId) => {
+                  // Navigate to flow selection route
+                  const blueprintId = blueprint.id || selectedProductId;
+                  navigate(`/phase-i/catalog/${selectedProductId}/modules/${moduleId}/flow`);
+                }}
                 blueprintId={selectedProductId}
               />
             </div>

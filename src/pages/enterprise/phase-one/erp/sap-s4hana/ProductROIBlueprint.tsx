@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { sections, Section, gradientStyles } from "./components/constants";
@@ -7,9 +8,38 @@ import { MetricsSection } from "./components/MetricsSection";
 import { DataSection } from "./components/DataSection";
 import { IntelligenceSection } from "./components/IntelligenceSection";
 
+// Mapping blueprint ID to catalog ID
+const blueprintToCatalogMap: Record<string, string> = {
+  "sap-s4hana": "1",
+  // Add more mappings as needed
+};
+
+const getCatalogId = (blueprintId: string): string => {
+  return blueprintToCatalogMap[blueprintId] || blueprintId;
+};
+
 export function ProductROIBlueprint() {
+  const { id: blueprintId } = useParams<{ id: string }>();
+  const location = useLocation();
+  const navigate = useNavigate();
   const blueprint = SAP_S4HANA_BLUEPRINT;
   const [activeSection, setActiveSection] = useState<Section>("intent");
+  
+  // Get catalog ID for navigation
+  const catalogId = blueprintId ? getCatalogId(blueprintId) : "1";
+  
+  // Get moduleId from location state (passed from flow selection)
+  const moduleId = (location.state as { moduleId?: string })?.moduleId;
+  
+  // Determine back navigation path
+  const getBackPath = () => {
+    if (moduleId) {
+      // If we have moduleId, go back to flow selection
+      return `/phase-i/catalog/${catalogId}/modules/${moduleId}/flow`;
+    }
+    // Otherwise, go to module selection
+    return `/phase-i/catalog/${catalogId}/modules`;
+  };
 
   const getDimensionColor = (dimension: string) =>
     blueprint.roiIntents.find((intent) =>
@@ -21,7 +51,8 @@ export function ProductROIBlueprint() {
       <PageHeader
         title={blueprint.productSuite}
         subtitle="Product ROI Blueprint"
-        backTo="/phase-i/catalog"
+        backTo={getBackPath()}
+        backLabel={moduleId ? "Back to Flow Selection" : "Back to Modules"}
         rightContent={
           <>
             <div className="text-right">

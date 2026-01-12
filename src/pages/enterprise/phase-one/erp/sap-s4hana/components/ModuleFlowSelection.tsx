@@ -7,6 +7,7 @@ interface ModuleFlowSelectionProps {
   moduleId: string;
   moduleName: string;
   moduleLabel: string;
+  catalogId?: string;
   onBack?: () => void;
 }
 
@@ -15,18 +16,32 @@ export function ModuleFlowSelection({
   moduleId,
   moduleName,
   moduleLabel,
+  catalogId,
   onBack,
 }: ModuleFlowSelectionProps) {
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else if (catalogId) {
+      // Navigate back to module selection
+      navigate(`/phase-i/catalog/${catalogId}/modules`);
+    }
+  };
+
   const handleROIDimensionFlow = () => {
-    // Navigate to blueprint page
-    navigate(`/phase-i/catalog/${blueprintId}/blueprint`);
+    // Navigate to blueprint page with moduleId in state so we can navigate back to flow selection
+    navigate(`/phase-i/catalog/${blueprintId}/blueprint`, {
+      state: { moduleId, catalogId },
+    });
   };
 
   const handleSubModuleFlow = () => {
-    // Navigate to module cockpit page
-    navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit`);
+    // Navigate to module cockpit page with moduleId and catalogId in state
+    navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit`, {
+      state: { moduleId, catalogId },
+    });
   };
 
   return (
