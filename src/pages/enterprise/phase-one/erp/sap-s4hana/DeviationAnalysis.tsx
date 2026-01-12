@@ -11,7 +11,6 @@ import {
   repeatTicketTrendData,
   strategicInsights,
 } from "@/data/deviationAnalysisData";
-import { BarChart3D } from "@/components/roi/BarChart3D";
 import {
   AlertTriangle,
   TrendingDown,
@@ -42,14 +41,6 @@ export default function DeviationAnalysis() {
   const absoluteReductionPercent = Math.round(
     (absoluteReduction / peakMonth.repeatTickets) * 100
   );
-
-  // Prepare bar chart data
-  const barChartData = repeatTicketTrendData.map((item) => ({
-    month: item.month,
-    "Repeat Tickets": item.repeatTickets,
-    "Total Tickets": item.totalTickets,
-    percentage: item.percentage,
-  }));
 
   return (
     <div className="flex flex-col gap-6 pb-8">
@@ -196,126 +187,6 @@ export default function DeviationAnalysis() {
                 color="#9909e0"
                 backgroundColor="rgba(153, 9, 224, 0.1)"
               />
-            </div>
-
-            {/* Chart Section - Compact */}
-            <div className="border border-border/50 rounded-lg overflow-hidden bg-card shadow-md">
-              <div className="p-3 border-b border-border/50 bg-muted/30">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="h-4 w-4 text-[#9909e0]" />
-                    <span className="text-sm font-bold">
-                      Repeat Tickets Count & Percentage Trend
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded bg-[#9909e0]" />
-                      <span className="text-muted-foreground">
-                        Repeat Tickets
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full border-2 border-[#10b981]" />
-                      <span className="text-muted-foreground">Percentage</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-3">
-                {/* Combined Chart: Bar + Line - Compact & 3D */}
-                <BarChart3D
-                  data={barChartData}
-                  keys={["Repeat Tickets"]}
-                  indexBy="month"
-                  height={400}
-                  margin={{ top: 40, right: 100, bottom: 50, left: 60 }}
-                  padding={0.6}
-                  xAxisLabel="Month"
-                  yAxisLabel="Repeat Tickets Count"
-                  getColor={(value) => {
-                    if (value >= 9) return "#DC2626"; // Critical - Red
-                    if (value >= 7) return "#EA580C"; // High - Orange
-                    if (value >= 5) return "#F59E0B"; // Medium - Yellow
-                    return "#10b981"; // Low - Green
-                  }}
-                  showLineOverlay={true}
-                  lineData={repeatTicketTrendData.map((item) => ({
-                    x: item.month,
-                    y: item.percentage,
-                  }))}
-                  lineColor="#10b981"
-                  tooltip={({ value, indexValue, data }) => {
-                    const barValue = value as number;
-                    let barColor = "#10b981";
-                    if (barValue >= 9) barColor = "#DC2626";
-                    else if (barValue >= 7) barColor = "#EA580C";
-                    else if (barValue >= 5) barColor = "#F59E0B";
-
-                    return (
-                      <div
-                        className="bg-white p-4 rounded-xl border-2 shadow-2xl min-w-[220px] z-50"
-                        style={{
-                          borderColor: barColor,
-                          boxShadow: `0 10px 25px rgba(0,0,0,0.15), 0 0 0 1px ${barColor}20`,
-                        }}
-                      >
-                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border/30">
-                          <div
-                            className="w-4 h-4 rounded"
-                            style={{ backgroundColor: barColor }}
-                          />
-                          <strong className="text-sm font-bold text-foreground">
-                            {indexValue}
-                          </strong>
-                        </div>
-                        <div className="space-y-2.5">
-                          <div>
-                            <div className="text-xs text-muted-foreground mb-1">
-                              Repeat Tickets
-                            </div>
-                            <div
-                              className="text-2xl font-bold"
-                              style={{ color: barColor }}
-                            >
-                              {value} tickets
-                            </div>
-                          </div>
-                          <div className="pt-2 border-t border-border/20 space-y-1.5">
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-muted-foreground">
-                                Percentage:
-                              </span>
-                              <span className="font-semibold text-foreground">
-                                {data.percentage}%
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-muted-foreground">
-                                Total Tickets:
-                              </span>
-                              <span className="font-semibold text-foreground">
-                                {data["Total Tickets"]}
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-muted-foreground">
-                                Repeat Rate:
-                              </span>
-                              <span
-                                className="font-semibold"
-                                style={{ color: barColor }}
-                              >
-                                {data.percentage}%
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }}
-                />
-              </div>
             </div>
 
             {/* Key Insights - Compact */}

@@ -1,6 +1,6 @@
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsiveLine } from "@nivo/line";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export interface BarChart3DData {
   [key: string]: string | number;
@@ -19,7 +19,12 @@ export interface BarChart3DProps {
   showLineOverlay?: boolean;
   lineData?: Array<{ x: string; y: number }>;
   lineColor?: string;
-  tooltip?: (props: any) => React.ReactNode;
+  tooltip?: (props: {
+    value: number | string;
+    indexValue: string | number;
+    data: Record<string, unknown>;
+    color?: string;
+  }) => React.ReactNode;
 }
 
 export function BarChart3D({
@@ -42,65 +47,11 @@ export function BarChart3D({
   lineColor = "#10b981",
   tooltip,
 }: BarChart3DProps) {
-  const defaultTooltip = ({ value, indexValue, data: barData, color }: any) => {
-    const barValue = value as number;
-    const barColor = getColor(barValue);
-
-    return (
-      <div
-        className="bg-white p-4 rounded-xl border-2 shadow-2xl min-w-[200px] z-50"
-        style={{
-          borderColor: barColor,
-          boxShadow: `0 10px 25px rgba(0,0,0,0.15), 0 0 0 1px ${barColor}20`,
-        }}
-      >
-        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border/30">
-          <div
-            className="w-4 h-4 rounded"
-            style={{ backgroundColor: barColor }}
-          />
-          <strong className="text-sm font-bold text-foreground">
-            {indexValue}
-          </strong>
-        </div>
-        <div className="space-y-2">
-          <div>
-            <div className="text-xs text-muted-foreground mb-1">
-              Repeat Tickets
-            </div>
-            <div className="text-xl font-bold" style={{ color: barColor }}>
-              {value} tickets
-            </div>
-          </div>
-          {barData && typeof barData === "object" && (
-            <div className="pt-2 border-t border-border/20 space-y-1.5">
-              {Object.entries(barData).map(([key, val]) => {
-                if (key === indexBy || keys.includes(key)) return null;
-                return (
-                  <div
-                    key={key}
-                    className="flex items-center justify-between text-xs"
-                  >
-                    <span className="text-muted-foreground capitalize">
-                      {key.replace(/([A-Z])/g, " $1").trim()}:
-                    </span>
-                    <span className="font-semibold text-foreground">
-                      {String(val)}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  // Add hover effects using CSS
+  // Add hover effects and tooltip styling using CSS
   useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
+      /* Hover effects for custom 3D bars */
       .bar-group {
         transition: transform 0.2s ease !important;
       }
@@ -118,6 +69,18 @@ export function BarChart3D({
       }
       .bar-group:hover .bar-highlight {
         opacity: 0.8 !important;
+      }
+      /* CRITICAL: Prevent tooltip from blocking interactions - this fixes flickering */
+      [class*="nivo-tooltip"],
+      [class*="nivo-tooltip-wrapper"],
+      .nivo-tooltip,
+      [id*="nivo-tooltip"] {
+        pointer-events: none !important;
+        z-index: 9999 !important;
+      }
+      /* Ensure tooltip container doesn't interfere */
+      [class*="nivo-tooltip-wrapper"] {
+        pointer-events: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -138,7 +101,7 @@ export function BarChart3D({
           padding={padding}
           valueScale={{ type: "linear" }}
           indexScale={{ type: "band", round: true }}
-          colors={["transparent"]}
+          colors={["rgba(0,0,0,0.01)"]}
           axisTop={null}
           axisRight={null}
           axisBottom={{
@@ -167,11 +130,12 @@ export function BarChart3D({
           layers={[
             "grid",
             "axes",
+            "bars", // Render default bars (transparent) for tooltip detection
             (props) => {
-              // Custom 3D bars with proper colors
+              // Custom 3D bars overlay with proper colors
               // First, collect all defs at the root level
-              const allDefs: JSX.Element[] = [];
-              const allBars: JSX.Element[] = [];
+              const allDefs: React.ReactElement[] = [];
+              const allBars: React.ReactElement[] = [];
 
               props.bars.forEach((bar) => {
                 const value = bar.data.value as number;
@@ -444,10 +408,8 @@ export function BarChart3D({
             "markers",
             "legends",
           ]}
-          tooltip={tooltip || defaultTooltip}
-          enableLabel={false}
+          tooltip={tooltip}
           isInteractive={true}
-          tooltipFormat={(value) => `${value}`}
           theme={{
             text: {
               fill: "hsl(var(--muted-foreground))",

@@ -18,6 +18,7 @@ import { ControlEvidence } from "./pages/enterprise/phase-one/erp/sap-s4hana/Con
 import { ActionTracker } from "./pages/enterprise/phase-one/erp/sap-s4hana/ActionTracker";
 import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTickets";
 import DeviationTicketDetails from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTicketDetails";
+import DeviationAnalysis from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationAnalysis";
 
 function App() {
   return (
@@ -79,6 +80,11 @@ function App() {
             <Route 
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/:ticketId" 
               element={<DeviationTicketDetails />} 
+            />
+
+            <Route 
+              path="phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/deviation-tickets/deviation-analysis" 
+              element={<DeviationAnalysis />} 
             />
 
             {/* Catch all - redirect to enterprise */}
