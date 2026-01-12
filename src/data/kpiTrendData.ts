@@ -191,3 +191,4 @@ export const getTrendConfig = (kpiId: string): KPITrendConfig => {
   return KPI_TREND_CONFIGS[kpiId] || getDefaultTrendConfig();
 };
 
+

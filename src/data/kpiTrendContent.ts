@@ -170,3 +170,4 @@ export const getTrendContent = (kpiId: string): KPITrendContent => {
   return KPI_TREND_CONTENT[kpiId] || getDefaultTrendContent();
 };
 
+

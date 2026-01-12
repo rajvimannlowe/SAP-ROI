@@ -42,15 +42,7 @@ export function BarChart3D({
   lineColor = "#10b981",
   tooltip,
 }: BarChart3DProps) {
-  const defaultTooltip = ({
-    value,
-    indexValue,
-    data: barData,
-  }: {
-    value: number;
-    indexValue: string | number;
-    data: any;
-  }) => {
+  const defaultTooltip = ({ value, indexValue, data: barData, color }: any) => {
     const barValue = value as number;
     const barColor = getColor(barValue);
 
@@ -146,7 +138,7 @@ export function BarChart3D({
           padding={padding}
           valueScale={{ type: "linear" }}
           indexScale={{ type: "band", round: true }}
-          colors={["rgba(0,0,0,0.01)"]}
+          colors={["transparent"]}
           axisTop={null}
           axisRight={null}
           axisBottom={{
@@ -172,17 +164,14 @@ export function BarChart3D({
           enableLabel={false}
           animate={true}
           motionConfig="gentle"
-          isInteractive={true}
-          tooltip={tooltip || defaultTooltip}
           layers={[
             "grid",
             "axes",
-            "bars", // Keep default bars for tooltip (they're nearly transparent)
             (props) => {
               // Custom 3D bars with proper colors
               // First, collect all defs at the root level
-              const allDefs: React.ReactElement[] = [];
-              const allBars: React.ReactElement[] = [];
+              const allDefs: JSX.Element[] = [];
+              const allBars: JSX.Element[] = [];
 
               props.bars.forEach((bar) => {
                 const value = bar.data.value as number;
@@ -322,7 +311,7 @@ export function BarChart3D({
                   <g
                     key={barId}
                     transform={`translate(${bar.x}, ${bar.y})`}
-                    style={{ cursor: "pointer", pointerEvents: "none" }}
+                    style={{ cursor: "pointer" }}
                     className="bar-group"
                   >
                     {/* 3D Top Face - Enhanced */}
@@ -455,6 +444,10 @@ export function BarChart3D({
             "markers",
             "legends",
           ]}
+          tooltip={tooltip || defaultTooltip}
+          enableLabel={false}
+          isInteractive={true}
+          tooltipFormat={(value) => `${value}`}
           theme={{
             text: {
               fill: "hsl(var(--muted-foreground))",
