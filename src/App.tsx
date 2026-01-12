@@ -42,6 +42,10 @@ function App() {
             <Route path="phase-i" element={<PhaseIROIPortfolio />} />
             <Route path="phase-i/catalog" element={<ROICatalogExplorer />} />
             <Route
+              path="phase-i/catalog/:id/modules"
+              element={<ROICatalogExplorer />}
+            />
+            <Route
               path="phase-i/catalog/:id/blueprint"
               element={<ProductROIBlueprint />}
             />

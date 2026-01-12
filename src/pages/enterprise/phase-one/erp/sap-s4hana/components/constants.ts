@@ -3,11 +3,10 @@ import {
   BarChart3,
   Database,
   Brain,
-  Layers,
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
-export type Section = "intent" | "metrics" | "data" | "intelligence" | "modules";
+export type Section = "intent" | "metrics" | "data" | "intelligence";
 
 export interface SectionConfig {
   id: Section;
@@ -20,7 +19,6 @@ export const sections: SectionConfig[] = [
   { id: "metrics", label: "Metrics", icon: BarChart3 },
   { id: "data", label: "Data & Integration", icon: Database },
   { id: "intelligence", label: "Intelligence", icon: Brain },
-  { id: "modules", label: "Modules", icon: Layers },
 ];
 
 // Metric Card Colors - Centralized for consistency

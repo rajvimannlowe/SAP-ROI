@@ -6,24 +6,22 @@ interface ModulesSectionProps {
   subModules: ProductBlueprint["subModules"];
   activeModuleId?: string;
   onModuleClick?: (moduleId: string) => void;
+  blueprintId?: string;
 }
 
 export function ModulesSection({
   subModules,
   activeModuleId,
   onModuleClick,
+  blueprintId: propBlueprintId,
 }: ModulesSectionProps) {
   const navigate = useNavigate();
-  const { id: blueprintId } = useParams<{ id: string }>();
+  const { id: routeBlueprintId } = useParams<{ id: string }>();
+  const blueprintId = propBlueprintId || routeBlueprintId;
 
   const handleModuleClick = (moduleId: string) => {
     onModuleClick?.(moduleId);
-    // Navigate to module cockpit page
-    navigate(
-      `/phase-i/catalog/${
-        blueprintId || "sap-s4hana"
-      }/blueprint/${moduleId}/cockpit`
-    );
+    // Don't navigate directly - let parent handle showing flow selection
   };
 
   return (

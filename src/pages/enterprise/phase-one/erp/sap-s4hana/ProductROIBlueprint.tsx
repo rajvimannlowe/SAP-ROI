@@ -6,14 +6,10 @@ import { IntentSection } from "./components/IntentSection";
 import { MetricsSection } from "./components/MetricsSection";
 import { DataSection } from "./components/DataSection";
 import { IntelligenceSection } from "./components/IntelligenceSection";
-import { ModulesSection } from "./components/ModulesSection";
 
 export function ProductROIBlueprint() {
   const blueprint = SAP_S4HANA_BLUEPRINT;
   const [activeSection, setActiveSection] = useState<Section>("intent");
-  const [activeModuleId, setActiveModuleId] = useState<string | undefined>(
-    "fi"
-  );
 
   const getDimensionColor = (dimension: string) =>
     blueprint.roiIntents.find((intent) =>
@@ -91,14 +87,6 @@ export function ProductROIBlueprint() {
 
         {activeSection === "intelligence" && (
           <IntelligenceSection blueprint={blueprint} />
-        )}
-
-        {activeSection === "modules" && (
-          <ModulesSection
-            subModules={blueprint.subModules}
-            activeModuleId={activeModuleId}
-            onModuleClick={setActiveModuleId}
-          />
         )}
       </div>
 

@@ -62,7 +62,7 @@ export const PHASE_I_ROI_CATEGORIES: CategorySection[] = [
           { label: "CFO", active: true },
           { label: "CIO", active: true },
         ],
-        bottomLink: "Click to view Product ROI Blueprint →",
+        bottomLink: "Click to view Product Module →",
         highlighted: true,
       },
     ],
