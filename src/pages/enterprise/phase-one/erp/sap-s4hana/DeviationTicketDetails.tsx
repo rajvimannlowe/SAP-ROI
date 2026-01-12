@@ -21,11 +21,11 @@ const DeviationTicketDetails = () => {
         const scrollToTop = () => {
             // Method 1: Instant scroll using scrollTo
             window.scrollTo(0, 0);
-            
+
             // Method 2: Set scrollTop directly
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
-            
+
             // Method 3: Use ref if available
             if (topRef.current) {
                 topRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
@@ -34,7 +34,7 @@ const DeviationTicketDetails = () => {
 
         // Execute immediately
         scrollToTop();
-        
+
         // Also execute after a small delay to handle any async rendering
         setTimeout(scrollToTop, 50);
         setTimeout(scrollToTop, 200);
@@ -59,8 +59,7 @@ const DeviationTicketDetails = () => {
                             <Button
                                 size="sm"
                                 className="gap-2 bg-linear-to-r from-[#4160F0] to-[#FF6700] text-white hover:from-[#3550D9] hover:to-[#E65C00] shadow-sm"
-                                //   onClick={() => navigate(`/`)}
-                                onClick={() => alert(`Navigate to Feedback & Improvement Loop`)}
+                                onClick={() => navigate(`/phase-i/catalog/:id/blueprint/:moduleId/cockpit/:kpiId/actions/feedback-improvement-loop`)}
                             >
                                 <span className="hidden sm:inline">Feedback & Improvement Loop</span>
                             </Button>
@@ -434,7 +433,7 @@ const DeviationTicketDetails = () => {
                     </div>
                 )}
             </div>
-            
+
             {/* Learnings */}
             <div className="bg-blue-50/80 border border-blue-200/60 rounded-xl p-8 mb-8 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center gap-4 mb-8">
@@ -497,7 +496,7 @@ const DeviationTicketDetails = () => {
                     </div>
                 )}
             </div>
-            
+
             {/* Audit Trail */}
             <div className="bg-linear-to-br from-slate-50 to-gray-50/50 border border-slate-200/70 rounded-2xl p-8 mb-8 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
                 <div className="flex items-center gap-4 mb-8">
@@ -514,7 +513,7 @@ const DeviationTicketDetails = () => {
                     <div className="relative">
                         {/* Enhanced Timeline Line */}
                         <div className="absolute left-7 top-0 bottom-0 w-1 bg-linear-to-b from-emerald-400 via-teal-400 to-slate-300/60 rounded-full shadow-sm"></div>
-                        
+
                         <div className="space-y-8">
                             {ticket.auditTrail.trails.map((trail, index) => (
                                 <div key={index} className="relative group">
@@ -522,7 +521,7 @@ const DeviationTicketDetails = () => {
                                     <div className="absolute left-5 top-5 w-6 h-6 bg-white border-3 border-emerald-400 rounded-full shadow-lg z-10 group-hover:scale-110 transition-transform duration-200">
                                         <div className="absolute inset-1.5 bg-linear-to-br from-emerald-500 to-teal-600 rounded-full"></div>
                                     </div>
-                                    
+
                                     {/* Enhanced Content Card */}
                                     <div className="ml-16 bg-white/80 backdrop-blur-sm border border-slate-200/70 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-emerald-300/60 hover:bg-white group-hover:translate-x-1">
                                         <div className="flex items-start justify-between mb-4">
@@ -539,7 +538,7 @@ const DeviationTicketDetails = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="ml-14 pl-5 border-l-3 border-gradient-to-b from-emerald-200 to-teal-200 relative">
                                             <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-linear-to-b from-emerald-400 to-teal-400 rounded-full"></div>
                                             <p className="text-sm text-slate-700 leading-relaxed font-medium bg-linear-to-r from-slate-50 to-emerald-50/30 p-4 rounded-xl border border-slate-200/50">
