@@ -67,64 +67,62 @@ export const PHASE_I_ROI_CATEGORIES: CategorySection[] = [
       },
     ],
   },
-  {
-    category: "CRM",
-    investments: [
-      {
-        id: "salesforce",
-        title: "Salesforce",
-        company: "Salesforce",
-        category: "CRM",
-        phase: "Phase 2",
-        roiDimensions: [
-          { label: "Cost", icon: DollarSign, active: false },
-          {
-            label: "Efficiency",
-            icon: TrendingUp,
-            active: true,
-            color: "#4160F0",
-          },
-          { label: "Compliance", icon: Shield, active: false },
-          { label: "Revenue", icon: TrendingDown, active: false },
-        ],
-        keyPersonas: [
-          { label: "CEO", active: true },
-          { label: "CFO", active: false },
-          { label: "CIO", active: false },
-        ],
-        bottomText: "Future Phases",
-      },
-    ],
-  },
-  {
-    category: "Data & Analytics",
-    investments: [
-      {
-        id: "snowflake",
-        title: "Snowflake",
-        company: "Snowflake",
-        category: "Data Platform",
-        phase: "Phase 2",
-        roiDimensions: [
-          { label: "Cost", icon: DollarSign, active: false },
-          {
-            label: "Efficiency",
-            icon: TrendingUp,
-            active: true,
-            color: "#4160F0",
-          },
-          { label: "Compliance", icon: Shield, active: false },
-          { label: "Revenue", icon: TrendingDown, active: false },
-        ],
-        keyPersonas: [
-          { label: "CEO", active: false },
-          { label: "CFO", active: false },
-          { label: "CIO", active: true },
-        ],
-        bottomText: "Future Phases",
-      },
-    ],
-  },
+  // {
+  //   category: "CRM",
+  //   investments: [
+  //     {
+  //       id: "salesforce",
+  //       title: "Salesforce",
+  //       company: "Salesforce",
+  //       category: "CRM",
+  //       phase: "Phase 2",
+  //       roiDimensions: [
+  //         { label: "Cost", icon: DollarSign, active: false },
+  //         {
+  //           label: "Efficiency",
+  //           icon: TrendingUp,
+  //           active: true,
+  //           color: "#4160F0",
+  //         },
+  //         { label: "Compliance", icon: Shield, active: false },
+  //         { label: "Revenue", icon: TrendingDown, active: false },
+  //       ],
+  //       keyPersonas: [
+  //         { label: "CEO", active: true },
+  //         { label: "CFO", active: false },
+  //         { label: "CIO", active: false },
+  //       ],
+  //       bottomText: "Future Phases",
+  //     },
+  //   ],
+  // },
+  // {
+  //   category: "Data & Analytics",
+  //   investments: [
+  //     {
+  //       id: "snowflake",
+  //       title: "Snowflake",
+  //       company: "Snowflake",
+  //       category: "Data Platform",
+  //       phase: "Phase 2",
+  //       roiDimensions: [
+  //         { label: "Cost", icon: DollarSign, active: false },
+  //         {
+  //           label: "Efficiency",
+  //           icon: TrendingUp,
+  //           active: true,
+  //           color: "#4160F0",
+  //         },
+  //         { label: "Compliance", icon: Shield, active: false },
+  //         { label: "Revenue", icon: TrendingDown, active: false },
+  //       ],
+  //       keyPersonas: [
+  //         { label: "CEO", active: false },
+  //         { label: "CFO", active: false },
+  //         { label: "CIO", active: true },
+  //       ],
+  //       bottomText: "Future Phases",
+  //     },
+  //   ],
+  // },
 ];
-
-
