@@ -46,6 +46,7 @@ export default function ControlOverviewTab({
           iconGradient={getGradient(kpiIcon.color)}
           title="Associated KPI"
           value={evidenceData.associatedKPI}
+          description={null}
           borderColor={hexToRgba(kpiIcon.color, 0.3)}
           bgColor={hexToRgba(kpiIcon.color, 0.05)}
         />
@@ -56,11 +57,13 @@ export default function ControlOverviewTab({
           iconGradient={getGradient(typeIcon.color)}
           title="Control Type"
           description={
-            <div className="mt-1">
-              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-100 text-blue-700 border border-blue-200">
-                {evidenceData.controlType}
-              </span>
-            </div>
+            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${
+              evidenceData.controlType === "Preventive" 
+                ? "bg-blue-100 text-blue-700 border-blue-200" 
+                : "bg-purple-100 text-purple-700 border-purple-200"
+            }`}>
+              {evidenceData.controlType}
+            </span>
           }
           borderColor={hexToRgba(typeIcon.color, 0.3)}
           bgColor={hexToRgba(typeIcon.color, 0.05)}
@@ -72,6 +75,7 @@ export default function ControlOverviewTab({
           iconGradient={getGradient(frequencyIcon.color)}
           title="Frequency of Execution"
           value={evidenceData.frequency}
+          description={null}
           borderColor={hexToRgba(frequencyIcon.color, 0.3)}
           bgColor={hexToRgba(frequencyIcon.color, 0.05)}
         />
@@ -82,11 +86,15 @@ export default function ControlOverviewTab({
           iconGradient={getGradient(riskIcon.color)}
           title="Risk Rating"
           description={
-            <div className="mt-1">
-              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-red-100 text-red-700 border border-red-200">
-                {evidenceData.riskRating}
-              </span>
-            </div>
+            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${
+              evidenceData.riskRating === "High" 
+                ? "bg-red-100 text-red-700 border-red-200"
+                : evidenceData.riskRating === "Medium"
+                ? "bg-amber-100 text-amber-700 border-amber-200"
+                : "bg-green-100 text-green-700 border-green-200"
+            }`}>
+              {evidenceData.riskRating}
+            </span>
           }
           borderColor={hexToRgba(riskIcon.color, 0.3)}
           bgColor={hexToRgba(riskIcon.color, 0.05)}

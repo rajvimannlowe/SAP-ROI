@@ -83,8 +83,27 @@ export function InfoCard({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center justify-between gap-2 mb-1.5">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
+            {value ? (
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  {Icon && iconGradient && (
+                    <div
+                      className="p-1.5 rounded-md shrink-0"
+                      style={{ background: iconGradient }}
+                    >
+                      <Icon className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                  <h3 className="text-sm font-bold text-foreground leading-tight">
+                    {title}
+                  </h3>
+                </div>
+                <p className="text-sm font-medium text-foreground leading-tight">
+                  {value}
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 mb-1.5">
                 {Icon && iconGradient && (
                   <div
                     className="p-1.5 rounded-md shrink-0"
@@ -93,16 +112,11 @@ export function InfoCard({
                     <Icon className="h-4 w-4 text-white" />
                   </div>
                 )}
-                <h3 className="text-sm font-bold text-foreground leading-tight line-clamp-1">
+                <h3 className="text-sm font-bold text-foreground leading-tight">
                   {title}
                 </h3>
               </div>
-              {value && (
-                <p className="text-sm font-bold text-foreground shrink-0">
-                  {value}
-                </p>
-              )}
-            </div>
+            )}
             {description && (
               <div className="text-xs text-muted-foreground leading-snug mb-1.5">
                 {typeof description === "string" ? (
