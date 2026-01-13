@@ -314,38 +314,6 @@ export function KPIDetailView() {
 
         {/* Right Column */}
         <div className="space-y-6">
-          {kpiDetail.calculationLogic && (
-            <InfoCard
-              {...createInfoCardProps(
-                BarChart3,
-                "Calculation Logic",
-                kpiDetail.calculationLogic,
-                COLORS.green
-              )}
-            />
-          )}
-          {kpiDetail.dataSources && kpiDetail.dataSources.length > 0 && (
-            <InfoCard
-              {...createInfoCardProps(
-                Database,
-                "Data Sources",
-                <ul className="space-y-2.5 mt-2">
-                  {kpiDetail.dataSources.map((source, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <div
-                        className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
-                        style={{ backgroundColor: COLORS.indigo }}
-                      />
-                      <span className="text-xs text-muted-foreground flex-1">
-                        {source}
-                      </span>
-                    </li>
-                  ))}
-                </ul>,
-                COLORS.indigo
-              )}
-            />
-          )}
           {kpiDetail.thresholds && (
             <InfoCard
               {...createInfoCardProps(
