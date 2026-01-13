@@ -68,14 +68,17 @@ export function ModuleROICockpit() {
   // Get KPI table columns from data config with navigation
   const kpiColumns = useMemo(
     () =>
-      getKPITableColumns((kpi) => {
-        navigate(
-          `/phase-i/catalog/${
-            blueprintId || "sap-s4hana"
-          }/blueprint/${moduleId}/cockpit/${kpi.id}`
-        );
-      }),
-    [navigate, blueprintId, moduleId]
+      getKPITableColumns(
+        cockpitData,
+        (kpi) => {
+          navigate(
+            `/phase-i/catalog/${
+              blueprintId || "sap-s4hana"
+            }/blueprint/${moduleId}/cockpit/${kpi.id}`
+          );
+        }
+      ),
+    [navigate, blueprintId, moduleId, cockpitData]
   );
 
   // Filter KPIs based on selected sub-modules

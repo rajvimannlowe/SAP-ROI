@@ -1,85 +1,140 @@
-import { SimpleColumnConfig, renderCellByType } from "./tableColumnTypes";
-import { KPIDetail } from "./moduleCockpitData";
+import { renderCellByType } from "./tableColumnTypes";
+import { KPIDetail, ModuleCockpitData } from "./moduleCockpitData";
 import { TableColumn } from "../components/roi/DrilldownTable";
+import { User } from "lucide-react";
 
-// KPI Table Column Configuration - Simple and Easy to Understand
-export const getKPI_TABLE_COLUMNS = (
-  onKpiClick?: (kpi: KPIDetail) => void
-): SimpleColumnConfig<KPIDetail>[] => [
-  {
-    key: "name",
-    header: "KPI Name",
-    type: "textWithLink",
-    customAccessor: (row) => {
-      return renderCellByType(row.name, "textWithLink", {
-        textStyle: "short",
-        row: row,
-        onClick: (value, rowData) => {
-          if (onKpiClick && rowData) {
-            onKpiClick(rowData as KPIDetail);
-          }
-        },
-      });
-    },
-  },
-  {
-    key: "businessRiskPrevented",
-    header: "Business Risk Prevented",
-    type: "text",
-    textStyle: "long", // Auto-applies long text styling
-  },
-  {
-    key: "controlType",
-    header: "Control Type",
-    type: "badge",
-    badgeConfig: {
-      colorMap: {
-        Preventive: "#2563eb",
-        Detective: "#9333ea",
-      },
-    },
-  },
-  {
-    key: "status",
-    header: "Status",
-    type: "status",
-    align: "center",
-  },
-  {
-    key: "owner",
-    header: "Owner",
-    type: "text",
-  },
-  {
-    key: "recommendedAction",
-    header: "Recommended Action",
-    type: "text",
-    textStyle: "long", // Auto-applies long text styling
-  },
-];
-
-// Convert column config to table format
-const createColumnAccessor = <T extends object>(
-  config: SimpleColumnConfig<T>
-) => {
-  return (row: T) => {
-    const value = row[config.key];
-    return renderCellByType(value, config.type, {
-      textStyle: config.textStyle,
-      badgeConfig: config.badgeConfig,
-    });
-  };
+const roiPotentialColorMap = {
+  "Very High": "#DC2626",
+  High: "#EA580C",
+  Medium: "#D97706",
+  Low: "#65A30D",
 };
 
-// Get KPI table columns
+// Get KPI table columns with required columns only - same structure as ROI Intent table
 export const getKPITableColumns = (
+  cockpitData: ModuleCockpitData | null,
   onKpiClick?: (kpi: KPIDetail) => void
 ): TableColumn<KPIDetail>[] => {
-  return getKPI_TABLE_COLUMNS(onKpiClick).map((config) => ({
-    key: String(config.key),
-    header: config.header,
-    align: config.align || "left",
-    width: config.width,
-    accessor: config.customAccessor || createColumnAccessor(config),
-  }));
+  // Create a map of sub-module ID to name
+  const subModuleMap = new Map<string, string>();
+  if (cockpitData) {
+    cockpitData.subModules.forEach((subModule) => {
+      subModuleMap.set(subModule.id, subModule.name);
+    });
+  }
+
+  return [
+    {
+      key: "module",
+      header: "Module",
+      accessor: (row) =>
+        renderCellByType(cockpitData?.moduleName || "", "badge", {
+          badgeConfig: { defaultColor: "#4160F0" },
+        }),
+    },
+    {
+      key: "subModule",
+      header: "Sub-Module",
+      accessor: (row) =>
+        renderCellByType(
+          subModuleMap.get(row.subModuleId) || row.subModuleId,
+          "text",
+          {
+            textStyle: "long",
+          }
+        ),
+    },
+    {
+      key: "id",
+      header: "KPI ID",
+      accessor: (row) =>
+        renderCellByType(row.id, "textWithLink", {
+          textStyle: "short",
+          onClick: () => {
+            if (onKpiClick) {
+              onKpiClick(row);
+            }
+          },
+        }),
+    },
+    {
+      key: "name",
+      header: "KPI Name",
+      accessor: (row) =>
+        renderCellByType(row.name, "text", {
+          textStyle: "short",
+        }),
+    },
+    {
+      key: "businessObjective",
+      header: "Business Objectives",
+      accessor: (row) =>
+        renderCellByType(row.businessObjective || "N/A", "text", {
+          textStyle: "long",
+        }),
+    },
+    {
+      key: "businessRiskPrevented",
+      header: "Business Impact Summary",
+      accessor: (row) =>
+        renderCellByType(row.businessRiskPrevented, "text", {
+          textStyle: "long",
+        }),
+    },
+    {
+      key: "roiDimension",
+      header: "ROI Intent",
+      accessor: (row) =>
+        renderCellByType(row.roiDimension || "N/A", "badge", {
+          badgeConfig: { defaultColor: "#7C3AED" },
+        }),
+    },
+    {
+      key: "targetValue",
+      header: "Expected Condition",
+      accessor: (row) =>
+        renderCellByType(row.targetValue || "N/A", "text", {
+          textStyle: "long",
+        }),
+    },
+    {
+      key: "recommendedAction",
+      header: "Recommended Action",
+      accessor: (row) =>
+        renderCellByType(row.recommendedAction, "text", {
+          textStyle: "long",
+        }),
+    },
+    {
+      key: "roiPotential",
+      header: "ROI Potential",
+      accessor: (row) =>
+        renderCellByType("N/A", "badge", {
+          badgeConfig: {
+            colorMap: roiPotentialColorMap,
+            defaultColor: "#D97706",
+          },
+        }),
+    },
+    {
+      key: "status",
+      header: "Status",
+      accessor: (row) =>
+        renderCellByType(row.status, "status", {
+          textStyle: "short",
+        }),
+    },
+    {
+      key: "owner",
+      header: "Owner",
+      accessor: (row) =>
+        renderCellByType(row.owner, "textWithIcon", {
+          textStyle: "long",
+          badgeConfig: {
+            defaultColor: "#6B7280",
+            icon: User,
+          },
+        }),
+    },
+  ];
 };

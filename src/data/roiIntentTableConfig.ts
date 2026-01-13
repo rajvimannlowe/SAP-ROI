@@ -1,28 +1,13 @@
 import { TableColumn } from "../components/roi/DrilldownTable";
 import { ROIIntentTableRow } from "./roiIntentData";
 import { renderCellByType } from "./tableColumnTypes";
-import { User, Calendar } from "lucide-react";
+import { User } from "lucide-react";
 
 const roiPotentialColorMap = {
     "Very High": "#DC2626",
     High: "#EA580C",
     Medium: "#D97706",
     Low: "#65A30D",
-};
-
-const complexityColorMap = {
-    High: "#DC2626",
-    Medium: "#D97706",
-    Low: "#16A34A",
-};
-
-const ruleTypeColorMap = {
-    Control: "#2563EB",
-    Validation: "#059669",
-    Prevention: "#DC2626",
-    Monitoring: "#7C3AED",
-    Analysis: "#DB2777",
-    Compliance: "#0891B2",
 };
 
 // Function to get table columns with navigation support
@@ -60,69 +45,18 @@ export const getROIIntentTableColumns = (
     },
     {
         key: "kpiTitle",
-        header: "KPI Title",
+        header: "KPI Name",
         accessor: (row) =>
             renderCellByType(row.kpiTitle, "text", {
                 textStyle: "short",
             }),
     },
     {
-        key: "ruleType",
-        header: "Rule Type",
-        accessor: (row) =>
-            renderCellByType(row.ruleType, "badge", {
-                badgeConfig: {
-                    colorMap: ruleTypeColorMap,
-                    defaultColor: "#6366F1",
-                },
-            }),
-    },
-    {
         key: "descriptionLogic",
-        header: "Description",
+        header: "Business Objectives",
         accessor: (row) =>
             renderCellByType(row.descriptionLogic, "text", {
                 textStyle: "long",
-            }),
-    },
-    {
-        key: "sapTableDataSource",
-        header: "Data Source",
-        accessor: (row) =>
-            renderCellByType(row.sapTableDataSource, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
-        key: "extractionMethod",
-        header: "Extraction Method",
-        accessor: (row) =>
-            renderCellByType(row.extractionMethod, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
-        key: "expectedCondition",
-        header: "Expected Condition",
-        accessor: (row) =>
-            renderCellByType(row.expectedCondition, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
-        key: "detectionMethod",
-        header: "Detection Method",
-        accessor: (row) =>
-            renderCellByType(row.detectionMethod, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
-        key: "impactCategory",
-        header: "Impact Category",
-        accessor: (row) =>
-            renderCellByType(row.impactCategory, "badge", {
-                badgeConfig: { defaultColor: "#7C3AED" },
             }),
     },
     {
@@ -130,6 +64,22 @@ export const getROIIntentTableColumns = (
         header: "Business Impact Summary",
         accessor: (row) =>
             renderCellByType(row.businessImpactSummary, "text", {
+                textStyle: "long",
+            }),
+    },
+    {
+        key: "impactCategory",
+        header: "ROI Intent",
+        accessor: (row) =>
+            renderCellByType(row.impactCategory, "badge", {
+                badgeConfig: { defaultColor: "#7C3AED" },
+            }),
+    },
+    {
+        key: "expectedCondition",
+        header: "Expected Condition",
+        accessor: (row) =>
+            renderCellByType(row.expectedCondition, "text", {
                 textStyle: "long",
             }),
     },
@@ -153,25 +103,6 @@ export const getROIIntentTableColumns = (
             }),
     },
     {
-        key: "technicalComplexity",
-        header: "Technical Complexity",
-        accessor: (row) =>
-            renderCellByType(row.technicalComplexity, "badge", {
-                badgeConfig: {
-                    colorMap: complexityColorMap,
-                    defaultColor: "#D97706",
-                },
-            }),
-    },
-    {
-        key: "dependencies",
-        header: "Dependencies",
-        accessor: (row) =>
-            renderCellByType(row.dependencies, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
         key: "status",
         header: "Status",
         accessor: (row) =>
@@ -181,7 +112,7 @@ export const getROIIntentTableColumns = (
     },
     {
         key: "ownerResponsibleRole",
-        header: "Owner / Responsible Role",
+        header: "Owner",
         accessor: (row) =>
             renderCellByType(row.ownerResponsibleRole, "textWithIcon", {
                 textStyle: "long",
@@ -190,26 +121,6 @@ export const getROIIntentTableColumns = (
                     icon: User
                 },
             }),
-    },
-    {
-        key: "remarks",
-        header: "Remarks",
-        accessor: (row) =>
-            renderCellByType(row.remarks, "text", {
-                textStyle: "long",
-            }),
-    },
-    {
-        key: "lastUpdated",
-        header: "Last Updated",
-        align: "center",
-        accessor: (row) => renderCellByType(row.lastUpdated, "textWithIcon", {
-            textStyle: "long",
-            badgeConfig: {
-                defaultColor: "#6B7280",
-                icon: Calendar
-            },
-        }),
     },
 ];
 
