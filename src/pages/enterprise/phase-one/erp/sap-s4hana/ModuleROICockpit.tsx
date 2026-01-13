@@ -222,7 +222,7 @@ export function ModuleROICockpit() {
         backLabel="Back to Flow Selection"
         rightContent={
           <div className="flex flex-col items-end gap-2">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <Button
                 className="gap-2"
                 style={{ backgroundColor: "#4160F0" }}
@@ -233,7 +233,7 @@ export function ModuleROICockpit() {
                 <TrendingUp className="h-4 w-4" />
                 View ROI Aggregation
               </Button>
-            </div>
+            </div> */}
             <p className="text-xs text-muted-foreground">
               Last Updated: {cockpitData.lastUpdated}
             </p>

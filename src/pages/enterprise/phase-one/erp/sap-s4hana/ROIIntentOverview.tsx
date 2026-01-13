@@ -11,7 +11,8 @@ import {
   getROIIntentDataByCategory,
   ROIIntentTableRow,
 } from "@/data/roiIntentData";
-import { getROIIntentSummaryCards } from "@/data/roiIntentSummaryData";
+import { TrendingUp, Shield, CheckCircle, Activity } from "lucide-react";
+import { getStatusColor } from "@/data/statusMapping";
 
 const RoiIntentOverview = () => {
   const { intentId } = useParams<{ intentId: string }>();
@@ -163,8 +164,117 @@ const RoiIntentOverview = () => {
     return <Navigate to="/phase-i/catalog/sap-s4hana/blueprint" replace />;
   }
 
-  // Get ROI intent summary cards data
-  const roiSummaryCards = getROIIntentSummaryCards(intentData.label);
+  // Calculate metrics from filtered table data (similar to cockpit page)
+  const calculatedMetrics = useMemo(() => {
+    const totalKPIs = filteredTableData.length;
+    
+    // Calculate KPI status counts
+    const activeCount = filteredTableData.filter(
+      (kpi) => kpi.status === "Active" || kpi.status === "Optimal"
+    ).length;
+    const plannedCount = filteredTableData.filter(
+      (kpi) => kpi.status === "Planned"
+    ).length;
+    const warningCount = filteredTableData.filter(
+      (kpi) => kpi.status === "Warning" || kpi.status === "Monitor"
+    ).length;
+    const errorCount = filteredTableData.filter(
+      (kpi) => kpi.status === "Error" || kpi.status === "Action"
+    ).length;
+    
+    // Calculate overall health (percentage of active/optimal KPIs)
+    const overallHealth = totalKPIs > 0 
+      ? Math.round((activeCount / totalKPIs) * 100) 
+      : 0;
+    const healthStatus: "Optimal" | "Monitor" | "Error" = overallHealth >= 80 ? "Optimal" : overallHealth >= 60 ? "Monitor" : "Error";
+    
+    // Calculate control coverage (active controls / total)
+    const activeControls = filteredTableData.filter(
+      (kpi) => kpi.status !== "Planned" && kpi.status !== "Action"
+    ).length;
+    const controlCoverage = totalKPIs > 0 
+      ? Math.round((activeControls / totalKPIs) * 100) 
+      : 0;
+    
+    // Map statuses to green/amber/red
+    const greenCount = activeCount;
+    const amberCount = warningCount + plannedCount;
+    const redCount = errorCount;
+    
+    // Calculate financial value at risk protected based on ROI potential
+    // Estimate value based on ROI potential levels and number of KPIs
+    const veryHighCount = filteredTableData.filter(kpi => kpi.roiPotential === "Very High").length;
+    const highCount = filteredTableData.filter(kpi => kpi.roiPotential === "High").length;
+    const mediumCount = filteredTableData.filter(kpi => kpi.roiPotential === "Medium").length;
+    const lowCount = filteredTableData.filter(kpi => kpi.roiPotential === "Low").length;
+    
+    // Estimate value: Very High = $50M, High = $20M, Medium = $10M, Low = $5M per KPI
+    const estimatedValue = (veryHighCount * 50) + (highCount * 20) + (mediumCount * 10) + (lowCount * 5);
+    const financialValueAtRisk = estimatedValue > 0 ? `$${estimatedValue}M` : "$0M";
+    
+    return {
+      overallHealth: {
+        value: `${overallHealth}%`,
+        status: healthStatus,
+        description: `${activeCount} of ${totalKPIs} KPIs active`,
+      },
+      financialValueAtRisk: {
+        value: financialValueAtRisk,
+        description: "Fraud prevention & error reduction",
+      },
+      controlCoverage: {
+        value: `${controlCoverage}%`,
+        total: totalKPIs,
+        active: activeControls,
+        description: `${activeControls} of ${totalKPIs} controls active`,
+      },
+      kpiStatus: {
+        green: greenCount,
+        amber: amberCount,
+        red: redCount,
+        total: totalKPIs,
+        description: `${totalKPIs} total KPIs monitored`,
+      },
+    };
+  }, [filteredTableData]);
+
+  // Create metric cards matching cockpit page format
+  const metricCards = useMemo(() => {
+    return [
+      {
+        icon: TrendingUp,
+        value: calculatedMetrics.overallHealth.value,
+        title: "Total KPI's Health",
+        description: calculatedMetrics.overallHealth.description,
+        color: getStatusColor(calculatedMetrics.overallHealth.status),
+        showStatusDot: false,
+      },
+      {
+        icon: Shield,
+        value: calculatedMetrics.financialValueAtRisk.value,
+        title: "Financial Value at Risk Protected",
+        description: calculatedMetrics.financialValueAtRisk.description,
+        color: "#10b981", // Green - matching Cockpit page
+        showStatusDot: false,
+      },
+      {
+        icon: CheckCircle,
+        value: calculatedMetrics.controlCoverage.value,
+        title: "Control Coverage Percentage",
+        description: calculatedMetrics.controlCoverage.description,
+        color: "#2563eb", // Blue - matching Cockpit page
+        showStatusDot: false,
+      },
+      {
+        icon: Activity,
+        value: `${calculatedMetrics.kpiStatus.green} / ${calculatedMetrics.kpiStatus.amber} / ${calculatedMetrics.kpiStatus.red}`,
+        title: "KPIs in Green / Amber / Red",
+        description: calculatedMetrics.kpiStatus.description,
+        color: "#6366f1", // Indigo - matching Cockpit page
+        showStatusDot: false,
+      },
+    ];
+  }, [calculatedMetrics]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -179,16 +289,17 @@ const RoiIntentOverview = () => {
         />
       </div>
 
-      {/* ROI Intent Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {roiSummaryCards.map((card) => (
+      {/* ROI Intent Cards Section - Matching Cockpit Page Format */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        {metricCards.map((card, index) => (
           <MetricCard
-            key={card.id}
+            key={index}
             icon={card.icon}
             title={card.title}
-            description={card.subtitle}
+            description={card.description}
             value={card.value}
             color={card.color}
+            showStatusDot={card.showStatusDot}
           />
         ))}
       </div>
