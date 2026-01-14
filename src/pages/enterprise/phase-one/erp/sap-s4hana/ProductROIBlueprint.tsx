@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { Download } from "lucide-react";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
+import { Button } from "../../../../../components/ui/button";
 import { sections, Section, gradientStyles } from "./components/constants";
 import { IntentSection } from "./components/IntentSection";
 import { MetricsSection } from "./components/MetricsSection";
@@ -54,28 +56,40 @@ export function ProductROIBlueprint() {
         backTo={getBackPath()}
         backLabel={moduleId ? "Back to Flow Selection" : "Back to Modules"}
         rightContent={
-          <>
-            <div className="text-right">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
-                Vendor
-              </p>
-              <p className="text-sm font-bold text-foreground">
-                {blueprint.vendor}
-              </p>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
+                  Vendor
+                </p>
+                <p className="text-sm font-bold text-foreground">
+                  {blueprint.vendor}
+                </p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-right">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
+                  Category
+                </p>
+                <p className="text-sm font-bold text-foreground">
+                  {blueprint.category}
+                </p>
+              </div>
+              <span className="px-2.5 py-0.5 text-xs font-semibold text-[#4160F0] bg-blue-50 rounded-full border border-blue-200">
+                {blueprint.phase}
+              </span>
             </div>
             <div className="w-px h-8 bg-border" />
-            <div className="text-right">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-0.5">
-                Category
-              </p>
-              <p className="text-sm font-bold text-foreground">
-                {blueprint.category}
-              </p>
-            </div>
-            <span className="px-2.5 py-0.5 text-xs font-semibold text-[#4160F0] bg-blue-50 rounded-full border border-blue-200">
-              {blueprint.phase}
-            </span>
-          </>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => {}}
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Export PDF</span>
+            </Button>
+          </div>
         }
       />
 
