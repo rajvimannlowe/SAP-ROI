@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   FileText,
   Download,
-  Printer,
   ClipboardList,
   Database,
   BarChart3,
@@ -152,15 +151,6 @@ export function ControlEvidence() {
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Export PDF</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={() => {}}
-            >
-              <Printer className="h-4 w-4" />
-              <span className="hidden sm:inline">Print</span>
             </Button>
           </div>
         }
