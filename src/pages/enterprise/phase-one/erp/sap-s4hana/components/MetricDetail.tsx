@@ -3,29 +3,30 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { SAP_S4HANA_BLUEPRINT } from "@/data/productBlueprintData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Target, 
-  Clock, 
-  User, 
-  FileText, 
-  Database, 
-  Calculator,
-  AlertTriangle,
-  CheckCircle,
-  TrendingUp
+import { MetricCard } from "@/components/roi/cards/MetricCard";
+import {
+    Target,
+    Clock,
+    User,
+    FileText,
+    Database,
+    Calculator,
+    AlertTriangle,
+    CheckCircle,
+    TrendingUp
 } from "lucide-react";
 
 const MetricDetail = () => {
     const { id, metricId } = useParams();
-    
+
     // Find the metric from both primary and secondary metrics
     const allMetrics = [
         ...SAP_S4HANA_BLUEPRINT.primaryMetrics,
         ...SAP_S4HANA_BLUEPRINT.secondaryMetrics
     ];
-    
+
     const metric = allMetrics.find(m => m.id === metricId);
-    
+
     if (!metric) {
         return (
             <div>
@@ -63,11 +64,11 @@ const MetricDetail = () => {
         <div className="space-y-6">
             <PageHeader
                 title={metric.title}
-                subtitle={`${metric.id} - ROI Metric Details`}
+                subtitle={`${metric.id} - ${metric.owner}`}
                 backTo={`/phase-i/catalog/${id}/blueprint`}
                 backLabel="Back to Blueprint"
             />
-            
+
             {/* Overview Card */}
             <Card>
                 <CardHeader>
@@ -76,163 +77,196 @@ const MetricDetail = () => {
                         Metric Overview
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Target className="h-4 w-4" />
-                                Unit
-                            </div>
-                            <p className="font-semibold">{metric.unit}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <User className="h-4 w-4" />
-                                Owner
-                            </div>
-                            <p className="font-semibold">{metric.owner}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock className="h-4 w-4" />
-                                Refresh Frequency
-                            </div>
-                            <p className="font-semibold">{metric.refresh}</p>
-                        </div>
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                {getStatusIcon(metric.status)}
-                                Status
-                            </div>
-                            {getStatusBadge(metric.status)}
-                        </div>
+                        <MetricCard
+                            icon={Target}
+                            value={metric.unit}
+                            title="Unit"
+                            color="#0EA5E9"
+                        />
+                        <MetricCard
+                            icon={Clock}
+                            value={metric.refresh}
+                            title="Refresh Frequency"
+                            color="#F59E0B"
+                        />
+                        <MetricCard
+                            icon={metric.status === "Active" ? CheckCircle : AlertTriangle}
+                            value={metric.status}
+                            title="Status"
+                            color={metric.status === "Active" ? "#10B981" : "#EF4444"}
+                        />
+                        <MetricCard
+                            icon={FileText}
+                            value={metric.dimension}
+                            title="Dimension"
+                            color="#8B5CF6"
+                        />
                     </div>
-                    
+
                     <div className="pt-4 border-t">
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <FileText className="h-4 w-4" />
-                                Dimension
-                            </div>
-                            <Badge variant="outline">{metric.dimension}</Badge>
-                        </div>
+
                     </div>
                 </CardContent>
             </Card>
 
             {/* Definition and Rationale */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Metric Definition</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm leading-relaxed">{metric.metricDefinition}</p>
-                    </CardContent>
-                </Card>
+                {/* Metric Definition */}
+                <div className="bg-emerald-50/80 border border-emerald-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2.5 rounded-xl bg-emerald-100/80 border border-emerald-200/60 shadow-sm">
+                            <FileText className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-foreground">Metric Definition</h3>
+                    </div>
+                    <div className="pl-14">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                            {metric.metricDefinition}
+                        </p>
+                    </div>
+                </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Business Rationale</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm leading-relaxed">{metric.businessRationale}</p>
-                    </CardContent>
-                </Card>
+                {/* Business Rationale */}
+                <div className="bg-pink-50/80 border border-pink-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2.5 rounded-xl bg-pink-100/80 border border-pink-200/60 shadow-sm">
+                            <TrendingUp className="h-5 w-5 text-pink-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-foreground">Business Rationale</h3>
+                    </div>
+                    <div className="pl-14">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                            {metric.businessRationale}
+                        </p>
+                    </div>
+                </div>
             </div>
 
             {/* Targets and Thresholds */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Target className="h-5 w-5" />
-                        Targets & Thresholds
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="space-y-2">
-                            <div className="text-sm font-medium text-emerald-700">Target</div>
-                            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                                <p className="font-semibold text-emerald-800">{metric.target}</p>
+            <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2.5 rounded-xl bg-blue-100/80 border border-blue-200/60 shadow-sm">
+                        <Target className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Targets & Thresholds</h3>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Target */}
+                    <div className="bg-emerald-50/80 border border-emerald-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 rounded-lg bg-emerald-100/80 border border-emerald-200/60 shadow-sm">
+                                <CheckCircle className="h-4 w-4 text-emerald-600" />
                             </div>
+                            <h4 className="text-sm font-semibold text-emerald-700">Target</h4>
                         </div>
-                        <div className="space-y-2">
-                            <div className="text-sm font-medium text-amber-700">Amber Threshold</div>
-                            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                <p className="font-semibold text-amber-800">{metric.amberThreshold}</p>
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <div className="text-sm font-medium text-red-700">Red Threshold</div>
-                            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                                <p className="font-semibold text-red-800">{metric.redThreshold}</p>
-                            </div>
+                        <div className="pl-10">
+                            <p className="text-lg font-bold text-emerald-800">{metric.target}</p>
+                            <p className="text-xs text-emerald-600 mt-1">Optimal Performance</p>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
 
-            {/* Computation Section */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Calculator className="h-5 w-5" />
-                        Computation Steps
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-3">
-                        {metric.computationSection.map((step, index) => (
-                            <div key={index} className="flex items-start gap-3">
-                                <div className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-semibold">
+                    {/* Amber Threshold */}
+                    <div className="bg-amber-50/80 border border-amber-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 rounded-lg bg-amber-100/80 border border-amber-200/60 shadow-sm">
+                                <AlertTriangle className="h-4 w-4 text-amber-600" />
+                            </div>
+                            <h4 className="text-sm font-semibold text-amber-700">Amber Threshold</h4>
+                        </div>
+                        <div className="pl-10">
+                            <p className="text-lg font-bold text-amber-800">{metric.amberThreshold}</p>
+                            <p className="text-xs text-amber-600 mt-1">Needs Attention</p>
+                        </div>
+                    </div>
+
+                    {/* Red Threshold */}
+                    <div className="bg-red-50/80 border border-red-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 rounded-lg bg-red-100/80 border border-red-200/60 shadow-sm">
+                                <AlertTriangle className="h-4 w-4 text-red-600" />
+                            </div>
+                            <h4 className="text-sm font-semibold text-red-700">Red Threshold</h4>
+                        </div>
+                        <div className="pl-10">
+                            <p className="text-lg font-bold text-red-800">{metric.redThreshold}</p>
+                            <p className="text-xs text-red-600 mt-1">Critical Action Required</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Calculation Method */}
+            <div className="bg-indigo-50/80 border border-indigo-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2.5 rounded-xl bg-indigo-100/80 border border-indigo-200/60 shadow-sm">
+                        <Calculator className="h-5 w-5 text-indigo-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Calculation Method</h3>
+                </div>
+                <div className="space-y-3">
+                    {metric.calculationMethod.map((method, index) => (
+                        <div key={index} className="bg-white/60 border border-indigo-200/40 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                            <div className="flex items-start gap-3">
+                                <div className="shrink-0 w-6 h-6 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-md flex items-center justify-center text-xs font-bold shadow-sm">
                                     {index + 1}
                                 </div>
-                                <p className="text-sm leading-relaxed">{step}</p>
+                                <code className="text-sm font-mono text-slate-700 leading-relaxed flex-1">{method}</code>
                             </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             {/* Data Sources and Calculation Method */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Database className="h-5 w-5" />
-                            Data Sources
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2">
-                            {metric.dataSource.map((source, index) => (
-                                <div key={index} className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm">{source}</span>
-                                </div>
-                            ))}
+                {/* Data Sources */}
+                <div className="bg-cyan-50/80 border border-cyan-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2.5 rounded-xl bg-cyan-100/80 border border-cyan-200/60 shadow-sm">
+                            <Database className="h-5 w-5 text-cyan-600" />
                         </div>
-                    </CardContent>
-                </Card>
+                        <h3 className="text-lg font-semibold text-foreground">Data Sources</h3>
+                    </div>
+                    <div className="space-y-3">
+                        {metric.dataSource.map((source, index) => (
+                            <div key={index} className="bg-white/60 border border-cyan-200/40 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                <div className="flex items-center gap-3">
+                                    <div className="shrink-0 w-3 h-3 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full shadow-sm"></div>
+                                    <span className="text-sm text-slate-700 font-medium">{source}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Calculator className="h-5 w-5" />
-                            Calculation Method
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2">
-                            {metric.calculationMethod.map((method, index) => (
-                                <div key={index} className="p-3 bg-gray-50 border rounded-lg">
-                                    <code className="text-sm font-mono">{method}</code>
-                                </div>
-                            ))}
+                {/* Computation Section */}
+                <div className="bg-slate-50/80 border border-slate-200/60 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2.5 rounded-xl bg-slate-100/80 border border-slate-200/60 shadow-sm">
+                            <Calculator className="h-5 w-5 text-slate-600" />
                         </div>
-                    </CardContent>
-                </Card>
+                        <h3 className="text-xl font-semibold text-foreground">Computation Steps</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        {metric.computationSection.map((step, index) => (
+                            <div key={index} className="bg-white/60 border border-slate-200/40 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                <div className="flex items-start gap-4">
+                                    <div className="shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-sm">
+                                        {index + 1}
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm leading-relaxed text-slate-700 font-medium">{step}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
             </div>
         </div>
     );
