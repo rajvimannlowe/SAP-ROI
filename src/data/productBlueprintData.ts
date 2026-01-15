@@ -17,6 +17,15 @@ export interface ROIIntent {
   description: string;
 }
 
+export interface SupportingKPI {
+  kpiId: string;
+  kpiName: string;
+  subModule: string;
+  contributionType: string;
+  status: "Active" | "In Progress" | "Planned";
+  owner: string;
+}
+
 export interface ROIMetric {
   id: string;
   title: string;
@@ -33,6 +42,7 @@ export interface ROIMetric {
   redThreshold: string;
   refresh: string;
   status: "Active" | "Planned";
+  supportingKPI: SupportingKPI[];
 }
 
 export interface DataSource {
@@ -121,6 +131,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "> 1.00%",
       refresh: "Weekly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-CMP-01",
+          kpiName: "Compliance Exception Rate",
+          subModule: "GL",
+          contributionType: "All critical accounts reconciled before close",
+          status: "Active",
+          owner: "Head – Compliance / CFO",
+        },
+        {
+          kpiId: " KPI-CMP-02",
+          kpiName: "SoD / approval policy exception count",
+          subModule: "AP",
+          contributionType: "Reduces manual accrual entries",
+          status: "In Progress",
+          owner: "Account Manager"
+        }
+      ]
     },
     {
       id: "FI-MET-PR-002",
@@ -129,7 +157,7 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       dimension: "Value Realization",
       owner: "Head - Finance Operations",
       metricDefinition: "Measures how efficiently core FI processes complete end-to-end within the expected timeline (posting-to-clearance / invoice-to-payment / close activities), expressed as an effectiveness score or % of transactions meeting SLA.",
-      businessRationale: "Cycle time is the operational “speed of finance”; improvements translate to lower cost, fewer escalations, better vendor/customer experience, and faster management visibility.",
+      businessRationale: "Cycle time is the operational 'speed of finance'; improvements translate to lower cost, fewer escalations, better vendor/customer experience, and faster management visibility.",
       computationSection: ["Track cycle time per in-scope process; compare actual cycle time vs target SLA", "compute % within SLA and derive effectiveness score"],
       dataSource: ["SAP FI (BKPF, BSEG)", "AP (F110 logs)", "AR clearing logs", "GR/IR (WRX/BSX)", "closing cockpit tasks", "workflow timestamps"],
       calculationMethod: ["Primary: (% Transactions within SLA)", "Optional score: Weighted average of (SLA met %) across AP/AR/Close with defined weights"],
@@ -138,6 +166,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 80%",
       refresh: "Weekly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-CYC-01",
+          kpiName: "Invoice Processing Time",
+          subModule: "AP",
+          contributionType: "Reduces invoice-to-payment cycle time",
+          status: "Active",
+          owner: "AP Manager",
+        },
+        {
+          kpiId: "KPI-CYC-02",
+          kpiName: "Month-end Close Duration",
+          subModule: "GL",
+          contributionType: "Accelerates financial reporting timeline",
+          status: "Active",
+          owner: "Financial Controller"
+        }
+      ]
     },
     {
       id: "FI-MET-PR-003",
@@ -155,6 +201,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "> 40",
       refresh: "Daily",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-CTL-01",
+          kpiName: "SoD Violation Count",
+          subModule: "GRC",
+          contributionType: "Identifies segregation of duties conflicts",
+          status: "Active",
+          owner: "Internal Audit Manager",
+        },
+        {
+          kpiId: "KPI-CTL-02",
+          kpiName: "Control Override Frequency",
+          subModule: "FI",
+          contributionType: "Tracks manual control bypasses and exceptions",
+          status: "Active",
+          owner: "CFO / Head – Internal Audit"
+        }
+      ]
     },
     {
       id: "FI-MET-PR-004",
@@ -172,6 +236,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 98.0",
       refresh: "Weekly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-ACC-01",
+          kpiName: "Journal Entry Error Rate",
+          subModule: "GL",
+          contributionType: "Tracks manual posting errors requiring correction",
+          status: "Active",
+          owner: "GL Accountant",
+        },
+        {
+          kpiId: "KPI-ACC-02",
+          kpiName: "Master Data Validation Score",
+          subModule: "FI",
+          contributionType: "Ensures accurate GL account and cost center assignments",
+          status: "Active",
+          owner: "Financial Controller"
+        }
+      ]
     },
     {
       id: "FI-MET-PR-005",
@@ -189,6 +271,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 85%",
       refresh: "Monthly",
       status: "Planned",
+      supportingKPI: [
+        {
+          kpiId: "KPI-COV-01",
+          kpiName: "Risk Assessment Completion Rate",
+          subModule: "GRC",
+          contributionType: "Ensures comprehensive risk identification and mapping",
+          status: "Planned",
+          owner: "Risk Manager",
+        },
+        {
+          kpiId: "KPI-COV-02",
+          kpiName: "Control Testing Coverage",
+          subModule: "FI",
+          contributionType: "Validates effectiveness of implemented controls",
+          status: "Planned",
+          owner: "CFO / Head – Governance"
+        }
+      ]
     },
     {
       id: "FI-MET-PR-006",
@@ -206,6 +306,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 95%",
       refresh: "Monthly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-CSH-01",
+          kpiName: "Bank Reconciliation Timeliness",
+          subModule: "Treasury",
+          contributionType: "Ensures timely cash position updates",
+          status: "Active",
+          owner: "Treasury Analyst",
+        },
+        {
+          kpiId: "KPI-CSH-02",
+          kpiName: "Multi-currency Exposure Tracking",
+          subModule: "FI",
+          contributionType: "Provides real-time foreign exchange risk visibility",
+          status: "Active",
+          owner: "CFO / Treasurer"
+        }
+      ]
     },
   ],
   secondaryMetrics: [
@@ -225,6 +343,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 98%",
       refresh: "Real-time",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-INT-01",
+          kpiName: "API Response Time",
+          subModule: "Integration",
+          contributionType: "Monitors integration performance and latency",
+          status: "Active",
+          owner: "Integration Specialist",
+        },
+        {
+          kpiId: "KPI-INT-02",
+          kpiName: "Data Quality Score",
+          subModule: "FI",
+          contributionType: "Ensures data integrity across integrated systems",
+          status: "Active",
+          owner: "Head - IT Integration"
+        }
+      ]
     },
     {
       id: "FI-MET-SR-017",
@@ -242,6 +378,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 85",
       refresh: "Monthly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-MDQ-01",
+          kpiName: "Vendor Master Completeness",
+          subModule: "AP",
+          contributionType: "Ensures complete vendor information for accurate processing",
+          status: "Active",
+          owner: "Master Data Specialist",
+        },
+        {
+          kpiId: "KPI-MDQ-02",
+          kpiName: "GL Account Hierarchy Accuracy",
+          subModule: "GL",
+          contributionType: "Maintains proper chart of accounts structure",
+          status: "Active",
+          owner: "Head – Master Data / CFO"
+        }
+      ]
     },
     {
       id: "FI-MET-SR-018",
@@ -259,6 +413,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 97.0%",
       refresh: "Weekly",
       status: "Active",
+      supportingKPI: [
+        {
+          kpiId: "KPI-USR-01",
+          kpiName: "System Login Frequency",
+          subModule: "FI",
+          contributionType: "Tracks active user engagement with SAP FI modules",
+          status: "Active",
+          owner: "System Administrator",
+        },
+        {
+          kpiId: "KPI-USR-02",
+          kpiName: "Training Completion Rate",
+          subModule: "Training",
+          contributionType: "Ensures users are properly trained on new processes",
+          status: "Active",
+          owner: "CIO / Head – Integration"
+        }
+      ]
     },
   ],
   dataSources: {

@@ -4,6 +4,8 @@ import { SAP_S4HANA_BLUEPRINT } from "@/data/productBlueprintData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MetricCard } from "@/components/roi/cards/MetricCard";
+import { DrilldownTable, TableColumn } from "@/components/roi/DrilldownTable";
+import { SupportingKPI } from "@/data/productBlueprintData";
 import {
     Target,
     Clock,
@@ -13,7 +15,8 @@ import {
     Calculator,
     AlertTriangle,
     CheckCircle,
-    TrendingUp
+    TrendingUp,
+    Table
 } from "lucide-react";
 
 const MetricDetail = () => {
@@ -53,12 +56,68 @@ const MetricDetail = () => {
             <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 border-emerald-200">
                 {status}
             </Badge>
-        ) : (
+        ) : status === "In Progress" ? (
             <Badge variant="secondary" className="bg-amber-50 text-amber-700 border-amber-200">
+                {status}
+            </Badge>
+        ) : (
+            <Badge variant="secondary" className="bg-slate-50 text-slate-700 border-slate-200">
                 {status}
             </Badge>
         );
     };
+
+    // Define columns for Supporting KPI table
+    const supportingKpiColumns: TableColumn<SupportingKPI>[] = [
+        {
+            key: "kpiId",
+            header: "KPI ID",
+            accessor: (row) => (
+                <span className="font-mono text-sm text-slate-700">{row.kpiId}</span>
+            ),
+            align: "left",
+        },
+        {
+            key: "kpiName",
+            header: "KPI Name",
+            accessor: (row) => (
+                <span className="font-medium text-slate-800">{row.kpiName}</span>
+            ),
+            align: "left",
+        },
+        {
+            key: "subModule",
+            header: "Sub-Module",
+            accessor: (row) => (
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                    {row.subModule}
+                </Badge>
+            ),
+            align: "center",
+        },
+        {
+            key: "contributionType",
+            header: "Contribution Type",
+            accessor: (row) => (
+                <span className="text-sm text-slate-600">{row.contributionType}</span>
+            ),
+            align: "left",
+        },
+        {
+            key: "status",
+            header: "Status",
+            accessor: (row) => getStatusBadge(row.status),
+            align: "center",
+        },
+        {
+            key: "owner",
+            header: "Owner",
+            accessor: (row) => (
+                <span className="text-sm text-slate-700">{row.owner}</span>
+            ),
+            align: "left",
+        },
+    ];
 
     return (
         <div className="space-y-6">
@@ -266,7 +325,19 @@ const MetricDetail = () => {
                         ))}
                     </div>
                 </div>
+            </div>
 
+            {/* Supporting KPI Table */}
+            <div className="space-y-4">
+                <DrilldownTable
+                    columns={supportingKpiColumns}
+                    data={metric.supportingKPI}
+                    title="Supporting KPIs"
+                    subtitle={`${metric.supportingKPI.length} KPIs supporting ${metric.title}`}
+                    emptyMessage="No supporting KPIs found"
+                    emptyDescription="This metric does not have any supporting KPIs defined"
+                    accentColor="#2563EB"
+                />
             </div>
         </div>
     );
