@@ -55,7 +55,13 @@ export function MetricsSection({
               {metrics.map((metric) => (
                 <ROIMeasurementCard
                   key={metric.id}
-                  {...metric}
+                  id={metric.id}
+                  title={metric.title}
+                  unit={metric.unit}
+                  target={metric.target}
+                  refresh={metric.refresh}
+                  status={metric.status}
+                  dimension={metric.dimension}
                   dimensionColor={getDimensionColor(metric.dimension)}
                 />
               ))}

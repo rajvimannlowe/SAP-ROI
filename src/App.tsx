@@ -20,6 +20,7 @@ import DeviationTickets from "./pages/enterprise/phase-one/erp/sap-s4hana/Deviat
 import DeviationTicketDetails from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationTicketDetails";
 import DeviationAnalysis from "./pages/enterprise/phase-one/erp/sap-s4hana/DeviationAnalysis";
 import FeedbackImprovementLoop from "./pages/enterprise/phase-one/erp/sap-s4hana/FeedbackImprovementLoop";
+import MetricDetail from "./pages/enterprise/phase-one/erp/sap-s4hana/components/MetricDetail";
 
 function App() {
   return (
@@ -53,6 +54,10 @@ function App() {
             <Route
               path="phase-i/catalog/:id/blueprint"
               element={<ProductROIBlueprint />}
+            />
+            <Route
+              path="phase-i/catalog/:id/blueprint/metric/:metricId"
+              element={<MetricDetail />}
             />
             <Route
               path="phase-i/catalog/:id/blueprint/:moduleId/cockpit"

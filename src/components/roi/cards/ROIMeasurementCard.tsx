@@ -5,9 +5,11 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { hexToRgba, CARD_STYLES } from "./index";
 
 interface ROIMeasurementCardProps {
+  id: string;
   title: string;
   unit: string;
   target: string;
@@ -18,6 +20,7 @@ interface ROIMeasurementCardProps {
 }
 
 export function ROIMeasurementCard({
+  id,
   title,
   unit,
   target,
@@ -26,9 +29,16 @@ export function ROIMeasurementCard({
   dimension,
   dimensionColor,
 }: ROIMeasurementCardProps) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/phase-i/catalog/sap-s4hana/blueprint/metric/${id}`);
+  };
+
   return (
     <div
-      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION}`}
+      className={`group relative overflow-hidden ${CARD_STYLES.BORDER_RADIUS} border border-border/50 bg-card ${CARD_STYLES.SHADOW} hover:${CARD_STYLES.HOVER_SHADOW} ${CARD_STYLES.TRANSITION} cursor-pointer`}
+      onClick={handleCardClick}
     >
       <div className="p-3">
         <div
