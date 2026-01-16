@@ -201,7 +201,115 @@ export function KPIDetailView() {
         }
       />
 
-      {/* Metrics */}
+      {/* Section 1: Content Cards - Objectives, Risk, Context */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {kpiDetail.businessObjective && (
+            <InfoCard
+              {...createInfoCardProps(
+                Target,
+                "Business Objective",
+                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                  {kpiDetail.businessObjective}
+                </p>,
+                COLORS.blue
+              )}
+            />
+          )}
+          <InfoCard
+            {...createInfoCardProps(
+              Shield,
+              "Business Risk / Leakage Prevented",
+              <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                {kpiDetail.businessRiskPrevented}
+              </p>,
+              COLORS.red
+            )}
+          />
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {kpiDetail.businessContext && (
+            <InfoCard
+              {...createInfoCardProps(
+                AlertCircle,
+                "Business Context",
+                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                  {kpiDetail.businessContext}
+                </p>,
+                COLORS.purple
+              )}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Section 2: Threshold / Tolerance */}
+      {kpiDetail.thresholds && (
+        <InfoCard
+          {...createInfoCardProps(
+            BarChart3,
+            "Threshold / Tolerance",
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+              <div className="flex items-center justify-between p-4 rounded-lg bg-green-50 border border-green-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-green-600" />
+                  <span className="text-sm font-semibold text-green-700">
+                    Green
+                  </span>
+                </div>
+                <span className="text-sm font-semibold text-green-700">
+                  {kpiDetail.thresholds.green}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-4 rounded-lg bg-amber-50 border border-amber-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-amber-600" />
+                  <span className="text-sm font-semibold text-amber-700">
+                    Amber
+                  </span>
+                </div>
+                <span className="text-sm font-semibold text-amber-700">
+                  {kpiDetail.thresholds.amber}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-4 rounded-lg bg-red-50 border border-red-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-red-600" />
+                  <span className="text-sm font-semibold text-red-700">
+                    Red
+                  </span>
+                </div>
+                <span className="text-sm font-semibold text-red-700">
+                  {kpiDetail.thresholds.red}
+                </span>
+              </div>
+            </div>,
+            COLORS.amber
+          )}
+        />
+      )}
+
+      {/* Section 3: Tags */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {subModule && (
+          <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+            {subModule.name}
+          </span>
+        )}
+        <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+          {kpiDetail.controlType} Control
+        </span>
+        {kpiDetail.roiDimension && (
+          <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
+            ROI: {kpiDetail.roiDimension}
+          </span>
+        )}
+      </div>
+
+      {/* Section 4: Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
           icon={CheckCircle2}
@@ -230,7 +338,7 @@ export function KPIDetailView() {
         )}
       </div>
 
-      {/* Status Analysis */}
+      {/* Section 5: Status Analysis */}
       {kpiDetail.statusAnalysis && (
         <div
           className="rounded-xl border p-6 shadow-lg"
@@ -260,112 +368,6 @@ export function KPIDetailView() {
           </div>
         </div>
       )}
-
-      {/* Tags */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {subModule && (
-          <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-            {subModule.name}
-          </span>
-        )}
-        <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
-          {kpiDetail.controlType} Control
-        </span>
-        {kpiDetail.roiDimension && (
-          <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
-            ROI: {kpiDetail.roiDimension}
-          </span>
-        )}
-      </div>
-
-      {/* Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* Left Column */}
-        <div className="space-y-6">
-          {kpiDetail.businessObjective && (
-            <InfoCard
-              {...createInfoCardProps(
-                Target,
-                "Business Objective",
-                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                  {kpiDetail.businessObjective}
-                </p>,
-                COLORS.blue
-              )}
-            />
-          )}
-          <InfoCard
-            {...createInfoCardProps(
-              Shield,
-              "Business Risk / Leakage Prevented",
-              <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                {kpiDetail.businessRiskPrevented}
-              </p>,
-              COLORS.red
-            )}
-          />
-          {kpiDetail.businessContext && (
-            <InfoCard
-              {...createInfoCardProps(
-                AlertCircle,
-                "Business Context",
-                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                  {kpiDetail.businessContext}
-                </p>,
-                COLORS.purple
-              )}
-            />
-          )}
-        </div>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-          {kpiDetail.thresholds && (
-            <InfoCard
-              {...createInfoCardProps(
-                BarChart3,
-                "Threshold / Tolerance",
-                <div className="space-y-2.5 mt-2">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 border border-green-200">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-green-600" />
-                      <span className="text-xs font-semibold text-green-700">
-                        Green
-                      </span>
-                    </div>
-                    <span className="text-xs font-semibold text-green-700">
-                      {kpiDetail.thresholds.green}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 border border-amber-200">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-amber-600" />
-                      <span className="text-xs font-semibold text-amber-700">
-                        Amber
-                      </span>
-                    </div>
-                    <span className="text-xs font-semibold text-amber-700">
-                      {kpiDetail.thresholds.amber}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-red-50 border border-red-200">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-red-600" />
-                      <span className="text-xs font-semibold text-red-700">
-                        Red
-                      </span>
-                    </div>
-                    <span className="text-xs font-semibold text-red-700">
-                      {kpiDetail.thresholds.red}
-                    </span>
-                  </div>
-                </div>,
-                COLORS.amber
-              )}
-            />
-          )}
-        </div>
-      </div>
 
       {/* Footer */}
       <InfoCard
