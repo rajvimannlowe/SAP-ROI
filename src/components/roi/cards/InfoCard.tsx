@@ -64,9 +64,9 @@ export function InfoCard({
           : undefined
       }
     >
-      <div className="p-2.5">
+      <div className="p-4">
         <div
-          className="rounded-lg p-2.5 shadow-sm border relative overflow-hidden"
+          className="rounded-lg p-4 shadow-sm border relative overflow-hidden"
           style={{
             backgroundColor: bgColor,
             borderColor: borderColor,
@@ -103,7 +103,7 @@ export function InfoCard({
                 </p>
               </div>
             ) : (
-              <div className="flex items-center gap-2 mb-1.5">
+              <div className="flex items-start gap-2 mb-1.5">
                 {Icon && iconGradient && (
                   <div
                     className="p-1.5 rounded-md shrink-0"
@@ -112,15 +112,15 @@ export function InfoCard({
                     <Icon className="h-4 w-4 text-white" />
                   </div>
                 )}
-                <h3 className="text-sm font-bold text-foreground leading-tight">
+                <h3 className="text-sm font-bold text-foreground leading-tight flex-1">
                   {title}
                 </h3>
               </div>
             )}
             {description && (
-              <div className="text-xs text-muted-foreground leading-snug mb-1.5">
+              <div className="text-sm text-foreground leading-relaxed mt-3">
                 {typeof description === "string" ? (
-                  <p className="line-clamp-1">{description}</p>
+                  <p className="whitespace-normal break-words">{description}</p>
                 ) : (
                   description
                 )}

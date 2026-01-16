@@ -174,7 +174,7 @@ export function KPIDetailView() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title={kpiDetail.name}
         subtitle={`SAP ${cockpitData.moduleName} - KPI Detail View`}
@@ -233,7 +233,7 @@ export function KPIDetailView() {
       {/* Status Analysis */}
       {kpiDetail.statusAnalysis && (
         <div
-          className="rounded-xl border p-5 shadow-lg"
+          className="rounded-xl border p-6 shadow-lg"
           style={{
             background: `linear-gradient(135deg, ${statusBg} 0%, ${hexToRgba(
               statusColor,
@@ -242,18 +242,18 @@ export function KPIDetailView() {
             borderColor: statusBorder,
           }}
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div
-              className="flex items-center justify-center w-10 h-10 rounded-full shrink-0"
+              className="flex items-center justify-center w-12 h-12 rounded-full shrink-0"
               style={{ backgroundColor: statusColor }}
             >
-              <CheckCircle2 className="h-5 w-5 text-white" />
+              <CheckCircle2 className="h-6 w-6 text-white" />
             </div>
-            <div className="flex-1">
-              <p className="text-sm font-bold text-foreground mb-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-bold text-foreground mb-3">
                 Status Analysis
               </p>
-              <p className="text-sm text-foreground leading-relaxed">
+              <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
                 {kpiDetail.statusAnalysis}
               </p>
             </div>
@@ -279,7 +279,7 @@ export function KPIDetailView() {
       </div>
 
       {/* Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Left Column */}
         <div className="space-y-6">
           {kpiDetail.businessObjective && (
@@ -287,7 +287,9 @@ export function KPIDetailView() {
               {...createInfoCardProps(
                 Target,
                 "Business Objective",
-                kpiDetail.businessObjective,
+                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                  {kpiDetail.businessObjective}
+                </p>,
                 COLORS.blue
               )}
             />
@@ -296,7 +298,9 @@ export function KPIDetailView() {
             {...createInfoCardProps(
               Shield,
               "Business Risk / Leakage Prevented",
-              kpiDetail.businessRiskPrevented,
+              <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                {kpiDetail.businessRiskPrevented}
+              </p>,
               COLORS.red
             )}
           />
@@ -305,7 +309,9 @@ export function KPIDetailView() {
               {...createInfoCardProps(
                 AlertCircle,
                 "Business Context",
-                kpiDetail.businessContext,
+                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                  {kpiDetail.businessContext}
+                </p>,
                 COLORS.purple
               )}
             />
@@ -395,12 +401,12 @@ export function KPIDetailView() {
                 <p
                   className={`text-sm ${
                     subValue ? "font-semibold" : ""
-                  } text-foreground ${!subValue ? "leading-relaxed" : ""}`}
+                  } text-foreground ${!subValue ? "leading-relaxed whitespace-normal break-words" : ""}`}
                 >
                   {value}
                 </p>
                 {subValue && (
-                  <p className="text-xs text-muted-foreground">{subValue}</p>
+                  <p className="text-xs text-muted-foreground whitespace-normal break-words">{subValue}</p>
                 )}
               </div>
             ))}

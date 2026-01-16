@@ -130,16 +130,18 @@ export const FI_MODULE_COCKPIT: ModuleCockpitData = {
     {
       id: "FI-AP-003",
       name: "Duplicate Payment Prevention",
-      businessRiskPrevented: "Payment fraud prevention",
+      businessRiskPrevented:
+        "High manual JV levels increase posting errors, inconsistent accounting treatment, and unsupported adjustments. They weaken segregation of duties by enabling late overrides, and create reconciliation churn between subledgers and GL. During audits, they trigger sampling expansion and challenge evidence quality, raising the likelihood of material misstatement or delayed close sign-off.",
       controlType: "Preventive",
       status: "Optimal",
       owner: "AP Manager",
       recommendedAction: "None - performing as expected",
       subModuleId: "ap",
-      businessObjective: "Prevent duplicate payments",
+      businessObjective:
+        "Reduce reliance on manual journal voucher postings by expanding system-driven postings in SAP FI, improving accuracy, accelerating close, strengthening approvals, and enabling audit-ready traceability. Shift corrections to root-cause fixes in subledger integration and configuration, not end-of-month fire-fighting. for every entity.",
       roiDimension: "Control",
       businessContext:
-        "This control protects approximately $850M in annual vendor payments. Historical baseline shows 0.3% duplicate invoice rate without controls, representing $2.5M annual exposure.",
+        "Manual JVs typically arise from legacy practices, incomplete integration with MM/SD/AA, or weak account determination. As volumes rise, they consume analyst time during close and hide process issues. SAP supports automation via subledger postings, validations, substitution rules, recurring entries, and interface monitoring. Tracking manual JV rate by company code and reason code highlights where configuration, master data, or upstream processes must be corrected to stabilize financial operations. This KPI is a proxy for finance maturity.",
       calculationLogic:
         "Count of invoice payments blocked due to matching vendor number, invoice number, amount, and payment date within system-defined tolerance window. Measured as percentage of total invoice volume screened.",
       dataSources: [
