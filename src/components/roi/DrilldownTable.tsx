@@ -1,4 +1,92 @@
-import { ReactNode } from "react";
+import React, { ReactNode, useRef, useState, useEffect } from "react";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+
+// Helper function to extract text content from ReactNode
+const getTextContent = (node: ReactNode): string => {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (typeof node === "boolean") return "";
+  if (node === null || node === undefined) return "";
+  
+  if (React.isValidElement(node)) {
+    // If it's a React element, extract from children
+    if (node.props?.children) {
+      return getTextContent(node.props.children);
+    }
+    // Also check if there's a text prop or value
+    if (node.props?.value) {
+      return String(node.props.value);
+    }
+  }
+  
+  if (Array.isArray(node)) {
+    return node.map(getTextContent).join(" ").trim();
+  }
+  
+  return "";
+};
+
+// Helper function to get first N words from text
+const getFirstNWords = (text: string, n: number = 5): string => {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= n) return text;
+  return words.slice(0, n).join(" ") + "...";
+};
+
+// Component to wrap cell content with tooltip if truncated
+const CellWithTooltip = ({ content, tooltipText }: { content: ReactNode; tooltipText?: string }) => {
+  const cellRef = useRef<HTMLDivElement>(null);
+  const extractedText = getTextContent(content);
+  const textContent = tooltipText || extractedText;
+  const hasText = textContent.trim().length > 0;
+  const words = textContent.trim().split(/\s+/);
+  const shouldTruncate = words.length > 5;
+
+  // Show tooltip if content has text and has more than 5 words
+  if (hasText && shouldTruncate) {
+    const previewText = getFirstNWords(textContent, 5);
+    
+    // Create preview content - try to preserve the original structure
+    let previewContent: ReactNode;
+    if (React.isValidElement(content)) {
+      // If it's a React element (like from renderCellByType), clone it with preview text
+      previewContent = React.cloneElement(content as React.ReactElement, {
+        children: previewText
+      });
+    } else {
+      // Otherwise, just show the preview text
+      previewContent = previewText;
+    }
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div
+              ref={cellRef}
+              className="max-w-full cursor-help"
+              style={{ 
+                overflow: "hidden",
+                display: "block"
+              }}
+            >
+              {previewContent}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="max-w-lg z-50">
+            <p className="whitespace-normal break-words text-sm leading-relaxed">{textContent}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return (
+    <div ref={cellRef} className="max-w-full overflow-hidden">
+      {content}
+    </div>
+  );
+};
 
 // Helper function to convert hex to rgba
 const hexToRgba = (hex: string, alpha: number): string => {
@@ -237,6 +325,13 @@ export function DrilldownTable<T extends object = object>({
                         const content = column.accessor
                           ? column.accessor(row)
                           : (rowData[column.key] as ReactNode);
+                        // Get raw value for tooltip (better for long text)
+                        const rawValue = rowData[column.key];
+                        const tooltipText = typeof rawValue === "string" 
+                          ? rawValue 
+                          : typeof rawValue === "number" 
+                          ? String(rawValue)
+                          : getTextContent(content);
                         const stickyBg = column.sticky
                           ? isEven
                             ? "var(--card)"
@@ -259,7 +354,7 @@ export function DrilldownTable<T extends object = object>({
                               width: column.width,
                             }}
                           >
-                            {content}
+                            <CellWithTooltip content={content} tooltipText={tooltipText} />
                           </td>
                         );
                       })}
