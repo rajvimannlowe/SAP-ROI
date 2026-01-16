@@ -43,6 +43,7 @@ export interface ROIMetric {
   refresh: string;
   status: "Active" | "Planned";
   supportingKPI: SupportingKPI[];
+  indirectKPI?: SupportingKPI[];
 }
 
 export interface DataSource {
@@ -141,12 +142,30 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           owner: "Head – Compliance / CFO",
         },
         {
-          kpiId: " KPI-CMP-02",
+          kpiId: "KPI-CMP-02",
           kpiName: "SoD / approval policy exception count",
           subModule: "AP",
           contributionType: "Reduces manual accrual entries",
           status: "In Progress",
           owner: "Account Manager"
+        }
+      ],
+      indirectKPI: [
+        {
+          kpiId: "KPI-CMP-01",
+          kpiName: "Compliance Exception Rate",
+          subModule: "Tax",
+          contributionType: "Core GST compliance check",
+          status: "Planned",
+          owner: "Tax Manager",
+        },
+        {
+          kpiId: "KPI-CMP-02",
+          kpiName: "SoD / approval policy exception count",
+          subModule: "AP",
+          contributionType: "Prevents non-compliant payments",
+          status: "Planned",
+          owner: "AP Manager",
         }
       ]
     },
@@ -182,6 +201,40 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           contributionType: "Accelerates financial reporting timeline",
           status: "Active",
           owner: "Financial Controller"
+        }
+      ],
+      indirectKPI: [
+        {
+          kpiId: "KPI-CYC-01",
+          kpiName: "Invoice Processing Time",
+          subModule: "AP",
+          contributionType: "Invoice to posting",
+          status: "Planned",
+          owner: "AP Manager",
+        },
+        {
+          kpiId: "KPI-CYC-02",
+          kpiName: "Month-end Close Duration",
+          subModule: "AP",
+          contributionType: "Reconciliation lag",
+          status: "Planned",
+          owner: "AP Manager",
+        },
+        {
+          kpiId: "KPI-CYC-01",
+          kpiName: "Invoice Processing Time",
+          subModule: "AP",
+          contributionType: "Payment readiness",
+          status: "Planned",
+          owner: "AP Manager",
+        },
+        {
+          kpiId: "KPI-CYC-02",
+          kpiName: "Month-end Close Duration",
+          subModule: "GL",
+          contributionType: "Core close metric",
+          status: "Planned",
+          owner: "Financial Controller",
         }
       ]
     },
@@ -236,24 +289,7 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       redThreshold: "< 98.0",
       refresh: "Weekly",
       status: "Active",
-      supportingKPI: [
-        {
-          kpiId: "KPI-ACC-01",
-          kpiName: "Journal Entry Error Rate",
-          subModule: "GL",
-          contributionType: "Tracks manual posting errors requiring correction",
-          status: "Active",
-          owner: "GL Accountant",
-        },
-        {
-          kpiId: "KPI-ACC-02",
-          kpiName: "Master Data Validation Score",
-          subModule: "FI",
-          contributionType: "Ensures accurate GL account and cost center assignments",
-          status: "Active",
-          owner: "Financial Controller"
-        }
-      ]
+      supportingKPI: []
     },
     {
       id: "FI-MET-PR-005",
@@ -287,6 +323,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           contributionType: "Validates effectiveness of implemented controls",
           status: "Planned",
           owner: "CFO / Head – Governance"
+        }
+      ],
+      indirectKPI: [
+        {
+          kpiId: "KPI-COV-01",
+          kpiName: "Risk Assessment Completion Rate",
+          subModule: "GL",
+          contributionType: "Control completeness",
+          status: "Planned",
+          owner: "Financial Controller",
+        },
+        {
+          kpiId: "KPI-COV-02",
+          kpiName: "Control Testing Coverage",
+          subModule: "GL",
+          contributionType: "IC reconciliation governance",
+          status: "Planned",
+          owner: "Financial Controller",
         }
       ]
     },

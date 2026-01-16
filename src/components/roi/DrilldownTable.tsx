@@ -107,7 +107,10 @@ export function DrilldownTable<T extends object = object>({
         <div className="relative overflow-x-auto">
           <table
             className="w-full border-collapse"
-            style={{ tableLayout: "auto", width: "100%", minWidth: "max-content" }}
+            style={{ 
+              tableLayout: columns.some(col => col.width) ? "fixed" : "auto", 
+              width: "100%"
+            }}
           >
             <thead
               style={{
@@ -122,13 +125,14 @@ export function DrilldownTable<T extends object = object>({
                       compact ? "px-3 py-3" : "px-4 py-4"
                     } text-xs font-semibold text-muted-foreground uppercase tracking-wider ${
                       alignClasses[column.align || "left"]
-                    } ${column.headerClassName || ""}`}
+                    } ${column.headerClassName || ""} ${column.className || ""}`}
                     style={{
                       backgroundColor: "hsl(var(--card))",
                       background: `linear-gradient(135deg, ${hexToRgba(
                         accentColor,
                         0.08
                       )} 0%, ${hexToRgba(accentColor, 0.03)} 100%)`,
+                      width: column.width,
                     }}
                   >
                     {column.renderHeader ? (
@@ -252,6 +256,7 @@ export function DrilldownTable<T extends object = object>({
                             style={{
                               backgroundColor: stickyBg,
                               textAlign: column.align || "left",
+                              width: column.width,
                             }}
                           >
                             {content}
