@@ -122,11 +122,25 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Compliance",
       owner: "Head – Compliance / CFO",
-      metricDefinition: "Percentage of finance transactions that trigger compliance exceptions (tax, SoD, approval, policy, or statutory rule breaches) during posting, payment, or reporting processes within the measurement period",
-      businessRationale: "Direct indicator of regulatory and audit exposure; sustained exceptions typically translate to penalties, delayed audits, qualified reports, and reputational risk",
-      computationSection: ["Identify total relevant FI transactions in-scope", "Identify transactions flagged as compliance exceptions (hard blocks + soft exceptions requiring remediation)", "Compute exception rate and trend"],
-      dataSource: ["SAP FI (BKPF, BSEG)", "Tax tables (BSET / J_1I*)", "Workflow logs", "GRC/SoD reports", "Audit exception logs"],
-      calculationMethod: ["(Count of Compliance Exceptions ÷ Count of In-scope Transactions) × 100; slice by company code, process (AP/AR/GL), exception type, and recurrence"],
+      metricDefinition:
+        "Percentage of finance transactions that trigger compliance exceptions (tax, SoD, approval, policy, or statutory rule breaches) during posting, payment, or reporting processes within the measurement period",
+      businessRationale:
+        "Direct indicator of regulatory and audit exposure; sustained exceptions typically translate to penalties, delayed audits, qualified reports, and reputational risk",
+      computationSection: [
+        "Identify total relevant FI transactions in-scope",
+        "Identify transactions flagged as compliance exceptions (hard blocks + soft exceptions requiring remediation)",
+        "Compute exception rate and trend",
+      ],
+      dataSource: [
+        "SAP FI (BKPF, BSEG)",
+        "Tax tables (BSET / J_1I*)",
+        "Workflow logs",
+        "GRC/SoD reports",
+        "Audit exception logs",
+      ],
+      calculationMethod: [
+        "(Count of Compliance Exceptions ÷ Count of In-scope Transactions) × 100; slice by company code, process (AP/AR/GL), exception type, and recurrence",
+      ],
       target: "≤ 0.50%",
       amberThreshold: "> 0.50% and ≤ 1.00%",
       redThreshold: "> 1.00%",
@@ -134,40 +148,48 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       status: "Active",
       supportingKPI: [
         {
-          kpiId: "KPI-CMP-01",
-          kpiName: "Compliance Exception Rate",
-          subModule: "GL",
-          contributionType: "All critical accounts reconciled before close",
-          status: "Active",
-          owner: "Head – Compliance / CFO",
+          kpiId: "	FI-AA-020",
+          kpiName: "Asset Capitalization Policy Check",
+          subModule: "AA",
+          contributionType: "Direct",
+          status: "Planned",
+          owner: "FI Lead / IT Analyst",
         },
         {
-          kpiId: "KPI-CMP-02",
-          kpiName: "SoD / approval policy exception count",
+          kpiId: "FI-AA-021",
+          kpiName: "Depreciation Method Validation",
+          subModule: "AA",
+          contributionType: "Direct",
+          status: "Planned",
+          owner: "FI Lead / IT Analyst",
+        },
+        {
+          kpiId: "FI-AP-015",
+          kpiName: "Vendor Master GST Validation",
           subModule: "AP",
-          contributionType: "Reduces manual accrual entries",
-          status: "In Progress",
-          owner: "Account Manager"
-        }
+          contributionType: "Direct",
+          status: "Planned",
+          owner: "FI Lead / IT Analyst",
+        },
+        {
+          kpiId: "FI-AP-016",
+          kpiName: "Blocked Invoice Compliance Review",
+          subModule: "AP",
+          contributionType: "Direct",
+          status: "Planned",
+          owner: "FI Lead / IT Analyst",
+        },
       ],
       indirectKPI: [
         {
-          kpiId: "KPI-CMP-01",
-          kpiName: "Compliance Exception Rate",
-          subModule: "Tax",
-          contributionType: "Core GST compliance check",
-          status: "Planned",
-          owner: "Tax Manager",
-        },
-        {
-          kpiId: "KPI-CMP-02",
-          kpiName: "SoD / approval policy exception count",
+          kpiId: "	FI-AP-017",
+          kpiName: "Automatic Duplicate Invoice Detection",
           subModule: "AP",
-          contributionType: "Prevents non-compliant payments",
+          contributionType: "Indirect",
           status: "Planned",
-          owner: "AP Manager",
-        }
-      ]
+          owner: "FI Lead / IT Analyst",
+        },
+      ],
     },
     {
       id: "FI-MET-PR-002",
@@ -175,11 +197,26 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Value Realization",
       owner: "Head - Finance Operations",
-      metricDefinition: "Measures how efficiently core FI processes complete end-to-end within the expected timeline (posting-to-clearance / invoice-to-payment / close activities), expressed as an effectiveness score or % of transactions meeting SLA.",
-      businessRationale: "Cycle time is the operational 'speed of finance'; improvements translate to lower cost, fewer escalations, better vendor/customer experience, and faster management visibility.",
-      computationSection: ["Track cycle time per in-scope process; compare actual cycle time vs target SLA", "compute % within SLA and derive effectiveness score"],
-      dataSource: ["SAP FI (BKPF, BSEG)", "AP (F110 logs)", "AR clearing logs", "GR/IR (WRX/BSX)", "closing cockpit tasks", "workflow timestamps"],
-      calculationMethod: ["Primary: (% Transactions within SLA)", "Optional score: Weighted average of (SLA met %) across AP/AR/Close with defined weights"],
+      metricDefinition:
+        "Measures how efficiently core FI processes complete end-to-end within the expected timeline (posting-to-clearance / invoice-to-payment / close activities), expressed as an effectiveness score or % of transactions meeting SLA.",
+      businessRationale:
+        "Cycle time is the operational 'speed of finance'; improvements translate to lower cost, fewer escalations, better vendor/customer experience, and faster management visibility.",
+      computationSection: [
+        "Track cycle time per in-scope process; compare actual cycle time vs target SLA",
+        "compute % within SLA and derive effectiveness score",
+      ],
+      dataSource: [
+        "SAP FI (BKPF, BSEG)",
+        "AP (F110 logs)",
+        "AR clearing logs",
+        "GR/IR (WRX/BSX)",
+        "closing cockpit tasks",
+        "workflow timestamps",
+      ],
+      calculationMethod: [
+        "Primary: (% Transactions within SLA)",
+        "Optional score: Weighted average of (SLA met %) across AP/AR/Close with defined weights",
+      ],
       target: "≥ 90% within SLA",
       amberThreshold: "≥ 80% and < 90%",
       redThreshold: "< 80%",
@@ -200,8 +237,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           subModule: "GL",
           contributionType: "Accelerates financial reporting timeline",
           status: "Active",
-          owner: "Financial Controller"
-        }
+          owner: "Financial Controller",
+        },
       ],
       indirectKPI: [
         {
@@ -235,8 +272,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           contributionType: "Core close metric",
           status: "Planned",
           owner: "Financial Controller",
-        }
-      ]
+        },
+      ],
     },
     {
       id: "FI-MET-PR-003",
@@ -244,11 +281,27 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Score (0-100)",
       dimension: "Control",
       owner: "CFO / Head – Internal Audit",
-      metricDefinition: "Composite risk score representing the health of financial controls based on control breaches, overrides, SoD conflicts, exception ageing, and repeat findings, normalized to a 0–100 scale (lower is better)",
-      businessRationale: "Converts multiple control signals into a single executive view; supports audit readiness and reduces 'unknown unknowns' that surface late in audit/closing",
-      computationSection: ["Aggregate weighted control risk events (breaches, overrides, SoD conflicts, unresolved exceptions)", "apply weights by severity and recurrence", "produce score by entity and overall"],
-      dataSource: ["SAP FI (BKPF, BSEG)", "GRC/SoD reports", "workflow approvals", "change logs (CDHDR/CDPOS)", "audit issue tracker"],
-      calculationMethod: ["Risk Score = Σ(Events × Weight × Severity Factor × Recurrence Factor)", "normalize to 0–100", "thresholds by risk appetite"],
+      metricDefinition:
+        "Composite risk score representing the health of financial controls based on control breaches, overrides, SoD conflicts, exception ageing, and repeat findings, normalized to a 0–100 scale (lower is better)",
+      businessRationale:
+        "Converts multiple control signals into a single executive view; supports audit readiness and reduces 'unknown unknowns' that surface late in audit/closing",
+      computationSection: [
+        "Aggregate weighted control risk events (breaches, overrides, SoD conflicts, unresolved exceptions)",
+        "apply weights by severity and recurrence",
+        "produce score by entity and overall",
+      ],
+      dataSource: [
+        "SAP FI (BKPF, BSEG)",
+        "GRC/SoD reports",
+        "workflow approvals",
+        "change logs (CDHDR/CDPOS)",
+        "audit issue tracker",
+      ],
+      calculationMethod: [
+        "Risk Score = Σ(Events × Weight × Severity Factor × Recurrence Factor)",
+        "normalize to 0–100",
+        "thresholds by risk appetite",
+      ],
       target: "≤ 25",
       amberThreshold: "> 25 and ≤ 40",
       redThreshold: "> 40",
@@ -269,9 +322,9 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           subModule: "FI",
           contributionType: "Tracks manual control bypasses and exceptions",
           status: "Active",
-          owner: "CFO / Head – Internal Audit"
-        }
-      ]
+          owner: "CFO / Head – Internal Audit",
+        },
+      ],
     },
     {
       id: "FI-MET-PR-004",
@@ -279,17 +332,31 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Score (0-100)",
       dimension: "Value Protection",
       owner: "Financial Controller",
-      metricDefinition: "Accuracy of financial postings measured as the proportion of postings that are correct the first time (no reversals, reclassifications, or correction journals attributable to posting error)",
-      businessRationale: "Directly impacts financial statement reliability, close effort, audit queries, and management decision quality; 'posting quality' is a leading indicator of control maturity",
-      computationSection: ["Identify total postings in-scope", "identify postings reversed/corrected due to errors (wrong GL, wrong cost center, wrong tax code, wrong period, wrong assignment)", "compute accuracy score"],
-      dataSource: ["SAP FI (BKPF, BSEG)", "reversal docs", "correction journal logs", "tax code tables", "master data (SKA1/CSKS/LFA1/KNA1)"],
-      calculationMethod: ["Posting Accuracy Score = 100 − [(Incorrect Postings ÷ Total Postings) × 100]"],
+      metricDefinition:
+        "Accuracy of financial postings measured as the proportion of postings that are correct the first time (no reversals, reclassifications, or correction journals attributable to posting error)",
+      businessRationale:
+        "Directly impacts financial statement reliability, close effort, audit queries, and management decision quality; 'posting quality' is a leading indicator of control maturity",
+      computationSection: [
+        "Identify total postings in-scope",
+        "identify postings reversed/corrected due to errors (wrong GL, wrong cost center, wrong tax code, wrong period, wrong assignment)",
+        "compute accuracy score",
+      ],
+      dataSource: [
+        "SAP FI (BKPF, BSEG)",
+        "reversal docs",
+        "correction journal logs",
+        "tax code tables",
+        "master data (SKA1/CSKS/LFA1/KNA1)",
+      ],
+      calculationMethod: [
+        "Posting Accuracy Score = 100 − [(Incorrect Postings ÷ Total Postings) × 100]",
+      ],
       target: "≥ 99.0",
       amberThreshold: "≥ 98.0 and < 99.0",
       redThreshold: "< 98.0",
       refresh: "Weekly",
       status: "Active",
-      supportingKPI: []
+      supportingKPI: [],
     },
     {
       id: "FI-MET-PR-005",
@@ -297,11 +364,27 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Strategic Position",
       owner: "CFO / Head – Governance",
-      metricDefinition: "Measures how completely critical FI risk areas are covered by configured and operating controls (preventive + detective), expressed as a % coverage score",
-      businessRationale: "Ensures there are no 'blind spots' in finance governance; high coverage reduces reliance on heroics and manual checks, improving scalability post-growth/acquisitions",
-      computationSection: ["Define FI risk-control library", "map risks to controls", "mark controls as implemented + operating", "compute coverage by process and overall"],
-      dataSource: ["Control library / GRC control matrix", "SAP configuration evidence", "workflow logs", "audit testing results", "monitoring dashboards"],
-      calculationMethod: ["Control Coverage Score = (Risks with Active Controls ÷ Total In-scope Risks) × 100", "optionally weighted by risk criticality"],
+      metricDefinition:
+        "Measures how completely critical FI risk areas are covered by configured and operating controls (preventive + detective), expressed as a % coverage score",
+      businessRationale:
+        "Ensures there are no 'blind spots' in finance governance; high coverage reduces reliance on heroics and manual checks, improving scalability post-growth/acquisitions",
+      computationSection: [
+        "Define FI risk-control library",
+        "map risks to controls",
+        "mark controls as implemented + operating",
+        "compute coverage by process and overall",
+      ],
+      dataSource: [
+        "Control library / GRC control matrix",
+        "SAP configuration evidence",
+        "workflow logs",
+        "audit testing results",
+        "monitoring dashboards",
+      ],
+      calculationMethod: [
+        "Control Coverage Score = (Risks with Active Controls ÷ Total In-scope Risks) × 100",
+        "optionally weighted by risk criticality",
+      ],
       target: "≥ 95%",
       amberThreshold: "≥ 85% and < 95%",
       redThreshold: "< 85%",
@@ -312,7 +395,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           kpiId: "KPI-COV-01",
           kpiName: "Risk Assessment Completion Rate",
           subModule: "GRC",
-          contributionType: "Ensures comprehensive risk identification and mapping",
+          contributionType:
+            "Ensures comprehensive risk identification and mapping",
           status: "Planned",
           owner: "Risk Manager",
         },
@@ -322,8 +406,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           subModule: "FI",
           contributionType: "Validates effectiveness of implemented controls",
           status: "Planned",
-          owner: "CFO / Head – Governance"
-        }
+          owner: "CFO / Head – Governance",
+        },
       ],
       indirectKPI: [
         {
@@ -341,8 +425,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           contributionType: "IC reconciliation governance",
           status: "Planned",
           owner: "Financial Controller",
-        }
-      ]
+        },
+      ],
     },
     {
       id: "FI-MET-PR-006",
@@ -350,11 +434,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Strategic Position",
       owner: "CFO / Treasurer",
-      metricDefinition: "Measures the extent to which enterprise cash balances are visible, timely, and reconciled across all bank accounts, entities, and currencies within defined SLAs",
-      businessRationale: "Incomplete cash visibility leads to sub-optimal borrowing, idle cash, missed investment opportunities, and liquidity risk during stress situations",
-      computationSection: ["Identify total in-scope bank accounts", "assess accounts with daily balance visibility and timely reconciliation", "compute coverage percentage"],
-      dataSource: ["SAP Bank Accounting", "Cash Management", "Bank Statements (MT940/BAI2)", "Treasury systems"],
-      calculationMethod: ["(Bank Accounts with Timely Visibility & Reconciliation ÷ Total In-scope Bank Accounts) × 100"],
+      metricDefinition:
+        "Measures the extent to which enterprise cash balances are visible, timely, and reconciled across all bank accounts, entities, and currencies within defined SLAs",
+      businessRationale:
+        "Incomplete cash visibility leads to sub-optimal borrowing, idle cash, missed investment opportunities, and liquidity risk during stress situations",
+      computationSection: [
+        "Identify total in-scope bank accounts",
+        "assess accounts with daily balance visibility and timely reconciliation",
+        "compute coverage percentage",
+      ],
+      dataSource: [
+        "SAP Bank Accounting",
+        "Cash Management",
+        "Bank Statements (MT940/BAI2)",
+        "Treasury systems",
+      ],
+      calculationMethod: [
+        "(Bank Accounts with Timely Visibility & Reconciliation ÷ Total In-scope Bank Accounts) × 100",
+      ],
       target: "≥ 98%",
       amberThreshold: "≥ 95% and < 98%",
       redThreshold: "< 95%",
@@ -373,11 +470,12 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           kpiId: "KPI-CSH-02",
           kpiName: "Multi-currency Exposure Tracking",
           subModule: "FI",
-          contributionType: "Provides real-time foreign exchange risk visibility",
+          contributionType:
+            "Provides real-time foreign exchange risk visibility",
           status: "Active",
-          owner: "CFO / Treasurer"
-        }
-      ]
+          owner: "CFO / Treasurer",
+        },
+      ],
     },
   ],
   secondaryMetrics: [
@@ -387,11 +485,26 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Operational Efficiency",
       owner: "Head - IT Integration",
-      metricDefinition: "Percentage of successful data integrations between SAP FI and connected systems without errors, timeouts, or data quality issues during the measurement period",
-      businessRationale: "Integration reliability ensures real-time data availability, reduces manual interventions, and maintains data consistency across business processes",
-      computationSection: ["Track all integration attempts and outcomes", "Identify failed integrations and root causes", "Calculate success rate by integration type", "Monitor performance trends"],
-      dataSource: ["Integration monitoring logs", "SAP PI/PO logs", "API gateway metrics", "Error handling systems"],
-      calculationMethod: ["(Successful integrations / Total integration attempts) × 100", "Segmented by system, data type, and time period"],
+      metricDefinition:
+        "Percentage of successful data integrations between SAP FI and connected systems without errors, timeouts, or data quality issues during the measurement period",
+      businessRationale:
+        "Integration reliability ensures real-time data availability, reduces manual interventions, and maintains data consistency across business processes",
+      computationSection: [
+        "Track all integration attempts and outcomes",
+        "Identify failed integrations and root causes",
+        "Calculate success rate by integration type",
+        "Monitor performance trends",
+      ],
+      dataSource: [
+        "Integration monitoring logs",
+        "SAP PI/PO logs",
+        "API gateway metrics",
+        "Error handling systems",
+      ],
+      calculationMethod: [
+        "(Successful integrations / Total integration attempts) × 100",
+        "Segmented by system, data type, and time period",
+      ],
       target: "> 99.5%",
       amberThreshold: "≥ 98% and ≤ 99.5%",
       redThreshold: "< 98%",
@@ -412,9 +525,9 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           subModule: "FI",
           contributionType: "Ensures data integrity across integrated systems",
           status: "Active",
-          owner: "Head - IT Integration"
-        }
-      ]
+          owner: "Head - IT Integration",
+        },
+      ],
     },
     {
       id: "FI-MET-SR-017",
@@ -422,11 +535,23 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Score (0-100)",
       dimension: "Control",
       owner: "Head – Master Data / CFO",
-      metricDefinition: "Composite index reflecting completeness, accuracy, consistency, and governance of FI-relevant master data (GL, vendor, customer, cost objects)",
-      businessRationale: "Master data quality is a root cause driver for posting errors, control breaches, and rework across all FI processes",
-      computationSection: ["Assess master data attributes against defined quality rules", "aggregate defect rates and normalize into an index"],
-      dataSource: ["SAP Master Data (SKA1, LFA1, KNA1, CSKS)", "Change logs", "MDG rules"],
-      calculationMethod: ["Quality Index = 100 − (Weighted Defect Score)", "defects include missing fields, invalid values, duplicates, and unauthorized changes"],
+      metricDefinition:
+        "Composite index reflecting completeness, accuracy, consistency, and governance of FI-relevant master data (GL, vendor, customer, cost objects)",
+      businessRationale:
+        "Master data quality is a root cause driver for posting errors, control breaches, and rework across all FI processes",
+      computationSection: [
+        "Assess master data attributes against defined quality rules",
+        "aggregate defect rates and normalize into an index",
+      ],
+      dataSource: [
+        "SAP Master Data (SKA1, LFA1, KNA1, CSKS)",
+        "Change logs",
+        "MDG rules",
+      ],
+      calculationMethod: [
+        "Quality Index = 100 − (Weighted Defect Score)",
+        "defects include missing fields, invalid values, duplicates, and unauthorized changes",
+      ],
       target: "≥ 95",
       amberThreshold: "≥ 85 and < 95",
       redThreshold: "< 85",
@@ -437,7 +562,8 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           kpiId: "KPI-MDQ-01",
           kpiName: "Vendor Master Completeness",
           subModule: "AP",
-          contributionType: "Ensures complete vendor information for accurate processing",
+          contributionType:
+            "Ensures complete vendor information for accurate processing",
           status: "Active",
           owner: "Master Data Specialist",
         },
@@ -447,9 +573,9 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           subModule: "GL",
           contributionType: "Maintains proper chart of accounts structure",
           status: "Active",
-          owner: "Head – Master Data / CFO"
-        }
-      ]
+          owner: "Head – Master Data / CFO",
+        },
+      ],
     },
     {
       id: "FI-MET-SR-018",
@@ -457,11 +583,24 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
       unit: "Percentage",
       dimension: "Value Realization",
       owner: "CIO / Head – Integration",
-      metricDefinition: "Measures the percentage of FI-related integrations (inbound and outbound) that execute successfully without errors, retries, or manual intervention",
-      businessRationale: "Integration failures create downstream posting errors, delays, and manual work, undermining automation and reliability of the finance ecosystem",
-      computationSection: ["Identify total FI integration messages", "identify successful end-to-end executions", "compute success rate by interface and criticality"],
-      dataSource: ["SAP CPI/PI", "Middleware logs", "SAP FI error logs", "Interface monitoring tools"],
-      calculationMethod: ["(Successful Integration Executions ÷ Total Integration Executions) × 100"],
+      metricDefinition:
+        "Measures the percentage of FI-related integrations (inbound and outbound) that execute successfully without errors, retries, or manual intervention",
+      businessRationale:
+        "Integration failures create downstream posting errors, delays, and manual work, undermining automation and reliability of the finance ecosystem",
+      computationSection: [
+        "Identify total FI integration messages",
+        "identify successful end-to-end executions",
+        "compute success rate by interface and criticality",
+      ],
+      dataSource: [
+        "SAP CPI/PI",
+        "Middleware logs",
+        "SAP FI error logs",
+        "Interface monitoring tools",
+      ],
+      calculationMethod: [
+        "(Successful Integration Executions ÷ Total Integration Executions) × 100",
+      ],
       target: "≥ 99.0%",
       amberThreshold: "≥ 97.0% and < 99.0%",
       redThreshold: "< 97.0%",
@@ -480,11 +619,12 @@ export const SAP_S4HANA_BLUEPRINT: ProductBlueprint = {
           kpiId: "KPI-USR-02",
           kpiName: "Training Completion Rate",
           subModule: "Training",
-          contributionType: "Ensures users are properly trained on new processes",
+          contributionType:
+            "Ensures users are properly trained on new processes",
           status: "Active",
-          owner: "CIO / Head – Integration"
-        }
-      ]
+          owner: "CIO / Head – Integration",
+        },
+      ],
     },
   ],
   dataSources: {
