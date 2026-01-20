@@ -12,6 +12,7 @@ import {
   User,
   Clock,
   AlertCircle,
+  Settings,
   LucideIcon,
 } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";

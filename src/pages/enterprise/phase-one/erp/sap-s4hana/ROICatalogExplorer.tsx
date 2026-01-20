@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { CatalogCard } from "../../../../../components/roi/cards/CatalogCard";
 import { SearchAndFilters } from "../../../../../components/roi/SearchAndFilters";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
@@ -13,6 +13,7 @@ import {
 import { PHASE_I_ROI_CATEGORIES, InvestmentCard } from "../../../../../data/phaseIROIData";
 import { CatalogItem } from "../../../../../data/roiCatalogData";
 import { ModulesSection } from "./components/ModulesSection";
+import { ModuleConfigurationSelection } from "./components/ModuleConfigurationSelection";
 import { ModuleFlowSelection } from "./components/ModuleFlowSelection";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 
@@ -109,6 +110,7 @@ const getCatalogId = (id: string): string => {
 
 export function ROICatalogExplorer() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id: productIdFromRoute, moduleId: moduleIdFromRoute } = useParams<{ 
     id?: string;
     moduleId?: string;
@@ -277,7 +279,7 @@ export function ROICatalogExplorer() {
         }
       />
 
-      {/* Show flow selection when module is selected, modules when product is selected, otherwise show catalog */}
+      {/* Show flow selection when on /flow route, configuration selection when module is selected, modules when product is selected, otherwise show catalog */}
       {selectedModuleId && selectedProductId ? (() => {
         // Convert to catalog ID if needed
         const catalogId = getCatalogId(selectedProductId);
@@ -287,8 +289,30 @@ export function ROICatalogExplorer() {
         if (selectedModule && blueprint) {
           // Use the blueprint ID for navigation, not the catalog ID
           const blueprintId = blueprint.id || selectedProductId;
+          
+          // Check if we're on the flow route
+          const isFlowRoute = location.pathname.includes("/flow");
+          
+          if (isFlowRoute) {
+            // Show flow selection page (2 buttons: ROI Dimension Flow, Sub Module Flow)
+            return (
+              <ModuleFlowSelection
+                blueprintId={blueprintId}
+                moduleId={selectedModuleId}
+                moduleName={selectedModule.name}
+                moduleLabel={selectedModule.label}
+                catalogId={catalogId}
+                onBack={() => {
+                  // Go back to configuration selection page
+                  navigate(`/phase-i/catalog/${catalogId}/modules/${selectedModuleId}`);
+                }}
+              />
+            );
+          }
+          
+          // Otherwise, show configuration selection page (3 buttons: Configuration, Report, Action)
           return (
-            <ModuleFlowSelection
+            <ModuleConfigurationSelection
               blueprintId={blueprintId}
               moduleId={selectedModuleId}
               moduleName={selectedModule.name}
@@ -326,9 +350,8 @@ export function ROICatalogExplorer() {
                 subModules={blueprint.subModules}
                 activeModuleId="fi"
                 onModuleClick={(moduleId) => {
-                  // Navigate to flow selection route
-                  const blueprintId = blueprint.id || selectedProductId;
-                  navigate(`/phase-i/catalog/${selectedProductId}/modules/${moduleId}/flow`);
+                  // Navigate to configuration selection page (not flow page)
+                  navigate(`/phase-i/catalog/${selectedProductId}/modules/${moduleId}`);
                 }}
                 blueprintId={selectedProductId}
               />
