@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
-import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
+// import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 import { CONFIGURATION_QUESTIONS } from "../../../../../data/configurationQuestionsData";
 import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../../components/ui/card";
@@ -33,8 +33,8 @@ export function ModuleConfiguration() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
-  const blueprint = SAP_S4HANA_BLUEPRINT;
-  const selectedModule = blueprint?.subModules.find(m => m.id === moduleId);
+  // const blueprint = SAP_S4HANA_BLUEPRINT;
+  // const selectedModule = blueprint?.subModules.find(m => m.id === moduleId);
 
   if (!cockpitData) {
     return (

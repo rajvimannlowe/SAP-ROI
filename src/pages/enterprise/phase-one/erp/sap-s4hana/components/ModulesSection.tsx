@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ProductBlueprint } from "../../../../../../data/productBlueprintData";
 import { SectionHeader } from "./SectionHeader";
 
@@ -15,7 +15,7 @@ export function ModulesSection({
   onModuleClick,
   blueprintId: propBlueprintId,
 }: ModulesSectionProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { id: routeBlueprintId } = useParams<{ id: string }>();
   const blueprintId = propBlueprintId || routeBlueprintId;
 

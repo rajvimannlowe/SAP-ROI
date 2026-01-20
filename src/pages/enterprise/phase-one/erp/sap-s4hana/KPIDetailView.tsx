@@ -6,13 +6,13 @@ import {
   CheckCircle2,
   Target,
   Shield,
-  Database,
+  // Database,
   RefreshCw,
   BarChart3,
   User,
   Clock,
   AlertCircle,
-  Settings,
+  // Settings,
   LucideIcon,
 } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";

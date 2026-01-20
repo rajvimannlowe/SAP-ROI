@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   HeatmapData,
-  getSeverityColor,
-  getSeverityBgColor,
   getUniqueSubProcesses,
   getUniqueRootCauses,
 } from "@/data/deviationAnalysisData";
