@@ -17,19 +17,19 @@ export function ModuleConfigurationSelection({
   moduleId,
   moduleName,
   moduleLabel,
-  catalogId,
-  onBack,
+  // catalogId,
+  // onBack,
 }: ModuleConfigurationSelectionProps) {
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else if (catalogId) {
-      // Navigate back to module selection
-      navigate(`/phase-i/catalog/${catalogId}/modules`);
-    }
-  };
+  // const handleBack = () => {
+  //   if (onBack) {
+  //     onBack();
+  //   } else if (catalogId) {
+  //     // Navigate back to module selection
+  //     navigate(`/phase-i/catalog/${catalogId}/modules`);
+  //   }
+  // };
 
   const handleConfiguration = () => {
     navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/configuration`);

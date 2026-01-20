@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState, useEffect } from "react";
+import React, { ReactNode, useRef } from "react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 
 // Helper function to extract text content from ReactNode
@@ -10,12 +10,13 @@ const getTextContent = (node: ReactNode): string => {
   
   if (React.isValidElement(node)) {
     // If it's a React element, extract from children
-    if (node.props?.children) {
-      return getTextContent(node.props.children);
+    const props = node.props as { children?: ReactNode; value?: unknown };
+    if (props?.children) {
+      return getTextContent(props.children);
     }
     // Also check if there's a text prop or value
-    if (node.props?.value) {
-      return String(node.props.value);
+    if (props?.value) {
+      return String(props.value);
     }
   }
   
@@ -47,16 +48,19 @@ const CellWithTooltip = ({ content, tooltipText }: { content: ReactNode; tooltip
     const previewText = getFirstNWords(textContent, 5);
     
     // Create preview content - try to preserve the original structure
-    let previewContent: ReactNode;
-    if (React.isValidElement(content)) {
-      // If it's a React element (like from renderCellByType), clone it with preview text
-      previewContent = React.cloneElement(content as React.ReactElement, {
-        children: previewText
-      });
-    } else {
-      // Otherwise, just show the preview text
-      previewContent = previewText;
-    }
+    // let previewContent: ReactNode;
+    // if (React.isValidElement(content)) {
+    //   // If it's a React element (like from renderCellByType), clone it with preview text
+    //   previewContent = React.cloneElement(content as React.ReactElement, {
+    //     children: previewText
+    //   });
+    // } else {
+    //   // Otherwise, just show the preview text
+    //   previewContent = previewText;
+    // }
+
+    // Create preview content - just use the preview text for simplicity
+    const previewContent: ReactNode = previewText;
 
     return (
       <TooltipProvider>

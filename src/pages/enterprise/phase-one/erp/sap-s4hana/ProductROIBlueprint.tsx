@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Download } from "lucide-react";
 import { SAP_S4HANA_BLUEPRINT } from "../../../../../data/productBlueprintData";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
@@ -23,7 +23,6 @@ const getCatalogId = (blueprintId: string): string => {
 export function ProductROIBlueprint() {
   const { id: blueprintId } = useParams<{ id: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
   const blueprint = SAP_S4HANA_BLUEPRINT;
   const [activeSection, setActiveSection] = useState<Section>("intent");
   
@@ -117,7 +116,7 @@ export function ProductROIBlueprint() {
 
       <div className="space-y-6">
         {activeSection === "intent" && (
-          <IntentSection roiIntents={blueprint.roiIntents} />
+          <IntentSection />
         )}
 
         {activeSection === "metrics" && (

@@ -2,7 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { LucideIcon, TrendingUp } from "lucide-react";
 import {
-  KPITrendConfig,
+  // KPITrendConfig,
   ThresholdLine,
   TrendDataSeries,
 } from "../../data/kpiTrendData";

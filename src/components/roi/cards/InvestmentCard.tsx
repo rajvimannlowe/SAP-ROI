@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, LucideIcon } from "lucide-react";
-import { InvestmentCard as InvestmentCardType } from "../../../../data/phaseIROIData";
+import { InvestmentCard as InvestmentCardType } from "../../../data/phaseIROIData";
 import {
   hexToRgba,
   getROIDimensionColor,

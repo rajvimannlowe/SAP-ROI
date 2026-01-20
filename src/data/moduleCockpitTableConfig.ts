@@ -27,7 +27,7 @@ export const getKPITableColumns = (
     {
       key: "module",
       header: "Module",
-      accessor: (row) =>
+      accessor: () =>
         renderCellByType(cockpitData?.moduleName || "", "badge", {
           badgeConfig: { defaultColor: "#4160F0" },
         }),
@@ -108,7 +108,7 @@ export const getKPITableColumns = (
     {
       key: "roiPotential",
       header: "ROI Potential",
-      accessor: (row) =>
+      accessor: () =>
         renderCellByType("N/A", "badge", {
           badgeConfig: {
             colorMap: roiPotentialColorMap,

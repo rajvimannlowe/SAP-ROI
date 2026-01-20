@@ -11,10 +11,10 @@ import {
   ClipboardList,
   CheckCircle2,
   XCircle,
-  AlertCircle,
+  // AlertCircle,
   ArrowRight,
 } from "lucide-react";
-import { getStatusColor } from "../../../../../data/statusMapping";
+// import { getStatusColor } from "../../../../../data/statusMapping";
 
 interface ConfigurationQuestion {
   id: string;
@@ -253,7 +253,7 @@ export function KPIConfiguration() {
       </div>
 
       <div className="space-y-6">
-        {CONFIGURATION_QUESTIONS.map((question, index) => (
+        {CONFIGURATION_QUESTIONS.map((question) => (
           <Card key={question.id} className="shadow-sm">
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">

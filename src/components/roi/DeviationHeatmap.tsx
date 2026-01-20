@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   HeatmapData,
-  getSeverityColor,
-  getSeverityBgColor,
   getUniqueSubProcesses,
   getUniqueRootCauses,
 } from "@/data/deviationAnalysisData";
@@ -63,20 +61,20 @@ export function DeviationHeatmap({
   };
 
   // Get circle opacity/intensity based on count
-  const getCircleIntensity = (count: number): number => {
-    const maxCount = 8;
-    return 0.3 + Math.min(count / maxCount, 1) * 0.7; // 0.3 to 1.0
-  };
+  // const getCircleIntensity = (count: number): number => {
+  //   const maxCount = 8;
+  //   return 0.3 + Math.min(count / maxCount, 1) * 0.7; // 0.3 to 1.0
+  // };
 
   // Get background circle color (lighter)
-  const getCircleBgColor = (
-    severity: HeatmapData["severity"] | null,
-    count: number
-  ): string => {
-    if (!severity || count === 0) return "#F9FAFB";
-    const intensity = getCircleIntensity(count);
-    return hexToRgba(getCircleColor(severity, count), intensity * 0.3);
-  };
+  // const getCircleBgColor = (
+  //   severity: HeatmapData["severity"] | null,
+  //   count: number
+  // ): string => {
+  //   if (!severity || count === 0) return "#F9FAFB";
+  //   const intensity = getCircleIntensity(count);
+  //   return hexToRgba(getCircleColor(severity, count), intensity * 0.3);
+  // };
 
   return (
     <Card className="border border-border/50 shadow-lg overflow-hidden">
