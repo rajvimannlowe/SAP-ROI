@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Info, TrendingUp, Filter } from "lucide-react";
+import { Info, Filter } from "lucide-react";
+import { StatusType } from "../../../../../data/statusMapping";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { MODULE_COCKPIT_DATA } from "../../../../../data/moduleCockpitData";
 import { MetricCard } from "../../../../../components/roi/cards/MetricCard";
@@ -113,7 +114,7 @@ export function ModuleROICockpit() {
     
     // Calculate overall ROI health (percentage of green KPIs)
     const overallHealth = totalKPIs > 0 ? Math.round((greenCount / totalKPIs) * 100) : 0;
-    const healthStatus = overallHealth >= 80 ? "Optimal" : overallHealth >= 60 ? "Monitor" : "Critical";
+    const healthStatus: StatusType = overallHealth >= 80 ? "Optimal" : overallHealth >= 60 ? "Monitor" : "Error";
     
     // Calculate control coverage (active controls / total)
     const activeControls = kpisToUse.filter((kpi) => {
