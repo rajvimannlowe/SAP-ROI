@@ -180,30 +180,33 @@ export function ModuleConfiguration() {
     const allAnswered = answeredCount === CONFIGURATION_QUESTIONS.length;
 
     return (
-      <div className="space-y-4">
-        {/* Compact Progress Section */}
-        <Card className="border-blue-200">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-base font-semibold text-foreground">
-                Assessment Progress
-              </h3>
-              <Badge variant="secondary" className="text-xs">
-                {answeredCount} / {CONFIGURATION_QUESTIONS.length}
-              </Badge>
-            </div>
-            <Progress value={(answeredCount / CONFIGURATION_QUESTIONS.length) * 100} className="h-2" />
-          </CardContent>
-        </Card>
+      <div className="flex flex-col h-full min-h-0">
+        {/* Fixed Progress Section */}
+        <div className="flex-shrink-0 pb-2">
+          <Card className="border-blue-200">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-foreground">
+                  Assessment Progress
+                </h3>
+                <Badge variant="secondary" className="text-xs">
+                  {answeredCount} / {CONFIGURATION_QUESTIONS.length}
+                </Badge>
+              </div>
+              <Progress value={(answeredCount / CONFIGURATION_QUESTIONS.length) * 100} className="h-1.5" />
+            </CardContent>
+          </Card>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          {/* Quick Navigation Sidebar - White Buttons with Checkmarks */}
-          <div className="lg:col-span-1 space-y-4">
-            <Card className="sticky top-4">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Navigation</CardTitle>
+        {/* Fixed Grid Layout */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-3 min-h-0">
+          {/* Fixed Navigation Sidebar */}
+          <div className="lg:col-span-1 flex-shrink-0">
+            <Card className="h-full">
+              <CardHeader className="pb-2 pt-3 px-3">
+                <CardTitle className="text-xs font-medium">Navigation</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 px-3 pb-3">
                 <div className="grid grid-cols-5 gap-1.5">
                   {CONFIGURATION_QUESTIONS.map((question, index) => {
                     const status = getQuestionStatus(question.id);
@@ -213,47 +216,46 @@ export function ModuleConfiguration() {
                       <button
                         key={question.id}
                         onClick={() => handleQuestionClick(index)}
-                        className={`relative aspect-square p-1.5 rounded border-2 text-xs font-medium transition-all ${
-                          isCurrent
+                        className={`aspect-square p-1.5 rounded border-2 text-xs font-medium transition-all ${
+                          isAnswered
+                            ? "bg-green-500 border-green-600 text-white shadow-sm"
+                            : isCurrent
                             ? "bg-blue-50 border-blue-500 text-blue-700 shadow-sm"
                             : "bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50"
                         }`}
                         title={question.id}
                       >
                         {question.id}
-                        {isAnswered && (
-                          <Check className="absolute -top-1 -right-1 h-3.5 w-3.5 text-green-600 bg-white rounded-full" />
-                        )}
                       </button>
                     );
                   })}
                 </div>
                 
                 {/* Threshold Section Below Navigation */}
-                <div className="pt-3 border-t space-y-2">
-                  <div className="p-2 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-1">Score</p>
-                    <p className="text-lg font-bold text-blue-600">
+                <div className="pt-2 border-t space-y-1.5">
+                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
+                    <p className="text-xs font-semibold text-foreground mb-0.5">Score</p>
+                    <p className="text-base font-bold text-blue-600">
                       {totalScore} / {maxScore}
                     </p>
                     <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
                   </div>
-                  <div className="p-2 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-1">Threshold</p>
+                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
+                    <p className="text-xs font-semibold text-foreground mb-0.5">Threshold</p>
                     <div className="flex items-center gap-1">
                       {percentage >= 70 ? (
-                        <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                        <CheckCircle2 className="h-3 w-3 text-green-600" />
                       ) : (
-                        <XCircle className="h-3.5 w-3.5 text-red-600" />
+                        <XCircle className="h-3 w-3 text-red-600" />
                       )}
                       <span className={`text-xs font-medium ${percentage >= 70 ? "text-green-600" : "text-red-600"}`}>
                         ≥ 70% {percentage >= 70 ? "Met" : "Not Met"}
                       </span>
                     </div>
                   </div>
-                  <div className="p-2 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-1.5">Requirements</p>
-                    <div className="space-y-1">
+                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
+                    <p className="text-xs font-semibold text-foreground mb-1">Requirements</p>
+                    <div className="space-y-0.5">
                       <div className="flex items-center gap-1">
                         {responses["Q1"] === "fully_implemented" ? (
                           <Check className="h-3 w-3 text-green-600" />
@@ -274,18 +276,18 @@ export function ModuleConfiguration() {
                   </div>
                   
                   {/* Eligibility Status */}
-                  <div className={`p-2 rounded border ${isEligible ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
+                  <div className={`p-1.5 rounded border-2 ${isEligible ? "bg-green-500 border-green-600 shadow-md" : "bg-red-50 border-red-200"}`}>
                     {isEligible ? (
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-1.5">
+                        <CheckCircle2 className="h-4 w-4 text-white mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-xs font-semibold text-green-700">Eligible</p>
-                          <p className="text-xs text-green-600">Can proceed</p>
+                          <p className="text-xs font-bold text-white">Eligible</p>
+                          <p className="text-xs text-green-100">Can proceed</p>
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-start gap-2">
-                        <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-1.5">
+                        <XCircle className="h-3.5 w-3.5 text-red-600 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-xs font-semibold text-red-700">Not Eligible</p>
                           <p className="text-xs text-red-600">
@@ -300,62 +302,64 @@ export function ModuleConfiguration() {
             </Card>
           </div>
 
-          {/* Questions Section - More Compact */}
-          <div className="lg:col-span-3 space-y-4">
-            {currentQuestions.map((question, qIndex) => {
-              const questionIndex = startIndex + qIndex;
-              return (
-                <Card key={question.id} id={`question-${question.id}`} className="shadow-sm border">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm flex items-center gap-2">
-                        <span className="text-blue-600 font-bold">
-                          {question.id}
-                        </span>
-                        <span className="text-sm">{question.question}</span>
-                      </CardTitle>
-                      {responses[question.id] && (
-                        <Check className="h-5 w-5 text-green-600" />
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="space-y-2">
-                      {question.options.map((option) => (
-                        <label
-                          key={option.value}
-                          className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition-all ${
-                            responses[question.id] === option.value
-                              ? "border-blue-500 bg-blue-50"
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name={question.id}
-                            value={option.value}
-                            checked={responses[question.id] === option.value}
-                            onChange={(e) =>
-                              handleResponseChange(question.id, e.target.value, questionIndex)
-                            }
-                            className="w-4 h-4 text-blue-600"
-                          />
-                          <span className="flex-1 text-sm font-medium">
-                            {option.label}
+          {/* Scrollable Questions Section */}
+          <div className="lg:col-span-3 flex flex-col min-h-0">
+            <div className="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+              {currentQuestions.map((question, qIndex) => {
+                const questionIndex = startIndex + qIndex;
+                return (
+                  <Card key={question.id} id={`question-${question.id}`} className="shadow-sm border">
+                    <CardHeader className="pb-2 pt-3 px-3">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-sm flex items-center gap-2">
+                          <span className="text-blue-600 font-bold">
+                            {question.id}
                           </span>
-                          <Badge variant="outline" className="text-xs">
-                            {option.score}
-                          </Badge>
-                        </label>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                          <span className="text-sm">{question.question}</span>
+                        </CardTitle>
+                        {responses[question.id] && (
+                          <Check className="h-4 w-4 text-green-600" />
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0 px-3 pb-3">
+                      <div className="space-y-1.5">
+                        {question.options.map((option) => (
+                          <label
+                            key={option.value}
+                            className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-all ${
+                              responses[question.id] === option.value
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name={question.id}
+                              value={option.value}
+                              checked={responses[question.id] === option.value}
+                              onChange={(e) =>
+                                handleResponseChange(question.id, e.target.value, questionIndex)
+                              }
+                              className="w-4 h-4 text-blue-600"
+                            />
+                            <span className="flex-1 text-sm font-medium">
+                              {option.label}
+                            </span>
+                            <Badge variant="outline" className="text-xs">
+                              {option.score}
+                            </Badge>
+                          </label>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
 
-            {/* Compact Pagination Controls */}
-            <div className="flex items-center justify-between pt-2">
+            {/* Fixed Pagination Controls */}
+            <div className="flex-shrink-0 flex items-center justify-between pt-2 border-t mt-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -381,15 +385,17 @@ export function ModuleConfiguration() {
               </Button>
             </div>
 
-            {/* Submit Button */}
-            <Button
-              onClick={handleSubmit}
-              className="w-full"
-              size="lg"
-              disabled={!allAnswered}
-            >
-              {allAnswered ? "Submit Configuration" : `Answer ${CONFIGURATION_QUESTIONS.length - answeredCount} more question(s) to submit`}
-            </Button>
+            {/* Fixed Submit Button */}
+            <div className="flex-shrink-0 pt-2">
+              <Button
+                onClick={handleSubmit}
+                className="w-full"
+                size="default"
+                disabled={!allAnswered}
+              >
+                {allAnswered ? "Submit Configuration" : `Answer ${CONFIGURATION_QUESTIONS.length - answeredCount} more question(s) to submit`}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -494,18 +500,21 @@ export function ModuleConfiguration() {
   };
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title={cockpitData.moduleName}
-        subtitle={`Configuration Assessment - ${cockpitData.moduleLabel}`}
-        backTo={`/phase-i/catalog/${
-          blueprintId || "sap-s4hana"
-        }/modules/${moduleId}`}
-        backLabel="Back to Configuration Selection"
-      />
+    <div className="flex flex-col h-[calc(100vh-4rem-3rem)] min-h-0">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 pb-2">
+        <PageHeader
+          title={cockpitData.moduleName}
+          subtitle={`Configuration Assessment - ${cockpitData.moduleLabel}`}
+          backTo={`/phase-i/catalog/${
+            blueprintId || "sap-s4hana"
+          }/modules/${moduleId}`}
+          backLabel="Back to Configuration Selection"
+        />
+      </div>
 
-      {/* Configuration Content */}
-      <div className="mt-6">
+      {/* Configuration Content - Fixed Layout */}
+      <div className="flex-1 flex flex-col min-h-0">
         {renderConfigurationTab()}
       </div>
     </div>
