@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { ProductBlueprint } from "../../../../../../data/productBlueprintData";
 import { SectionHeader } from "./SectionHeader";
 
@@ -6,18 +5,13 @@ interface ModulesSectionProps {
   subModules: ProductBlueprint["subModules"];
   activeModuleId?: string;
   onModuleClick?: (moduleId: string) => void;
-  blueprintId?: string;
 }
 
 export function ModulesSection({
   subModules,
   activeModuleId,
   onModuleClick,
-  blueprintId: propBlueprintId,
 }: ModulesSectionProps) {
-  // const navigate = useNavigate();
-  const { id: routeBlueprintId } = useParams<{ id: string }>();
-  const blueprintId = propBlueprintId || routeBlueprintId;
 
   const handleModuleClick = (moduleId: string) => {
     onModuleClick?.(moduleId);
