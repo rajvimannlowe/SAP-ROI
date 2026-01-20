@@ -17,18 +17,18 @@ export function ModuleFlowSelection({
   moduleName,
   moduleLabel,
   catalogId,
-  onBack,
+  // onBack,
 }: ModuleFlowSelectionProps) {
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else if (catalogId) {
-      // Navigate back to module selection
-      navigate(`/phase-i/catalog/${catalogId}/modules`);
-    }
-  };
+  // const handleBack = () => {
+  //   if (onBack) {
+  //     onBack();
+  //   } else if (catalogId) {
+  //     // Navigate back to module selection
+  //     navigate(`/phase-i/catalog/${catalogId}/modules`);
+  //   }
+  // };
 
   const handleROIDimensionFlow = () => {
     // Navigate to blueprint page with moduleId in state so we can navigate back to flow selection

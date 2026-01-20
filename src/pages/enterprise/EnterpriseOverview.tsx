@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Package, Target, Layers, CheckCircle2 } from "lucide-react";
-import { MOCK_DD_ITEMS } from "../../data/mockData";
+// import { MOCK_DD_ITEMS } from "../../data/mockData";
 import { MetricCard } from "../../components/roi/cards/MetricCard";
 import { BRAND_COLORS } from "../../components/roi/cards/index";
 import { PortfolioPhasingStructure } from "../../components/roi/PortfolioPhasingStructure";
@@ -13,8 +13,9 @@ export function EnterpriseOverview() {
     // Set dummy data values as specified
     const totalItems = 104;
     const phaseIProducts = 1;
-    const roiDimensionsCount = 11;
+    // const roiDimensionsCount = 11;
     const executionReady = 0;
+    const quarterlyIncrease = 2;
 
     // Calculate percentages
     const phaseIPercentage =
@@ -62,6 +63,7 @@ export function EnterpriseOverview() {
       valueProtection,
       valueRealization,
       strategicPosition,
+      quarterlyIncrease,
     };
   }, []);
 
@@ -78,7 +80,7 @@ export function EnterpriseOverview() {
         <MetricCard
           title="Total Products in ROI Catalog"
           value={roiStats.totalItems}
-          subtitle={2 > 0 ? `+${2} this quarter` : undefined}
+          subtitle={roiStats.quarterlyIncrease > 0 ? `+${roiStats.quarterlyIncrease} this quarter` : undefined}
           icon={Package}
           color={BRAND_COLORS.PRIMARY}
         />

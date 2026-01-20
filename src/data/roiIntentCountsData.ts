@@ -2,8 +2,6 @@ import {
   DollarSign,
   TrendingUp,
   Shield,
-  TrendingDown,
-  User,
   Zap,
   Target,
   CheckCircle,

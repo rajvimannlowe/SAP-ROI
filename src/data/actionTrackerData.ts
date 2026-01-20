@@ -1,5 +1,5 @@
 import React from "react";
-import { LucideIcon, AlertTriangle, Clock, TrendingUp, User, FileText, DollarSign, Gauge, Settings, Database, Calendar, Target, Link2, BarChart3 } from "lucide-react";
+import { LucideIcon, AlertTriangle, Clock, TrendingUp, User, DollarSign, Gauge, Settings, Database } from "lucide-react";
 import { SummaryCard } from "../components/roi/cards/SummaryCards";
 import { CatalogItem } from "./roiCatalogData";
 
@@ -56,12 +56,12 @@ export interface ActionTrackerData {
   };
 }
 
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
+// const hexToRgba = (hex: string, alpha: number): string => {
+//   const r = parseInt(hex.slice(1, 3), 16);
+//   const g = parseInt(hex.slice(3, 5), 16);
+//   const b = parseInt(hex.slice(5, 7), 16);
+//   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+// };
 
 export const getActionTrackerData = (kpiName: string, moduleName: string): ActionTrackerData => {
   // Mock data based on the image description
@@ -367,8 +367,8 @@ export const convertActionToCardData = (action: ActionItem): ActionCardData => {
   };
 };
 
-const getGradient = (color: string) =>
-  `linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.8)} 100%)`;
+// const getGradient = (color: string) =>
+//   `linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.8)} 100%)`;
 
 export const getSummaryCards = (summary: ActionSummary): SummaryCard[] => [
   {

@@ -4,8 +4,8 @@ import {
   Shield,
   TrendingUp,
   User,
-  CheckCircle,
-  Clock,
+  // CheckCircle,
+  // Clock,
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 

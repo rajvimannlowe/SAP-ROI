@@ -5,7 +5,7 @@ import {
   AlertCircle,
   User,
   Database,
-  CheckCircle2,
+  // CheckCircle2,
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 
