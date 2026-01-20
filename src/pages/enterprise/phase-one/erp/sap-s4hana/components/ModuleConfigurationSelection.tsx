@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Settings, FileText, ClipboardList, ArrowRight } from "lucide-react";
 import { hexToRgba, BRAND_COLORS, CARD_STYLES } from "../../../../../../components/roi/cards/index";
+import { MODULE_COCKPIT_DATA } from "../../../../../../data/moduleCockpitData";
 
 interface ModuleConfigurationSelectionProps {
   blueprintId: string;
@@ -39,8 +40,20 @@ export function ModuleConfigurationSelection({
   };
 
   const handleAction = () => {
-    // Navigate to module cockpit where user can select a KPI for action tracker
-    navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit`);
+    // Get the first KPI from the module to navigate to Action Tracker
+    const cockpitData = MODULE_COCKPIT_DATA[moduleId];
+    if (cockpitData && cockpitData.kpiDetails.length > 0) {
+      const firstKPI = cockpitData.kpiDetails[0];
+      // Use KPI ID or create slug from name
+      const kpiId = firstKPI.id || firstKPI.name
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
+      navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit/${kpiId}/actions`);
+    } else {
+      // Fallback to cockpit if no KPIs found
+      navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit`);
+    }
   };
 
   return (
