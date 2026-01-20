@@ -320,3 +320,4 @@ export const getSeverityBgColor = (
       return "#F3F4F6"; // Light Gray
   }
 };
+
