@@ -83,8 +83,11 @@ export function KPIDetailView() {
     
     // Try partial match - check if key words match
     // This handles cases like "duplicate-payment-detection" matching "duplicate-payment-prevention"
-    const kpiIdLower = kpiId.toLowerCase();
+    const kpiIdLower = kpiId?.toLowerCase();
     const nameSlugLower = nameSlug.toLowerCase();
+    
+    // Return false if kpiIdLower is undefined
+    if (!kpiIdLower) return false;
     
     // Extract key words (remove common suffixes like -detection, -prevention, -monitoring)
     const normalizeSlug = (slug: string) => {

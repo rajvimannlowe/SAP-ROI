@@ -353,7 +353,6 @@ export function ROICatalogExplorer() {
                   // Navigate to configuration selection page (not flow page)
                   navigate(`/phase-i/catalog/${selectedProductId}/modules/${moduleId}`);
                 }}
-                blueprintId={selectedProductId}
               />
             </div>
           );

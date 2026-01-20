@@ -14,7 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Check,
-  FileText,
+  // FileText,
 } from "lucide-react";
 
 const QUESTIONS_PER_PAGE = 5;
@@ -397,102 +397,102 @@ export function ModuleConfiguration() {
     );
   };
 
-  const renderReportTab = () => {
-    const answeredCount = CONFIGURATION_QUESTIONS.filter(
-      (q) => responses[q.id]
-    ).length;
+  // const renderReportTab = () => {
+  //   const answeredCount = CONFIGURATION_QUESTIONS.filter(
+  //     (q) => responses[q.id]
+  //   ).length;
 
-    return (
-      <div className="space-y-6">
-        <div className="bg-purple-50/80 border border-purple-200/60 rounded-xl p-6">
-          <div className="flex items-start gap-3">
-            <FileText className="h-5 w-5 text-purple-600 mt-0.5" />
-            <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                Configuration Responses Report
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                View all your configuration assessment responses and scores.
-              </p>
-            </div>
-          </div>
-        </div>
+  //   return (
+  //     <div className="space-y-6">
+  //       <div className="bg-purple-50/80 border border-purple-200/60 rounded-xl p-6">
+  //         <div className="flex items-start gap-3">
+  //           <FileText className="h-5 w-5 text-purple-600 mt-0.5" />
+  //           <div>
+  //             <h3 className="text-lg font-semibold text-foreground mb-2">
+  //               Configuration Responses Report
+  //             </h3>
+  //             <p className="text-sm text-muted-foreground">
+  //               View all your configuration assessment responses and scores.
+  //             </p>
+  //           </div>
+  //         </div>
+  //       </div>
 
-        {/* Summary Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Assessment Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-                <p className="text-sm text-muted-foreground mb-1">
-                  Questions Answered
-                </p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {answeredCount} / {CONFIGURATION_QUESTIONS.length}
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-green-50 border border-green-200">
-                <p className="text-sm text-muted-foreground mb-1">Total Score</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {totalScore} / {maxScore}
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-purple-50 border border-purple-200">
-                <p className="text-sm text-muted-foreground mb-1">Percentage</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {percentage.toFixed(1)}%
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+  //       {/* Summary Card */}
+  //       <Card>
+  //         <CardHeader>
+  //           <CardTitle>Assessment Summary</CardTitle>
+  //         </CardHeader>
+  //         <CardContent>
+  //           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  //             <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
+  //               <p className="text-sm text-muted-foreground mb-1">
+  //                 Questions Answered
+  //               </p>
+  //               <p className="text-2xl font-bold text-blue-600">
+  //                 {answeredCount} / {CONFIGURATION_QUESTIONS.length}
+  //               </p>
+  //             </div>
+  //             <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+  //               <p className="text-sm text-muted-foreground mb-1">Total Score</p>
+  //               <p className="text-2xl font-bold text-green-600">
+  //                 {totalScore} / {maxScore}
+  //               </p>
+  //             </div>
+  //             <div className="p-4 rounded-lg bg-purple-50 border border-purple-200">
+  //               <p className="text-sm text-muted-foreground mb-1">Percentage</p>
+  //               <p className="text-2xl font-bold text-purple-600">
+  //                 {percentage.toFixed(1)}%
+  //               </p>
+  //             </div>
+  //           </div>
+  //         </CardContent>
+  //       </Card>
 
-        {/* Detailed Responses */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Detailed Responses</h3>
-          {CONFIGURATION_QUESTIONS.map((question) => {
-            const response = responses[question.id];
-            const selectedOption = question.options.find(
-              (opt) => opt.value === response
-            );
+  //       {/* Detailed Responses */}
+  //       <div className="space-y-4">
+  //         <h3 className="text-lg font-semibold">Detailed Responses</h3>
+  //         {CONFIGURATION_QUESTIONS.map((question) => {
+  //           const response = responses[question.id];
+  //           const selectedOption = question.options.find(
+  //             (opt) => opt.value === response
+  //           );
 
-            return (
-              <Card key={question.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <p className="font-medium text-foreground mb-2">
-                        {question.id}: {question.question}
-                      </p>
-                      {selectedOption ? (
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant="secondary"
-                            className="bg-blue-100 text-blue-700 border-blue-200"
-                          >
-                            {selectedOption.label}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">
-                            Score: {selectedOption.score}/3
-                          </span>
-                        </div>
-                      ) : (
-                        <Badge variant="outline" className="text-muted-foreground">
-                          Not Answered
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
+  //           return (
+  //             <Card key={question.id}>
+  //               <CardContent className="p-4">
+  //                 <div className="flex items-start justify-between gap-4">
+  //                   <div className="flex-1">
+  //                     <p className="font-medium text-foreground mb-2">
+  //                       {question.id}: {question.question}
+  //                     </p>
+  //                     {selectedOption ? (
+  //                       <div className="flex items-center gap-2">
+  //                         <Badge
+  //                           variant="secondary"
+  //                           className="bg-blue-100 text-blue-700 border-blue-200"
+  //                         >
+  //                           {selectedOption.label}
+  //                         </Badge>
+  //                         <span className="text-xs text-muted-foreground">
+  //                           Score: {selectedOption.score}/3
+  //                         </span>
+  //                       </div>
+  //                     ) : (
+  //                       <Badge variant="outline" className="text-muted-foreground">
+  //                         Not Answered
+  //                       </Badge>
+  //                     )}
+  //                   </div>
+  //                 </div>
+  //               </CardContent>
+  //             </Card>
+  //           );
+  //         })}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="space-y-6">

@@ -1,13 +1,8 @@
-import { ROIIntent } from "../../../../../../data/productBlueprintData";
 import { ROIIntentCard } from "../../../../../../components/roi/cards/ROIIntentCard";
 import { ROI_INTENT_COUNTS } from "../../../../../../data/roiIntentCountsData";
 import { SectionHeader } from "./SectionHeader";
 
-interface IntentSectionProps {
-  roiIntents: ROIIntent[];
-}
-
-export function IntentSection({ roiIntents }: IntentSectionProps) {
+export function IntentSection() {
   // Use the intent counts data instead of the blueprint intents
   return (
     <div className="space-y-5 animate-in fade-in-50 duration-300">

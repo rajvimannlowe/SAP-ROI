@@ -116,7 +116,7 @@ export function ProductROIBlueprint() {
 
       <div className="space-y-6">
         {activeSection === "intent" && (
-          <IntentSection roiIntents={blueprint.roiIntents} />
+          <IntentSection />
         )}
 
         {activeSection === "metrics" && (
