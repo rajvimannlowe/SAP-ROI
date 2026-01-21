@@ -54,14 +54,36 @@ export interface ControlEvidenceData {
   periodPerformance: PeriodPerformance[];
 }
 
+// Computed Field: Calculate Overall Pass Rate from SAP-derived data
+export const calculatePassRate = (
+  totalTests: number,
+  totalExceptions: number
+): string => {
+  if (totalTests === 0) return "0.00%";
+  const passRate = ((totalTests - totalExceptions) / totalTests) * 100;
+  return `${passRate.toFixed(2)}%`;
+};
+
+// TODO: This function will be replaced with SAP API call
+// SAP-Derived Fields: Read from SAP tables (ANLA, BKPF/BSEG, REGUH, etc.)
+const getSAPDerivedData = async (controlId: string) => {
+  // TODO: Replace with actual SAP API call
+  // Example: Read from SAP table ANLA for asset count
+  // Example: Read from exception reports for exception count
+  return {
+    totalTests: 12480, // TODO: From SAP - ANLA count
+    totalExceptions: 100, // TODO: From SAP - Exception report count
+  };
+};
+
 export const getControlEvidenceData = (
   kpiName?: string,
   kpiOwner?: string,
   controlType?: "Preventive" | "Detective"
 ): ControlEvidenceData => {
-  // Default to first rule from spreadsheet (FI-AA-001)
-  // Associated KPI should be "Depreciation key configuration" as per the spreadsheet
-  return {
+  // TODO: Static Fields should come from configuration/metadata layer
+  // For now, using dummy data - these will be stored in config table
+  const staticFields = {
     controlId: "FI-AA-001",
     controlName: "Depreciation key configuration",
     associatedKPI: "Depreciation key configuration",
@@ -70,15 +92,43 @@ export const getControlEvidenceData = (
     riskRating: "High",
     controlObjective:
       "Ensure depreciation keys are correctly configured and consistently applied to avoid asset valuation and depreciation misstatement",
-    controlOwner: kpiOwner || "Entity Screen",
+  };
+
+  // TODO: SAP-Derived Fields - Replace with actual SAP API call
+  // For now, using dummy data
+  const sapDerivedData = {
+    totalTests: 12480, // TODO: From SAP - ANLA count
+    totalExceptions: 100, // TODO: From SAP - Exception report count
+  };
+
+  // Computed Field: Calculate from SAP-derived data
+  const overallPassRate = calculatePassRate(
+    sapDerivedData.totalTests,
+    sapDerivedData.totalExceptions
+  );
+  const totalPassed = sapDerivedData.totalTests - sapDerivedData.totalExceptions;
+
+  // TODO: Entry Screen Fields - These will come from database (user input)
+  // For now, using dummy data
+  const entryScreenFields = {
     lastReviewDate: "15-Jun-24",
-    complianceStatus: "COMPLIANT",
+    reviewedBy: "Financial Controller",
+    approvedBy: "CFO",
+    remarks:
+      "Depreciation keys are consistently applied; identified exceptions corrected without material impact",
+    complianceStatus: "COMPLIANT" as const,
+  };
+
+  return {
+    ...staticFields,
+    controlOwner: kpiOwner || "Entity Screen",
+    ...entryScreenFields,
     soxRelevant: true,
-    overallPassRate: "99.20%",
-    totalTests: 12480,
-    totalPassed: 12380,
-    totalExceptions: 100,
-    nextReviewDate: "15-Sep-24",
+    overallPassRate, // Computed field
+    totalTests: sapDerivedData.totalTests, // SAP-derived
+    totalPassed, // Computed
+    totalExceptions: sapDerivedData.totalExceptions, // SAP-derived
+    nextReviewDate: "15-Sep-24", // TODO: Calculated from lastReviewDate + review frequency
     reviewedBy: "Financial Controller",
     approvedBy: "CFO",
     remarks:

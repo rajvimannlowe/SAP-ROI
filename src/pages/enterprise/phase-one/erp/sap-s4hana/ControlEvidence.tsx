@@ -110,11 +110,27 @@ export function ControlEvidence() {
   }
 
   // Get data from data folder
-  const evidenceData = getControlEvidenceData(
-    kpiDetail.name,
-    kpiDetail.owner,
-    kpiDetail.controlType
+  // TODO: Replace with actual API calls:
+  // - Static fields from configuration/metadata layer
+  // - SAP-derived fields from SAP API
+  // - Entry screen fields from database
+  const [evidenceData, setEvidenceData] = useState(() =>
+    getControlEvidenceData(
+      kpiDetail.name,
+      kpiDetail.owner,
+      kpiDetail.controlType
+    )
   );
+
+  // Handle updates from Entry Screen Fields (Assessment Tab)
+  const handleAssessmentUpdate = (updatedData: Partial<typeof evidenceData>) => {
+    // TODO: Replace with actual API call to save Entry Screen Fields
+    // This will save to database with audit trail
+    setEvidenceData((prev) => ({ ...prev, ...updatedData }));
+    
+    // TODO: Show success toast notification
+    console.log("Assessment updated:", updatedData);
+  };
 
   return (
     <div className="space-y-6">
@@ -189,7 +205,10 @@ export function ControlEvidence() {
           <EffectivenessTab evidenceData={evidenceData} />
         )}
         {activeTab === "assessment" && (
-          <AssessmentTab evidenceData={evidenceData} />
+          <AssessmentTab 
+            evidenceData={evidenceData} 
+            onUpdate={handleAssessmentUpdate}
+          />
         )}
       </div>
     </div>
