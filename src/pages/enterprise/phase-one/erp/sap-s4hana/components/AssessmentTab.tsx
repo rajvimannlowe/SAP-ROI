@@ -83,9 +83,7 @@ export default function AssessmentTab({
                   Control Operating Effectively
                 </p>
                 <p className="text-sm text-green-700 leading-relaxed">
-                  No deficiencies identified. Control design and operating
-                  effectiveness are adequate. The control has been tested and
-                  verified to meet all compliance requirements.
+                  {evidenceData.remarks || "No deficiencies identified. Control design and operating effectiveness are adequate. The control has been tested and verified to meet all compliance requirements."}
                 </p>
               </div>
             </div>
