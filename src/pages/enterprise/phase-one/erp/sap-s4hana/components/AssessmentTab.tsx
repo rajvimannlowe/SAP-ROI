@@ -7,13 +7,6 @@ import { Button } from "../../../../../../components/ui/button";
 import { Dropdown, DropdownOption } from "../../../../../../components/ui/dropdown";
 import { ControlEvidenceData } from "../../../../../../data/controlEvidenceData";
 
-const hexToRgba = (hex: string, alpha: number): string => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
-
 interface AssessmentTabProps {
   evidenceData: ControlEvidenceData;
   onUpdate?: (updatedData: Partial<ControlEvidenceData>) => void;
