@@ -66,7 +66,8 @@ export const calculatePassRate = (
 
 // TODO: This function will be replaced with SAP API call
 // SAP-Derived Fields: Read from SAP tables (ANLA, BKPF/BSEG, REGUH, etc.)
-const getSAPDerivedData = async (controlId: string) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getSAPDerivedData = async (_controlId: string) => {
   // TODO: Replace with actual SAP API call
   // Example: Read from SAP table ANLA for asset count
   // Example: Read from exception reports for exception count
@@ -77,7 +78,7 @@ const getSAPDerivedData = async (controlId: string) => {
 };
 
 export const getControlEvidenceData = (
-  kpiName?: string,
+  _kpiName?: string,
   kpiOwner?: string,
   controlType?: "Preventive" | "Detective"
 ): ControlEvidenceData => {

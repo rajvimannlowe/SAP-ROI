@@ -14,9 +14,6 @@ const hexToRgba = (hex: string, alpha: number): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-const getGradient = (color: string) =>
-  `linear-gradient(135deg, ${color} 0%, ${hexToRgba(color, 0.8)} 100%)`;
-
 interface AssessmentTabProps {
   evidenceData: ControlEvidenceData;
   onUpdate?: (updatedData: Partial<ControlEvidenceData>) => void;
