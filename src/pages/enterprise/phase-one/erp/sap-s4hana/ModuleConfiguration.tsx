@@ -182,32 +182,34 @@ export function ModuleConfiguration() {
 
     return (
       <div className="flex flex-col h-full min-h-0">
-        {/* Fixed Progress Section */}
-        <div className="flex-shrink-0 pb-2">
-          <Card className="border-blue-200">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold text-foreground">
-                  Assessment Progress
-                </h3>
-                <Badge variant="secondary" className="text-xs">
-                  {answeredCount} / {CONFIGURATION_QUESTIONS.length}
-                </Badge>
-              </div>
-              <Progress value={(answeredCount / CONFIGURATION_QUESTIONS.length) * 100} className="h-1.5" />
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Fixed Grid Layout */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-3 min-h-0">
           {/* Fixed Navigation Sidebar */}
-          <div className="lg:col-span-1 flex-shrink-0">
-            <Card className="h-full">
+          <div className="lg:col-span-1 flex-shrink-0 space-y-3 flex flex-col min-h-0">
+            {/* Progress Card */}
+            <Card>
               <CardHeader className="pb-2 pt-3 px-3">
-                <CardTitle className="text-xs font-medium">Navigation</CardTitle>
+                <CardTitle className="text-xs font-medium">Progress</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1 px-3 pb-3">
+              <CardContent className="px-3 pb-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-muted-foreground">
+                    Questions
+                  </span>
+                  <Badge variant="secondary" className="text-xs">
+                    {answeredCount}/{CONFIGURATION_QUESTIONS.length}
+                  </Badge>
+                </div>
+                <Progress value={(answeredCount / CONFIGURATION_QUESTIONS.length) * 100} className="h-1.5" />
+              </CardContent>
+            </Card>
+
+            {/* Quick Navigation Card */}
+            <Card className="flex-1 flex flex-col min-h-0">
+              <CardHeader className="pb-2 pt-3 px-3">
+                <CardTitle className="text-xs font-medium">Quick Navigation</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-1 px-3 pb-3 flex-1 overflow-y-auto">
                 <div className="grid grid-cols-10 gap-1">
                   {CONFIGURATION_QUESTIONS.map((question, index) => {
                     const status = getQuestionStatus(question.id);
@@ -233,7 +235,7 @@ export function ModuleConfiguration() {
                 </div>
                 
                 {/* Threshold Section Below Navigation */}
-                <div className="pt-2 border-t space-y-1.5">
+                <div className="pt-2 border-t space-y-1.5 mt-2">
                   <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
                     <p className="text-xs font-semibold text-foreground mb-0.5">Score</p>
                     <p className="text-base font-bold text-blue-600">
