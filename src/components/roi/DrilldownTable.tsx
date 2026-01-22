@@ -68,7 +68,7 @@ const CellWithTooltip = ({ content, tooltipText }: { content: ReactNode; tooltip
           <TooltipTrigger asChild>
             <div
               ref={cellRef}
-              className="max-w-full cursor-help"
+              className="max-w-full cursor-help overflow-hidden text-ellipsis"
               style={{ 
                 overflow: "hidden",
                 display: "block"
@@ -86,7 +86,7 @@ const CellWithTooltip = ({ content, tooltipText }: { content: ReactNode; tooltip
   }
 
   return (
-    <div ref={cellRef} className="max-w-full overflow-hidden">
+    <div ref={cellRef} className="max-w-full overflow-hidden text-ellipsis">
       {content}
     </div>
   );
@@ -215,7 +215,7 @@ export function DrilldownTable<T extends object = object>({
                     key={column.key}
                     className={`${
                       compact ? "px-3 py-3" : "px-4 py-4"
-                    } text-xs font-semibold text-muted-foreground uppercase tracking-wider ${
+                    } text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap ${
                       alignClasses[column.align || "left"]
                     } ${column.headerClassName || ""} ${column.className || ""}`}
                     style={{
@@ -351,7 +351,7 @@ export function DrilldownTable<T extends object = object>({
                               compact ? "px-3 py-2.5" : "px-4 py-3.5"
                             } ${alignClasses[column.align || "left"]} ${
                               column.sticky ? "sticky left-0 z-10" : ""
-                            } ${column.className || ""}`}
+                            } whitespace-nowrap ${column.className || ""}`}
                             style={{
                               backgroundColor: stickyBg,
                               textAlign: column.align || "left",

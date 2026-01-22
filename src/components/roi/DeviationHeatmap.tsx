@@ -164,7 +164,7 @@ export function DeviationHeatmap({
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gradient-to-r from-muted/50 to-muted/30">
-                  <th className="sticky left-0 z-10 bg-gradient-to-r from-muted/50 to-muted/30 border-r-2 border-border/40 p-3 text-left text-xs font-bold text-foreground min-w-[160px]">
+                  <th className="sticky left-0 z-10 bg-gradient-to-r from-muted/50 to-muted/30 border-r-2 border-border/40 p-3 text-left text-xs font-bold text-foreground min-w-[160px] whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-4 rounded-full bg-[#9909e0]" />
                       <span>Sub-Process</span>
@@ -173,7 +173,7 @@ export function DeviationHeatmap({
                   {rootCauses.map((rootCause) => (
                     <th
                       key={rootCause}
-                      className="border-l border-border/30 p-3 text-center text-xs font-semibold text-foreground min-w-[120px]"
+                      className="border-l border-border/30 p-3 text-center text-xs font-semibold text-foreground min-w-[120px] whitespace-nowrap"
                     >
                       <div className="max-w-[110px] mx-auto leading-tight">
                         {rootCause}
@@ -192,7 +192,7 @@ export function DeviationHeatmap({
                         : "bg-muted/10 hover:bg-muted/40"
                     }`}
                   >
-                    <td className="sticky left-0 z-10 bg-inherit border-r-2 border-border/40 p-3 text-xs font-semibold text-foreground">
+                    <td className="sticky left-0 z-10 bg-inherit border-r-2 border-border/40 p-3 text-xs font-semibold text-foreground whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#9909e0]/60" />
                         <span>{subProcess}</span>
@@ -206,7 +206,7 @@ export function DeviationHeatmap({
                       return (
                         <td
                           key={`${subProcess}-${rootCause}`}
-                          className="border-l border-border/20 p-3 text-center align-middle group transition-all duration-200 hover:bg-muted/20"
+                          className="border-l border-border/20 p-3 text-center align-middle group transition-all duration-200 hover:bg-muted/20 whitespace-nowrap"
                         >
                           {count > 0 ? (
                             <div className="flex flex-col items-center justify-center gap-1.5">
