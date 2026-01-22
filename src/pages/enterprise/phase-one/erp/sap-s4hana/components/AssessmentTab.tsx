@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { CheckCircle2, User, FileText, Calendar, Save, Edit2, AlertCircle, XCircle } from "lucide-react";
+import { CheckCircle2, User, FileText, Calendar, Save, Edit2 } from "lucide-react";
 import { Card } from "../../../../../../components/ui/card";
-import { Input } from "../../../../../../components/ui/input";
 import { Textarea } from "../../../../../../components/ui/textarea";
 import { Button } from "../../../../../../components/ui/button";
-import { Dropdown, DropdownOption } from "../../../../../../components/ui/dropdown";
 import { ControlEvidenceData } from "../../../../../../data/controlEvidenceData";
 
 interface AssessmentTabProps {
@@ -27,15 +25,9 @@ export default function AssessmentTab({
   const [isSaving, setIsSaving] = useState(false);
   
   // Entry Screen Fields - Human Governance Inputs
-  const [lastReviewDate, setLastReviewDate] = useState(evidenceData.lastReviewDate);
-  const [reviewedBy, setReviewedBy] = useState(evidenceData.reviewedBy);
-  const [approvedBy, setApprovedBy] = useState(evidenceData.approvedBy);
+  // Only narrative is editable, other fields are read-only
   const [assessmentNarrative, setAssessmentNarrative] = useState(evidenceData.remarks);
-  const [finalAssessmentStatus, setFinalAssessmentStatus] = useState(
-    evidenceData.complianceStatus === "COMPLIANT" 
-      ? "Control Operating Effectively" 
-      : "Control Not Operating Effectively"
-  );
+  const [createdBy, setCreatedBy] = useState((evidenceData as any).createdBy || evidenceData.reviewedBy || "");
 
   const canEdit = hasEditPermission();
 
@@ -49,13 +41,8 @@ export default function AssessmentTab({
       await new Promise(resolve => setTimeout(resolve, 500));
       
       const updatedData: Partial<ControlEvidenceData> = {
-        lastReviewDate,
-        reviewedBy,
-        approvedBy,
         remarks: assessmentNarrative,
-        complianceStatus: finalAssessmentStatus.includes("Operating Effectively") 
-          ? "COMPLIANT" 
-          : "NON-COMPLIANT",
+        // Only narrative is editable, other fields remain unchanged
       };
 
       // Call parent callback if provided
@@ -73,47 +60,10 @@ export default function AssessmentTab({
 
   const handleCancel = () => {
     // Reset to original values
-    setLastReviewDate(evidenceData.lastReviewDate);
-    setReviewedBy(evidenceData.reviewedBy);
-    setApprovedBy(evidenceData.approvedBy);
     setAssessmentNarrative(evidenceData.remarks);
-    setFinalAssessmentStatus(
-      evidenceData.complianceStatus === "COMPLIANT" 
-        ? "Control Operating Effectively" 
-        : "Control Not Operating Effectively"
-    );
     setIsEditing(false);
   };
 
-  // Convert date format for input (DD-MMM-YY to YYYY-MM-DD)
-  const formatDateForInput = (dateStr: string): string => {
-    // Simple conversion - in real app, use proper date library
-    const months: Record<string, string> = {
-      "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
-      "May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
-      "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
-    };
-    const parts = dateStr.split("-");
-    if (parts.length === 3) {
-      const day = parts[0].padStart(2, "0");
-      const month = months[parts[1]] || "01";
-      const year = "20" + parts[2];
-      return `${year}-${month}-${day}`;
-    }
-    return "";
-  };
-
-  const formatDateForDisplay = (dateStr: string): string => {
-    // Convert YYYY-MM-DD to DD-MMM-YY
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate().toString().padStart(2, "0");
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear().toString().slice(-2);
-    return `${day}-${month}-${year}`;
-  };
   const getStatusColor = (status: string) => {
     if (status.includes("Operating Effectively")) {
       return {
@@ -148,51 +98,21 @@ export default function AssessmentTab({
     }
   };
 
+  // Get final assessment status from evidence data (read-only)
+  const finalAssessmentStatus = evidenceData.complianceStatus === "COMPLIANT" 
+    ? "Control Operating Effectively" 
+    : "Control Not Operating Effectively";
+  
   const statusColors = getStatusColor(finalAssessmentStatus);
-
-  // Dropdown options for Assessment Status
-  const assessmentStatusOptions: DropdownOption[] = [
-    {
-      value: "Control Operating Effectively",
-      label: "Control Operating Effectively",
-      icon: <CheckCircle2 className="h-4 w-4 text-green-600" />,
-    },
-    {
-      value: "Control Not Operating Effectively",
-      label: "Control Not Operating Effectively",
-      icon: <XCircle className="h-4 w-4 text-red-600" />,
-    },
-    {
-      value: "Control Design Deficiency",
-      label: "Control Design Deficiency",
-      icon: <AlertCircle className="h-4 w-4 text-amber-600" />,
-    },
-    {
-      value: "Control Operating Deficiency",
-      label: "Control Operating Deficiency",
-      icon: <AlertCircle className="h-4 w-4 text-amber-600" />,
-    },
-  ];
 
   return (
     <div className="space-y-4">
-      {/* Header with Edit Button */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-foreground">Assessment</h2>
-        {canEdit && !isEditing && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditing(true)}
-            className="gap-2"
-          >
-            <Edit2 className="h-4 w-4" />
-            Edit Assessment
-          </Button>
-        )}
       </div>
 
-      {/* Final Assessment Status - Prominent Display */}
+      {/* Final Assessment Status - Prominent Display (Read-only) */}
       <Card className={`p-4 border-2 ${statusColors.border} bg-gradient-to-br ${statusColors.bg} shadow-sm`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -203,18 +123,9 @@ export default function AssessmentTab({
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
                 Final Assessment Status
               </p>
-              {isEditing ? (
-                <Dropdown
-                  options={assessmentStatusOptions}
-                  value={finalAssessmentStatus}
-                  onChange={setFinalAssessmentStatus}
-                  className="min-w-[320px]"
-                />
-              ) : (
-                <p className={`text-base font-bold ${statusColors.textColor}`}>
-                  {finalAssessmentStatus}
-                </p>
-              )}
+              <p className={`text-base font-bold ${statusColors.textColor}`}>
+                {finalAssessmentStatus}
+              </p>
             </div>
           </div>
           <div className="text-right">
@@ -234,82 +145,62 @@ export default function AssessmentTab({
       {/* Entry Screen Fields Card */}
       <Card className="p-5 border border-border/50 shadow-sm">
         <div className="space-y-4">
-          {/* Review Information Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Last Review Date */}
+          {/* Review Information Grid - All Read-only */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Last Review Date - Read-only */}
             <div className="space-y-2">
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5 text-[#4160F0]" />
                 Last Review Date
-                <span className="text-red-500">*</span>
               </label>
-              {isEditing ? (
-                <Input
-                  type="date"
-                  value={formatDateForInput(lastReviewDate)}
-                  onChange={(e) => setLastReviewDate(formatDateForDisplay(e.target.value))}
-                  className="h-9 text-sm"
-                  required
-                />
-              ) : (
-                <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
-                  <p className="text-sm font-medium text-foreground">{lastReviewDate}</p>
-                </div>
-              )}
+              <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
+                <p className="text-sm font-medium text-foreground">{evidenceData.lastReviewDate}</p>
+              </div>
               <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70">
                 <span className="font-medium">Source:</span>
                 <span>Entry Screen (Human Governance Input)</span>
               </div>
             </div>
 
-            {/* Reviewed By */}
+            {/* Reviewed By - Read-only */}
             <div className="space-y-2">
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
                 <User className="h-3.5 w-3.5 text-[#4160F0]" />
                 Reviewed By
-                <span className="text-red-500">*</span>
               </label>
-              {isEditing ? (
-                <Input
-                  type="text"
-                  value={reviewedBy}
-                  onChange={(e) => setReviewedBy(e.target.value)}
-                  placeholder="Enter reviewer name"
-                  className="h-9 text-sm"
-                  required
-                />
-              ) : (
-                <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
-                  <p className="text-sm font-medium text-foreground">{reviewedBy}</p>
-                </div>
-              )}
+              <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
+                <p className="text-sm font-medium text-foreground">{evidenceData.reviewedBy}</p>
+              </div>
               <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70">
                 <span className="font-medium">Source:</span>
                 <span>Entry Screen (Human Governance Input)</span>
               </div>
             </div>
 
-            {/* Approved By */}
+            {/* Approved By - Read-only */}
             <div className="space-y-2">
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
                 <User className="h-3.5 w-3.5 text-[#4160F0]" />
                 Approved By
-                <span className="text-red-500">*</span>
               </label>
-              {isEditing ? (
-                <Input
-                  type="text"
-                  value={approvedBy}
-                  onChange={(e) => setApprovedBy(e.target.value)}
-                  placeholder="Enter approver name"
-                  className="h-9 text-sm"
-                  required
-                />
-              ) : (
-                <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
-                  <p className="text-sm font-medium text-foreground">{approvedBy}</p>
-                </div>
-              )}
+              <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
+                <p className="text-sm font-medium text-foreground">{evidenceData.approvedBy}</p>
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70">
+                <span className="font-medium">Source:</span>
+                <span>Entry Screen (Human Governance Input)</span>
+              </div>
+            </div>
+
+            {/* Created By - Read-only */}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-[#4160F0]" />
+                Created By
+              </label>
+              <div className="px-3 py-2 bg-muted/20 rounded-md border border-border/30">
+                <p className="text-sm font-medium text-foreground">{createdBy || evidenceData.reviewedBy || "N/A"}</p>
+              </div>
               <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/70">
                 <span className="font-medium">Source:</span>
                 <span>Entry Screen (Human Governance Input)</span>
@@ -319,11 +210,22 @@ export default function AssessmentTab({
 
           {/* Assessment Narrative */}
           <div className="space-y-2 pt-2 border-t border-border/30">
-            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
-              <FileText className="h-3.5 w-3.5 text-[#4160F0]" />
-              Assessment Narrative
-              <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+                <FileText className="h-3.5 w-3.5 text-[#4160F0]" />
+                Assessment Narrative
+                <span className="text-red-500">*</span>
+              </label>
+              {canEdit && !isEditing && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-2 rounded-md bg-blue-50 hover:bg-blue-100 border border-blue-200 hover:border-blue-300 transition-all text-blue-600 hover:text-blue-700 shadow-sm hover:shadow-md"
+                  title="Edit narrative"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
+              )}
+            </div>
             {isEditing ? (
               <Textarea
                 value={assessmentNarrative}
