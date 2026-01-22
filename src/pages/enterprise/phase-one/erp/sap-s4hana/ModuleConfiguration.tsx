@@ -207,8 +207,8 @@ export function ModuleConfiguration() {
               <CardHeader className="pb-2 pt-3 px-3">
                 <CardTitle className="text-xs font-medium">Navigation</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 px-3 pb-3">
-                <div className="grid grid-cols-5 gap-1.5">
+              <CardContent className="space-y-1 px-3 pb-3">
+                <div className="grid grid-cols-10 gap-1">
                   {CONFIGURATION_QUESTIONS.map((question, index) => {
                     const status = getQuestionStatus(question.id);
                     const isCurrent = index >= startIndex && index < endIndex;
@@ -217,7 +217,7 @@ export function ModuleConfiguration() {
                       <button
                         key={question.id}
                         onClick={() => handleQuestionClick(index)}
-                        className={`aspect-square p-1.5 rounded border-2 text-xs font-medium transition-all ${
+                        className={`aspect-square p-1 rounded border text-xs font-medium transition-all ${
                           isAnswered
                             ? "bg-green-500 border-green-600 text-white shadow-sm"
                             : isCurrent
