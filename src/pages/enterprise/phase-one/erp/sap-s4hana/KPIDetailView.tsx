@@ -206,48 +206,41 @@ export function KPIDetailView() {
       />
 
       {/* Section 1: Content Cards - Objectives, Risk, Context */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left Column */}
-        <div className="space-y-6">
-          {kpiDetail.businessObjective && (
-            <InfoCard
-              {...createInfoCardProps(
-                Target,
-                "Business Objective",
-                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                  {kpiDetail.businessObjective}
-                </p>,
-                COLORS.blue
-              )}
-            />
-          )}
+      <div className="space-y-6">
+        {kpiDetail.businessObjective && (
           <InfoCard
             {...createInfoCardProps(
-              Shield,
-              "Business Risk / Leakage Prevented",
+              Target,
+              "Business Objective",
               <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                {kpiDetail.businessRiskPrevented}
+                {kpiDetail.businessObjective}
               </p>,
-              COLORS.red
+              COLORS.blue
             )}
           />
-        </div>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-          {kpiDetail.businessContext && (
-            <InfoCard
-              {...createInfoCardProps(
-                AlertCircle,
-                "Business Context",
-                <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
-                  {kpiDetail.businessContext}
-                </p>,
-                COLORS.purple
-              )}
-            />
+        )}
+        <InfoCard
+          {...createInfoCardProps(
+            Shield,
+            "Business Risk / Leakage Prevented",
+            <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+              {kpiDetail.businessRiskPrevented}
+            </p>,
+            COLORS.red
           )}
-        </div>
+        />
+        {kpiDetail.businessContext && (
+          <InfoCard
+            {...createInfoCardProps(
+              AlertCircle,
+              "Business Context",
+              <p className="text-sm text-foreground leading-relaxed whitespace-normal break-words">
+                {kpiDetail.businessContext}
+              </p>,
+              COLORS.purple
+            )}
+          />
+        )}
       </div>
 
       {/* Section 2: Threshold / Tolerance */}
