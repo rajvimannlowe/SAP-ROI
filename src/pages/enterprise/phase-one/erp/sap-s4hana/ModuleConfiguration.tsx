@@ -32,6 +32,7 @@ export function ModuleConfiguration() {
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [remarks, setRemarks] = useState<Record<string, string>>({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [scrollToQuestionId, setScrollToQuestionId] = useState<string | null>(null);
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
   // const blueprint = SAP_S4HANA_BLUEPRINT;
@@ -85,12 +86,10 @@ export function ModuleConfiguration() {
             nextQuestionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         } else {
-          // Navigate to next page
+          // Navigate to next page and scroll to the first question on that page
           setCurrentPage(nextPage);
-          // Scroll to top after page change
-          setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }, 100);
+          // Store the question ID to scroll to after page renders
+          setScrollToQuestionId(nextQuestion.id);
         }
       }
     }, 300);
@@ -154,10 +153,48 @@ export function ModuleConfiguration() {
     loadSavedResponses();
   }, [moduleId]);
 
-  // Scroll to top when page changes
+  // Scroll to question when page changes or scrollToQuestionId is set
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+    if (scrollToQuestionId) {
+      // Wait for DOM to update with new page content
+      const timeoutId = setTimeout(() => {
+        const questionElement = document.getElementById(`question-${scrollToQuestionId}`);
+        if (questionElement) {
+          // Find the scrollable container (parent with overflow-y-auto)
+          const scrollableContainer = questionElement.closest('.overflow-y-auto');
+          if (scrollableContainer) {
+            // Scroll the question to the top of the scrollable container
+            const containerRect = scrollableContainer.getBoundingClientRect();
+            const elementRect = questionElement.getBoundingClientRect();
+            const scrollTop = scrollableContainer.scrollTop;
+            const targetScrollTop = scrollTop + elementRect.top - containerRect.top - 10; // 10px offset from top
+            
+            scrollableContainer.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          } else {
+            // Fallback to scrollIntoView if container not found
+            questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          setScrollToQuestionId(null);
+        }
+      }, 150);
+      
+      return () => clearTimeout(timeoutId);
+    } else {
+      // Scroll to top of scrollable container when page changes without specific question
+      const timeoutId = setTimeout(() => {
+        // Find the questions scrollable container specifically
+        const questionsContainer = document.querySelector('.lg\\:col-span-3 .overflow-y-auto');
+        if (questionsContainer) {
+          questionsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [currentPage, scrollToQuestionId]);
 
   // Calculate pagination
   const totalPages = Math.ceil(CONFIGURATION_QUESTIONS.length / QUESTIONS_PER_PAGE);
@@ -179,11 +216,12 @@ export function ModuleConfiguration() {
 
   const handleQuestionClick = (questionIndex: number) => {
     const page = Math.floor(questionIndex / QUESTIONS_PER_PAGE) + 1;
+    const question = CONFIGURATION_QUESTIONS[questionIndex];
     setCurrentPage(page);
-    // Scroll to top after page change
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
+    // Set the question to scroll to after page change
+    if (question) {
+      setScrollToQuestionId(question.id);
+    }
   };
 
   const getQuestionStatus = (questionId: string) => {
