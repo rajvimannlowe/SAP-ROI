@@ -8,12 +8,12 @@ import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../../components/ui/card";
 import { Badge } from "../../../../../components/ui/badge";
 import { Progress } from "../../../../../components/ui/progress";
+import { Textarea } from "../../../../../components/ui/textarea";
 import {
-  CheckCircle2,
-  XCircle,
   ChevronLeft,
   ChevronRight,
   Check,
+  XCircle,
   // FileText,
 } from "lucide-react";
 
@@ -30,6 +30,7 @@ export function ModuleConfiguration() {
   const navigate = useNavigate();
 
   const [responses, setResponses] = useState<Record<string, string>>({});
+  const [remarks, setRemarks] = useState<Record<string, string>>({});
   const [currentPage, setCurrentPage] = useState(1);
 
   const cockpitData = moduleId ? MODULE_COCKPIT_DATA[moduleId] : null;
@@ -57,6 +58,15 @@ export function ModuleConfiguration() {
       ...prev,
       [questionId]: value,
     }));
+    
+    // Clear remark if not "not_applicable"
+    if (value !== "not_applicable") {
+      setRemarks((prev) => {
+        const newRemarks = { ...prev };
+        delete newRemarks[questionId];
+        return newRemarks;
+      });
+    }
     
     // Auto-advance to next question after a short delay
     setTimeout(() => {
@@ -86,49 +96,53 @@ export function ModuleConfiguration() {
     }, 300);
   };
 
-  const calculateScore = () => {
-    let totalScore = 0;
-    let maxScore = 0;
-    CONFIGURATION_QUESTIONS.forEach((question) => {
-      maxScore += 3; // Max score per question is 3
-      const response = responses[question.id];
-      if (response) {
-        const option = question.options.find((opt) => opt.value === response);
-        if (option) {
-          totalScore += option.score;
-        }
-      }
-    });
-    return { totalScore, maxScore, percentage: (totalScore / maxScore) * 100 };
+  const handleRemarkChange = (questionId: string, value: string) => {
+    setRemarks((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
   };
 
-  const { totalScore, maxScore, percentage } = calculateScore();
-  
-  // Threshold: Need at least 70% score AND Q1 and Q2 must be "fully_implemented" and "fully_integrated"
-  const isEligible = 
-    percentage >= 70 &&
-    responses["Q1"] === "fully_implemented" &&
-    responses["Q2"] === "fully_integrated";
+  const calculateScore = () => {
+    let yesCount = 0;
+    let noCount = 0;
+    let notApplicableCount = 0;
+    
+    CONFIGURATION_QUESTIONS.forEach((question) => {
+      const response = responses[question.id];
+      if (response === "yes") {
+        yesCount++;
+      } else if (response === "no") {
+        noCount++;
+      } else if (response === "not_applicable") {
+        notApplicableCount++;
+      }
+    });
+    
+    return { yesCount, noCount, notApplicableCount };
+  };
+
+  const { yesCount, noCount, notApplicableCount } = calculateScore();
 
   const handleSubmit = () => {
-    // Save responses (can be stored in localStorage or sent to backend)
-    localStorage.setItem(`module-config-${moduleId}`, JSON.stringify(responses));
-    // Navigate based on eligibility
-    if (isEligible) {
-      // Navigate to flow selection page
-      const catalogId = blueprintId || "sap-s4hana";
-      navigate(`/phase-i/catalog/${catalogId}/modules/${moduleId}/flow`);
-    } else {
-      // Show message that it's not applicable
-      // The message is already shown in the UI, but we can add a toast notification if needed
-    }
+    // Save responses and remarks
+    const dataToSave = {
+      responses,
+      remarks,
+    };
+    localStorage.setItem(`module-config-${moduleId}`, JSON.stringify(dataToSave));
+    // Navigate to flow selection page
+    const catalogId = blueprintId || "sap-s4hana";
+    navigate(`/phase-i/catalog/${catalogId}/modules/${moduleId}/flow`);
   };
 
   const loadSavedResponses = () => {
     const saved = localStorage.getItem(`module-config-${moduleId}`);
     if (saved) {
       try {
-        setResponses(JSON.parse(saved));
+        const data = JSON.parse(saved);
+        setResponses(data.responses || data || {});
+        setRemarks(data.remarks || {});
       } catch (e) {
         console.error("Error loading saved responses", e);
       }
@@ -178,7 +192,13 @@ export function ModuleConfiguration() {
 
   const renderConfigurationTab = () => {
     const answeredCount = CONFIGURATION_QUESTIONS.filter((q) => responses[q.id]).length;
-    const allAnswered = answeredCount === CONFIGURATION_QUESTIONS.length;
+    const allAnswered = CONFIGURATION_QUESTIONS.every((q) => {
+      const response = responses[q.id];
+      if (response === "not_applicable") {
+        return remarks[q.id] && remarks[q.id].trim().length > 0;
+      }
+      return !!response;
+    });
 
     return (
       <div className="flex flex-col h-full min-h-0">
@@ -234,71 +254,58 @@ export function ModuleConfiguration() {
                   })}
                 </div>
                 
-                {/* Threshold Section Below Navigation */}
-                <div className="pt-2 border-t space-y-1.5 mt-2">
-                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-0.5">Score</p>
-                    <p className="text-base font-bold text-blue-600">
-                      {totalScore} / {maxScore}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
-                  </div>
-                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-0.5">Threshold</p>
-                    <div className="flex items-center gap-1">
-                      {percentage >= 70 ? (
-                        <CheckCircle2 className="h-3 w-3 text-green-600" />
-                      ) : (
-                        <XCircle className="h-3 w-3 text-red-600" />
-                      )}
-                      <span className={`text-xs font-medium ${percentage >= 70 ? "text-green-600" : "text-red-600"}`}>
-                        ≥ 70% {percentage >= 70 ? "Met" : "Not Met"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-1.5 rounded bg-gray-50 border border-gray-200">
-                    <p className="text-xs font-semibold text-foreground mb-1">Requirements</p>
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-1">
-                        {responses["Q1"] === "fully_implemented" ? (
-                          <Check className="h-3 w-3 text-green-600" />
-                        ) : (
-                          <XCircle className="h-3 w-3 text-red-600" />
-                        )}
-                        <span className="text-xs text-foreground">Q1: Fully Implemented</span>
+                {/* Score Section Below Navigation */}
+                <div className="pt-3 border-t space-y-2.5 mt-3">
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100/50 border border-gray-200 shadow-sm">
+                    <p className="text-xs font-bold text-foreground mb-2.5 uppercase tracking-wide">Response Summary</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-green-50 border border-green-200">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-green-600"></div>
+                          <span className="text-xs font-medium text-green-900">Yes</span>
+                        </div>
+                        <span className="text-sm font-bold text-green-700">{yesCount}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        {responses["Q2"] === "fully_integrated" ? (
-                          <Check className="h-3 w-3 text-green-600" />
-                        ) : (
-                          <XCircle className="h-3 w-3 text-red-600" />
-                        )}
-                        <span className="text-xs text-foreground">Q2: Fully Integrated</span>
+                      <div className="flex items-center justify-between p-2 rounded-md bg-red-50 border border-red-200">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-red-600"></div>
+                          <span className="text-xs font-medium text-red-900">No</span>
+                        </div>
+                        <span className="text-sm font-bold text-red-700">{noCount}</span>
+                      </div>
+                      <div className="flex items-center justify-between p-2 rounded-md bg-amber-50 border border-amber-200">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-amber-600"></div>
+                          <span className="text-xs font-medium text-amber-900">Not Applicable</span>
+                        </div>
+                        <span className="text-sm font-bold text-amber-700">{notApplicableCount}</span>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Eligibility Status */}
-                  <div className={`p-1.5 rounded border-2 ${isEligible ? "bg-green-500 border-green-600 shadow-md" : "bg-red-50 border-red-200"}`}>
-                    {isEligible ? (
-                      <div className="flex items-start gap-1.5">
-                        <CheckCircle2 className="h-4 w-4 text-white mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-xs font-bold text-white">Eligible</p>
-                          <p className="text-xs text-green-100">Can proceed</p>
-                        </div>
+                  {/* Response Descriptions */}
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50/50 border border-blue-200 shadow-sm">
+                    <p className="text-xs font-bold text-foreground mb-2.5 uppercase tracking-wide">Response Guide</p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-600 mt-1.5 flex-shrink-0"></div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          <span className="font-semibold text-green-700">Yes:</span> The requirement is met or implemented.
+                        </p>
                       </div>
-                    ) : (
-                      <div className="flex items-start gap-1.5">
-                        <XCircle className="h-3.5 w-3.5 text-red-600 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="text-xs font-semibold text-red-700">Not Eligible</p>
-                          <p className="text-xs text-red-600">
-                            {percentage < 70 ? "Score < 70%" : "Check Q1 & Q2"}
-                          </p>
-                        </div>
+                      <div className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-600 mt-1.5 flex-shrink-0"></div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          <span className="font-semibold text-red-700">No:</span> The requirement is not met or not implemented.
+                        </p>
                       </div>
-                    )}
+                      <div className="flex items-start gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 flex-shrink-0"></div>
+                        <p className="text-muted-foreground leading-relaxed">
+                          <span className="font-semibold text-amber-700">Not Applicable:</span> The requirement does not apply to your organization. Please provide a reason.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -311,49 +318,167 @@ export function ModuleConfiguration() {
               {currentQuestions.map((question, qIndex) => {
                 const questionIndex = startIndex + qIndex;
                 return (
-                  <Card key={question.id} id={`question-${question.id}`} className="shadow-sm border">
-                    <CardHeader className="pb-2 pt-3 px-3">
+                  <Card key={question.id} id={`question-${question.id}`} className="shadow-sm border hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3 pt-4 px-4">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-sm flex items-center gap-2">
-                          <span className="text-blue-600 font-bold">
+                        <CardTitle className="text-sm flex items-center gap-2.5">
+                          <span className="text-blue-600 font-bold text-base">
                             {question.id}
                           </span>
-                          <span className="text-sm">{question.question}</span>
+                          <span className="text-sm text-foreground leading-relaxed">{question.question}</span>
                         </CardTitle>
-                        {responses[question.id] && (
-                          <Check className="h-4 w-4 text-green-600" />
-                        )}
+                        <div className="flex-shrink-0">
+                          {responses[question.id] === "yes" && (
+                            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-100 border border-green-200">
+                              <Check className="h-4 w-4 text-green-600" />
+                              <span className="text-xs font-semibold text-green-700">Yes</span>
+                            </div>
+                          )}
+                          {responses[question.id] === "no" && (
+                            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-red-100 border border-red-200">
+                              <XCircle className="h-4 w-4 text-red-600" />
+                              <span className="text-xs font-semibold text-red-700">No</span>
+                            </div>
+                          )}
+                          {responses[question.id] === "not_applicable" && (
+                            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-amber-100 border border-amber-200">
+                              <Check className="h-4 w-4 text-amber-600" />
+                              <span className="text-xs font-semibold text-amber-700">N/A</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </CardHeader>
                     <CardContent className="pt-0 px-3 pb-3">
-                      <div className="space-y-1.5">
-                        {question.options.map((option) => (
-                          <label
-                            key={option.value}
-                            className={`flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-all ${
-                              responses[question.id] === option.value
-                                ? "border-blue-500 bg-blue-50"
-                                : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                            }`}
-                          >
+                      <div className="space-y-2">
+                        <label
+                          className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                            responses[question.id] === "yes"
+                              ? "border-green-500 bg-green-50 shadow-md ring-2 ring-green-200"
+                              : "border-gray-200 hover:border-green-300 hover:bg-green-50/30 hover:shadow-sm"
+                          }`}
+                        >
+                          <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
                             <input
                               type="radio"
                               name={question.id}
-                              value={option.value}
-                              checked={responses[question.id] === option.value}
+                              value="yes"
+                              checked={responses[question.id] === "yes"}
                               onChange={(e) =>
                                 handleResponseChange(question.id, e.target.value, questionIndex)
                               }
-                              className="w-4 h-4 text-blue-600"
+                              className="w-5 h-5 text-green-600 border-2 border-gray-300 focus:ring-2 focus:ring-green-500 focus:ring-offset-1 cursor-pointer appearance-none rounded-full checked:border-green-600 checked:bg-white"
                             />
-                            <span className="flex-1 text-sm font-medium">
-                              {option.label}
+                            {responses[question.id] === "yes" && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <span className={`text-sm font-semibold ${
+                              responses[question.id] === "yes" ? "text-green-700" : "text-foreground"
+                            }`}>
+                              Yes
                             </span>
-                            <Badge variant="outline" className="text-xs">
-                              {option.score}
-                            </Badge>
-                          </label>
-                        ))}
+                          </div>
+                          {responses[question.id] === "yes" && (
+                            <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                          )}
+                        </label>
+                        
+                        <label
+                          className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                            responses[question.id] === "no"
+                              ? "border-red-500 bg-red-50 shadow-md ring-2 ring-red-200"
+                              : "border-gray-200 hover:border-red-300 hover:bg-red-50/30 hover:shadow-sm"
+                          }`}
+                        >
+                          <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
+                            <input
+                              type="radio"
+                              name={question.id}
+                              value="no"
+                              checked={responses[question.id] === "no"}
+                              onChange={(e) =>
+                                handleResponseChange(question.id, e.target.value, questionIndex)
+                              }
+                              className="w-5 h-5 text-red-600 border-2 border-gray-300 focus:ring-2 focus:ring-red-500 focus:ring-offset-1 cursor-pointer appearance-none rounded-full checked:border-red-600 checked:bg-white"
+                            />
+                            {responses[question.id] === "no" && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="w-3 h-3 bg-red-600 rounded-full"></div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <span className={`text-sm font-semibold ${
+                              responses[question.id] === "no" ? "text-red-700" : "text-foreground"
+                            }`}>
+                              No
+                            </span>
+                          </div>
+                          {responses[question.id] === "no" && (
+                            <XCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
+                          )}
+                        </label>
+                        
+                        <label
+                          className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                            responses[question.id] === "not_applicable"
+                              ? "border-amber-500 bg-amber-50 shadow-md ring-2 ring-amber-200"
+                              : "border-gray-200 hover:border-amber-300 hover:bg-amber-50/30 hover:shadow-sm"
+                          }`}
+                        >
+                          <div className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
+                            <input
+                              type="radio"
+                              name={question.id}
+                              value="not_applicable"
+                              checked={responses[question.id] === "not_applicable"}
+                              onChange={(e) =>
+                                handleResponseChange(question.id, e.target.value, questionIndex)
+                              }
+                              className="w-5 h-5 text-amber-600 border-2 border-gray-300 focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 cursor-pointer appearance-none rounded-full checked:border-amber-600 checked:bg-white"
+                            />
+                            {responses[question.id] === "not_applicable" && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div className="w-3 h-3 bg-amber-600 rounded-full"></div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <span className={`text-sm font-semibold ${
+                              responses[question.id] === "not_applicable" ? "text-amber-700" : "text-foreground"
+                            }`}>
+                              Not Applicable
+                            </span>
+                          </div>
+                          {responses[question.id] === "not_applicable" && (
+                            <Check className="h-5 w-5 text-amber-600 flex-shrink-0" />
+                          )}
+                        </label>
+                        
+                        {/* Remark input for Not Applicable */}
+                        {responses[question.id] === "not_applicable" && (
+                          <div className="mt-3 p-4 rounded-lg border-2 border-amber-200 bg-amber-50/50 shadow-sm animate-in fade-in slide-in-from-top-2">
+                            <label className="text-sm font-semibold text-amber-900 mb-2 block">
+                              Reason for Not Applicable <span className="text-red-500">*</span>
+                            </label>
+                            <Textarea
+                              value={remarks[question.id] || ""}
+                              onChange={(e) => handleRemarkChange(question.id, e.target.value)}
+                              placeholder="Please provide a detailed reason why this requirement is not applicable to your organization..."
+                              className="min-h-[100px] text-sm border-amber-300 focus:border-amber-500 focus:ring-amber-500 bg-white"
+                              required
+                            />
+                            {!remarks[question.id]?.trim() && (
+                              <p className="text-xs text-amber-700 mt-1.5">
+                                This field is required when selecting "Not Applicable"
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -396,7 +521,7 @@ export function ModuleConfiguration() {
                 size="default"
                 disabled={!allAnswered}
               >
-                {allAnswered ? "Submit Configuration" : `Answer ${CONFIGURATION_QUESTIONS.length - answeredCount} more question(s) to submit`}
+                {allAnswered ? "Submit Configuration" : `Complete all questions to submit`}
               </Button>
             </div>
           </div>
