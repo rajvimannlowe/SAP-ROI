@@ -17,7 +17,7 @@ export function ModuleConfigurationSelection({
   moduleId,
   moduleName,
   moduleLabel,
-  // catalogId,
+  catalogId,
   // onBack,
 }: ModuleConfigurationSelectionProps) {
   const navigate = useNavigate();
@@ -49,7 +49,14 @@ export function ModuleConfigurationSelection({
         .toLowerCase()
         .replace(/\s+/g, "-")
         .replace(/[^a-z0-9-]/g, "");
-      navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit/${kpiId}/actions`);
+      // Pass state to indicate we came from Catalog Explorer
+      navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit/${kpiId}/actions`, {
+        state: { 
+          fromCatalogExplorer: true, 
+          catalogId: catalogId || blueprintId,
+          moduleId: moduleId
+        }
+      });
     } else {
       // Fallback to cockpit if no KPIs found
       navigate(`/phase-i/catalog/${blueprintId}/blueprint/${moduleId}/cockpit`);

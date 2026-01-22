@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Download, Bell, AlertTriangle } from "lucide-react";
 import { PageHeader } from "../../../../../components/layout/PageHeader";
 import { Button } from "../../../../../components/ui/button";
@@ -25,6 +25,12 @@ export function ActionTracker() {
     id: string;
   }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check if we came from ROI Catalog Explorer
+  const locationState = location.state as { fromCatalogExplorer?: boolean; catalogId?: string; moduleId?: string } | null;
+  const fromCatalogExplorer = locationState?.fromCatalogExplorer;
+  const stateCatalogId = locationState?.catalogId;
 
   // Filter state - must be before early return
   const [searchTerm, setSearchTerm] = useState("");
@@ -165,15 +171,32 @@ export function ActionTracker() {
     actionData.categorySummary
   );
 
+  // Determine back navigation based on where user came from
+  const getBackPath = () => {
+    if (fromCatalogExplorer && stateCatalogId) {
+      // If coming from ROI Catalog Explorer, go back to configuration selection (modules page)
+      return `/phase-i/catalog/${stateCatalogId}/modules/${moduleId}`;
+    }
+    // Otherwise, go back to KPI Detail (evidence page)
+    return `/phase-i/catalog/${
+      blueprintId || "sap-s4hana"
+    }/blueprint/${moduleId}/cockpit/${kpiId}/evidence`;
+  };
+
+  const getBackLabel = () => {
+    if (fromCatalogExplorer) {
+      return "Back to Configuration Selection";
+    }
+    return "Back to KPI Detail";
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
         title={`${cockpitData.moduleName} - ROI Action & Remediation Tracker`}
         subtitle={`Actions for ${actionData.kpiName}`}
-        backTo={`/phase-i/catalog/${
-          blueprintId || "sap-s4hana"
-        }/blueprint/${moduleId}/cockpit/${kpiId}/evidence`}
-        backLabel="Back to KPI Detail"
+        backTo={getBackPath()}
+        backLabel={getBackLabel()}
         rightContent={
           <div className="flex flex-wrap items-center gap-2">
             <Button
