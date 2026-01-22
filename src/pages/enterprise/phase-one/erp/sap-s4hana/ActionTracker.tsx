@@ -226,7 +226,7 @@ export function ActionTracker() {
         </h3>
         <SummaryCards
           cards={[...summaryCards, ...categorySummaryCards]}
-          columns={6}
+          columns={4}
         />
       </div>
 

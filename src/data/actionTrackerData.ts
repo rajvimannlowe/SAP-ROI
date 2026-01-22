@@ -477,21 +477,7 @@ export const getCategorySummaryCards = (categorySummary: {
     icon: Settings,
     color: "#4160F0",
     description: "Workflow & procedure issues",
-  },
-  {
-    title: "DATA",
-    value: categorySummary.DATA,
-    icon: Database,
-    color: "#10b981",
-    description: "Data quality & integrity",
-  },
-  {
-    title: "SYSTEM",
-    value: categorySummary.SYSTEM,
-    icon: Gauge,
-    color: "#FF6700",
-    description: "Technology & automation",
-  },
+  }
 ];
  
 export const convertActionToCatalogItem = (action: ActionItem): CatalogItem => {
